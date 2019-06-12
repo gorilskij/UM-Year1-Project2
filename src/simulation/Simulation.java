@@ -7,13 +7,13 @@ import simulation.universe.Universe;
 
 public interface Simulation {
     /**
-     *
+     * initialization
      * @param bodies celestial objects of the universe
      */
     void init(Body ...bodies);
 
     /**
-     *
+     * physics processes go here
      * @param universe in our case solar-system
      */
     void iterate(Universe universe);
