@@ -1,6 +1,7 @@
 package simulation;
 
 import body.interfaces.Body;
+import simulation.universe.BaseUniverse;
 import simulation.universe.Universe;
 
 
@@ -18,12 +19,6 @@ public interface Simulation {
     void iterate(Universe universe);
 
     /**
-     *
-     * @return current timeline value
-     */
-    double time();
-
-    /**
      * if we need to use change in time
      * @return time step
      */
@@ -32,6 +27,30 @@ public interface Simulation {
 
 }
 
-class SimImplementation {
+class Environment implements Simulation {
 
+    public Universe universe = null;
+    private double timeStep;
+
+
+    Environment(double timeStep){
+        this.timeStep = timeStep;
+    }
+
+    @Override
+    public void init(Body... bodies) {
+        this.universe = new BaseUniverse();
+        for (Body body : bodies)
+            universe.addBody(body);
+    }
+
+    @Override
+    public void iterate(Universe universe) {
+        // TODO: implement
+    }
+
+    @Override
+    public double timeStep() {
+        return this.timeStep;
+    }
 }

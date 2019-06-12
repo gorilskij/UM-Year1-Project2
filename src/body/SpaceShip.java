@@ -3,6 +3,7 @@ package body;
 import body.interfaces.Drawable;
 import body.interfaces.Moving;
 import general_support.Vector;
+import ship_support.ThrustSystem;
 
 import java.awt.*;
 
@@ -11,6 +12,7 @@ public class SpaceShip extends BaseBody implements Moving, Drawable {
     private Vector position = null;
     private Vector velocity = null;
     private Vector acceleration = null;
+    private ThrustSystem thrustSystem = null;
 
     //get's, set's
 

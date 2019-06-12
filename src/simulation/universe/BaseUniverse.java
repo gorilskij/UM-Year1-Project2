@@ -1,5 +1,6 @@
 package simulation.universe;
 
+import body.SpaceShip;
 import body.interfaces.*;
 
 import java.util.ArrayList;
@@ -19,5 +20,10 @@ public class BaseUniverse implements Universe {
         } else {
             attractors.add(body);
         }
+    }
+
+    @Override
+    public void addLaunch(SpaceShip ship) {
+        // TODO: implement
     }
 }
