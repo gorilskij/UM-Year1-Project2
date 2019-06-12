@@ -6,12 +6,11 @@ import general_support.Vector;
 
 import java.awt.*;
 
-public class Planet extends BaseBody implements Moving, Drawable {
+public class SpaceShip extends BaseBody implements Moving, Drawable {
 
     private Vector position = null;
     private Vector velocity = null;
     private Vector acceleration = null;
-    private double radius;
 
     //get's, set's
 
@@ -39,15 +38,7 @@ public class Planet extends BaseBody implements Moving, Drawable {
         this.acceleration = acceleration;
     }
 
-    public double radius() {
-        return radius;
-    }
-
-    public  void setRadius(double radius) {
-        this.radius = radius;
-    }
-
-    Planet(String name, Color color, double mass) {
+    SpaceShip(String name, Color color, double mass) {
         super(name, color, mass);
     }
 

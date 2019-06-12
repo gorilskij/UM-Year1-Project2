@@ -23,6 +23,8 @@ public class Vector {
 
     public Vector direction() {
         double mag = magnitude();
+        if (mag == 0)
+            throw new ArithmeticException("no direction for zero vector");
         return new Vector(
                 x / mag,
                 y / mag,

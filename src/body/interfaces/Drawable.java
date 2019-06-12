@@ -1,9 +1,19 @@
 package body.interfaces;
 
-import body.interfaces.granular.GetPosition;
-
+import general_support.Vector;
 import java.awt.*;
 
-public interface Drawable extends GetPosition {
+public interface Drawable extends Body {
+
+    /**
+     *
+     * @param g Graphics
+     */
     void draw(Graphics g);
+
+    /**
+     *
+     * @return position
+     */
+    Vector position();
 }

@@ -1,11 +1,43 @@
 package body.interfaces;
 
-import body.interfaces.granular.GetPosition;
 import general_support.Vector;
 
-public interface Moving extends GetPosition {
+public interface Moving extends Body {
+    /**
+     *
+     * @return position
+     */
+    Vector position();
+
+    /**
+     * changes position of the body
+     * @param position has to be Vector
+     */
     void setPosition(Vector position);
 
-    Vector getVelocity();
+    /**
+     *
+     * @return velocity
+     */
+    Vector velocity();
+
+    /**
+     * changes velocity of the body
+     * @param velocity has to be Vector
+     *
+     */
     void setVelocity(Vector velocity);
+
+    /**
+     *
+     * @return acceleration
+     */
+    Vector acceleration();
+
+    /**
+     * changes acceleration of the body
+     * @param acceleration has to be Vector
+     *
+     */
+    void setAcceleration(Vector acceleration);
 }
