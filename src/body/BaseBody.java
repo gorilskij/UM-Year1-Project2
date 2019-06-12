@@ -1,8 +1,10 @@
 package body;
 
+import body.interfaces.Body;
+
 import java.awt.*;
 
-public abstract class BaseBody {
+public abstract class BaseBody implements Body {
     private final String name;
     private final Color color;
 

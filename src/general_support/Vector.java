@@ -5,6 +5,8 @@ import java.util.Locale;
 public class Vector {
     public final double x, y, z;
 
+    public static final Vector ZERO = new Vector(0, 0, 0);
+
     public Vector(double x, double y, double z) {
         // TODO: maybe remove for performance
         if (Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(z))
