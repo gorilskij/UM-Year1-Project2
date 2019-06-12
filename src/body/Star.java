@@ -7,12 +7,23 @@ import java.awt.*;
 
 public class Star extends BaseBody implements Drawable {
 
+    private double radius;
+
     public Vector position() {
         return Vector.ZERO;
     }
 
-    Star(String name, Color color, double mass) {
+    public double radius() {
+        return radius;
+    }
+
+    private void setRadius(double radius) {
+        this.radius = radius;
+    }
+
+    public Star(String name, double mass, double radius, Color color) {
         super(name, color, mass);
+        setRadius(radius);
     }
 
     public void draw(Graphics g) {

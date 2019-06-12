@@ -43,12 +43,15 @@ public class Planet extends BaseBody implements Moving, Drawable {
         return radius;
     }
 
-    public  void setRadius(double radius) {
+    private void setRadius(double radius) {
         this.radius = radius;
     }
 
-    Planet(String name, Color color, double mass) {
+    public Planet(String name, double mass, double radius, Vector position, Vector velocity, Color color) {
         super(name, color, mass);
+        setPosition(position);
+        setVelocity(velocity);
+        setRadius(radius);
     }
 
     public void draw(Graphics g) {
