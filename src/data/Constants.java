@@ -1,8 +1,9 @@
-package general_support;
+package data;
 
 import body.BaseBody;
 import body.Planet;
 import body.Star;
+import general_support.Vector;
 
 import java.awt.*;
 

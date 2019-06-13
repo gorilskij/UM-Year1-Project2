@@ -23,6 +23,8 @@ public interface Body {
      */
     double mass();
 
+    Body copy();
+
     /**
      *
      * @return current position

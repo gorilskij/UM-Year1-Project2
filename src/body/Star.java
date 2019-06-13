@@ -6,24 +6,19 @@ import general_support.Vector;
 import java.awt.*;
 
 public class Star extends BaseBody implements Drawable {
+    public Star copy() {
+        return new Star(name(), mass(), radius, color());
+    }
 
-    private double radius;
+    public final double radius;
 
     public Vector position() {
         return Vector.ZERO;
     }
 
-    public double radius() {
-        return radius;
-    }
-
-    private void setRadius(double radius) {
-        this.radius = radius;
-    }
-
     public Star(String name, double mass, double radius, Color color) {
         super(name, color, mass);
-        setRadius(radius);
+        this.radius = radius;
     }
 
     public void draw(Graphics g) {

@@ -3,6 +3,7 @@ package simulation.universe;
 import body.SpaceShip;
 import body.interfaces.*;
 import general_support.Vector;
+import data.BodyFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +19,11 @@ public final class UniverseImpl implements Universe {
 
     public static Universe newSolarSystem() {
         Universe universe = new UniverseImpl();
-        // TODO: read data/ephemerides.txt and make solar system
-        return null;
+
+        for (Body body : BodyFactory.createSolarSystem())
+            universe.addBody(body);
+
+        return universe;
     }
 
     @Override
