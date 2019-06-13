@@ -11,6 +11,7 @@ public class UniverseRunner extends BaseRunner {
     }
 
     public UniverseRunner(Universe universe, double timeStep) {
+        super(0);
         this.universe = universe;
         this.timeStep = timeStep;
     }

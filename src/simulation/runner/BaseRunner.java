@@ -1,8 +1,12 @@
 package simulation.runner;
 
 public abstract class BaseRunner implements Runner {
-    private volatile long minFrameTimeNs = 0;
+    private volatile long minFrameTimeNs;
     private Thread runnerThread = null;
+
+    BaseRunner(long minFrameTimeNs) {
+        this.minFrameTimeNs = minFrameTimeNs;
+    }
 
     public long minFrameTimeNs() {
         return minFrameTimeNs;
