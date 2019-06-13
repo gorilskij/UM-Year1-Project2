@@ -1,11 +1,12 @@
 package body;
 
 import body.interfaces.Drawable;
+import body.interfaces.Stable;
 import general_support.Vector;
 
 import java.awt.*;
 
-public class Star extends BaseBody implements Drawable {
+public class Star extends BaseBody implements Drawable, Stable {
     public Star copy() {
         return new Star(name(), mass(), radius, color());
     }

@@ -3,6 +3,8 @@ package simulation.universe;
 import body.SpaceShip;
 import body.interfaces.*;
 import data.Constants;
+import general_support.Integrator;
+import general_support.LeapFrog;
 import general_support.Vector;
 import data.BodyFactory;
 
@@ -15,6 +17,8 @@ public final class UniverseImpl implements Universe {
     private final List<Moving> spaceShips = new ArrayList<>();
     private final List<Moving> movingBodies = new ArrayList<>();
     private final List<Body> attractors = new ArrayList<>();
+    private Stable star = null;
+    public Integrator integrator = new LeapFrog();
 
     private UniverseImpl() {} // shouldn't be used outside class
 
@@ -31,6 +35,10 @@ public final class UniverseImpl implements Universe {
     public void addBody(Body body) {
 
         allBodies.add(body);
+
+        if (body instanceof Stable) {
+            star = (Stable) body;
+        }
 
         if (body instanceof SpaceShip) {
             spaceShips.add((Moving) body);
@@ -50,10 +58,10 @@ public final class UniverseImpl implements Universe {
 
     @Override
     public void iteratePhysics(double timeStep) {
-        Vector acceleration = Vector.ZERO;
 
-        for (Body attractor : attractors) {
-            for (Body body : allBodies) {
+        for (Body body : allBodies) {
+            Vector acceleration = Vector.ZERO;
+            for (Body attractor : attractors) {
                 if (body == attractor) continue;
 
                 Vector vectorToAttractor = body.position().vectorTo(attractor.position());
@@ -62,7 +70,9 @@ public final class UniverseImpl implements Universe {
 
                 double accelerationMagnitude = Constants.G * attractor.mass() / Math.pow(distance, 2);
                 acceleration.plus(directionToAttractor.times(accelerationMagnitude));
+
             }
         }
+
     }
 }
