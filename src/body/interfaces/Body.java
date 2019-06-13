@@ -30,10 +30,4 @@ public interface Body {
      * @return current position
      */
     Vector position();
-
-    /**
-     *
-     * @param position position to assign to
-     */
-    void setPosition(Vector position);
 }
