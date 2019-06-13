@@ -8,12 +8,16 @@ import java.awt.*;
 
 public class Planet extends BaseBody implements Moving, Drawable {
 
-    private Vector position = null;
-    private Vector velocity = null;
+    private Vector position;
+    private Vector velocity;
     private Vector acceleration = null;
-    private double radius;
+    public final double radius;
 
-    //get's, set's
+    public Planet copy() {
+        return new Planet(name(), mass(), radius, position, velocity, color());
+    }
+
+    //create's, set's
 
     public Vector position() {
         return position;
@@ -39,19 +43,11 @@ public class Planet extends BaseBody implements Moving, Drawable {
         this.acceleration = acceleration;
     }
 
-    public double radius() {
-        return radius;
-    }
-
-    private void setRadius(double radius) {
-        this.radius = radius;
-    }
-
     public Planet(String name, double mass, double radius, Vector position, Vector velocity, Color color) {
         super(name, color, mass);
-        setPosition(position);
-        setVelocity(velocity);
-        setRadius(radius);
+        this.position = position;
+        this.velocity = velocity;
+        this.radius = radius;
     }
 
     public void draw(Graphics g) {

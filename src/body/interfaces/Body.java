@@ -20,4 +20,6 @@ public interface Body {
      * @return mass
      */
     double mass();
+
+    Body copy();
 }

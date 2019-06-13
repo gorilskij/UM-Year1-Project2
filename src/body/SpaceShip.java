@@ -8,15 +8,20 @@ import ship_support.ThrustSystem;
 import java.awt.*;
 
 public class SpaceShip extends BaseBody implements Moving, Drawable {
+    public SpaceShip copy() {
+        return new SpaceShip(name(), color(), mass());
+    }
 
     private Vector position = null;
     private Vector velocity = null;
     private Vector acceleration = null;
     private ThrustSystem thrustSystem = null;
 
-    //get's, set's
+    //create's, set's
 
     public Vector position() {
+        if (position == null)
+            throw new IllegalStateException("tried to access null position");
         return position;
     }
 
@@ -25,6 +30,8 @@ public class SpaceShip extends BaseBody implements Moving, Drawable {
     }
 
     public Vector velocity() {
+        if (velocity == null)
+            throw new IllegalStateException("tried to access null velocity");
         return velocity;
     }
 
@@ -33,6 +40,8 @@ public class SpaceShip extends BaseBody implements Moving, Drawable {
     }
 
     public Vector acceleration() {
+        if (acceleration == null)
+            throw new IllegalStateException("tried to access null acceleration");
         return acceleration;
     }
 
