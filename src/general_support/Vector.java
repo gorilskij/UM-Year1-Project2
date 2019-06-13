@@ -83,4 +83,12 @@ public final class Vector {
                 x, y, z
         );
     }
+
+    public Vector averageWith(Vector other) {
+        return new Vector(
+                (x + other.x)/2,
+                (y + other.y)/2,
+                (z + other.z)/2
+        );
+    }
 }

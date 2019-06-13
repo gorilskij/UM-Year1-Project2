@@ -8,5 +8,5 @@ public interface Integrator {
      * @param acceleration Vector indicating current acceleration
      * @param velocity Vector indicating current velocity
      */
-    void integrate(Vector position, Vector acceleration, Vector velocity);
+    void integrate(Vector position, Vector acceleration, Vector velocity, double timeStep);
 }
