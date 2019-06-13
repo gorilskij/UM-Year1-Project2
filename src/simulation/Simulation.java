@@ -22,6 +22,8 @@ public interface Simulation {
      * @return time step
      */
     double timeStep();
+    void setTimeStep(double timeStep);
 
-
+    void graphicsStart();
+    void graphicsStop();
 }

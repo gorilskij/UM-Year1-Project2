@@ -16,7 +16,7 @@ public final class SimulationImpl implements Simulation {
         this.timeStep = timeStep;
 
         this.universe = UniverseImpl.newSolarSystem();
-        this.gui = new GUIImpl();
+        this.gui = new GUIImpl(this);
     }
 
     @Override
@@ -35,5 +35,17 @@ public final class SimulationImpl implements Simulation {
         return this.timeStep;
     }
 
+    public void setTimeStep(double timeStep) {
+        this.timeStep = timeStep;
+    }
 
+    @Override
+    public void graphicsStart() {
+        // TODO: implement
+    }
+
+    @Override
+    public void graphicsStop() {
+        // TODO: implement
+    }
 }
