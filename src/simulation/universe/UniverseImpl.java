@@ -6,11 +6,19 @@ import body.interfaces.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseUniverse implements Universe {
+public final class UniverseImpl implements Universe {
 
     private final List<Body> allBodies = new ArrayList<>();
     private final List<Body> attractors = new ArrayList<>();
     private final List<Moving> movingBodies = new ArrayList<>();
+
+    private UniverseImpl() {} // shouldn't be used outside class
+
+    public static Universe newSolarSystem() {
+        Universe universe = new UniverseImpl();
+        // TODO: read data/ephemerides.txt and make solar system
+        return null;
+    }
 
     public void addBody(Body body) {
         allBodies.add(body);

@@ -2,7 +2,7 @@ package general_support;
 
 import java.util.Locale;
 
-public class Vector {
+public final class Vector {
     public final double x, y, z;
 
     public static final Vector ZERO = new Vector(0, 0, 0);
