@@ -3,17 +3,6 @@ package body.interfaces;
 import general_support.Vector;
 
 public interface Moving extends Body {
-    /**
-     *
-     * @return position
-     */
-    Vector position();
-
-    /**
-     * changes position of the body
-     * @param position has to be Vector
-     */
-    void setPosition(Vector position);
 
     /**
      *

@@ -1,5 +1,7 @@
 package body.interfaces;
 
+import general_support.Vector;
+
 import java.awt.*;
 
 public interface Body {
@@ -20,4 +22,16 @@ public interface Body {
      * @return mass
      */
     double mass();
+
+    /**
+     *
+     * @return current position
+     */
+    Vector position();
+
+    /**
+     *
+     * @param position position to assign to
+     */
+    void setPosition(Vector position);
 }

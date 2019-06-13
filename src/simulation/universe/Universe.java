@@ -16,4 +16,10 @@ public interface Universe {
      * @param ship space ship to launch
      */
     void addLaunch(SpaceShip ship);
+
+    /**
+     *
+     * @param timeStep time step at which to iterate
+     */
+    void iteratePhysics(double timeStep);
 }
