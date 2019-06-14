@@ -18,7 +18,7 @@ public final class SimulationImpl implements Simulation {
         this.timeStep = timeStep;
 
         this.universe = UniverseImpl.newSolarSystem();
-        this.gui = new GUIImpl();
+        this.gui = new GUIImpl(this);
     }
 
     @Override
@@ -41,5 +41,18 @@ public final class SimulationImpl implements Simulation {
     public void bodies() {
         for (Body body : universe.bodies())
             System.out.println(body.name());
+    }
+    public void setTimeStep(double timeStep) {
+        this.timeStep = timeStep;
+    }
+
+    @Override
+    public void graphicsStart() {
+        // TODO: implement
+    }
+
+    @Override
+    public void graphicsStop() {
+        // TODO: implement
     }
 }

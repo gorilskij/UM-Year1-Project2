@@ -24,10 +24,13 @@ public interface Simulation {
      * @return time step
      */
     double timeStep();
+    void setTimeStep(double timeStep);
 
     /**
      * list of current celestial objects in the simulation
      */
     void bodies();
 
+    void graphicsStart();
+    void graphicsStop();
 }

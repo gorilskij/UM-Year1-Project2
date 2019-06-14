@@ -1,5 +1,7 @@
 package simulation.gui;
 
+import simulation.universe.Universe;
+
 public interface GUI {
-    void iterateGraphics();
+    void iterateGraphics(Universe universe);
 }
