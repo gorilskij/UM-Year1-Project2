@@ -15,9 +15,8 @@ public interface Universe {
 
     /**
      *
-     * @param ship space ship to launch
      */
-    void addLaunch(SpaceShip ship);
+    void addLaunch();
 
     /**
      *
@@ -27,7 +26,7 @@ public interface Universe {
 
     /**
      *
-     * @return return list of current celestial objects in universe
+     * print all the current data about universe
      */
-    List<Body> bodies();
+    void getCurrentData();
 }

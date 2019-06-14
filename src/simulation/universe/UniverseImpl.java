@@ -8,6 +8,7 @@ import general_support.LeapFrog;
 import general_support.Vector;
 import data.BodyFactory;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,8 +49,11 @@ public final class UniverseImpl implements Universe {
     }
 
     @Override
-    public void addLaunch(SpaceShip ship) {
+    public void addLaunch() {
         // TODO: implement
+        SpaceShip fr = new SpaceShip("fr", Color.WHITE, 962);
+        SpaceShip sr = new SpaceShip("sr", Color.WHITE, 1871);
+        SpaceShip tr = new SpaceShip( "tr", Color.WHITE, 1933);
     }
 
     @Override
@@ -74,7 +78,11 @@ public final class UniverseImpl implements Universe {
     }
 
     @Override
-    public List<Body> bodies() {
-        return new ArrayList<>(allBodies);
+    public void getCurrentData() {
+        for (Moving body : movingBodies) {
+            System.out.println("body.name: " + body.name());
+            System.out.println("body.velocity: " + body.velocity());
+            System.out.println("body.position: " + body.position());
+        }
     }
 }

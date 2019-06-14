@@ -14,10 +14,21 @@ public interface Simulation {
     void addBodies(Body ...bodies);
 
     /**
-     * physics processes go here
-     * @param universe in our case solar-system
+     *
+     * @return current time
      */
-    void iterate(Universe universe);
+    long currentMillis();
+
+    /**
+     *
+     * @return how many seconds have passed
+     */
+    long secondPassed();
+
+    /**
+     * physics processes go here
+     */
+    void iterate();
 
     /**
      * if we need to use change in time
@@ -27,9 +38,9 @@ public interface Simulation {
     void setTimeStep(double timeStep);
 
     /**
-     * list of current celestial objects in the simulation
+     * print all the current data for the universe
      */
-    void bodies();
+    void getData();
 
     void graphicsStart();
     void graphicsStop();

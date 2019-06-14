@@ -49,7 +49,7 @@ public class SpaceShip extends BaseBody implements Moving, Drawable {
         this.acceleration = acceleration;
     }
 
-    SpaceShip(String name, Color color, double mass) {
+    public SpaceShip(String name, Color color, double mass) {
         super(name, color, mass);
     }
 
