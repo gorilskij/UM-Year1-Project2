@@ -5,7 +5,7 @@ public class LeapFrog implements Integrator {
     private Vector lastAcceleration = Vector.ZERO;
 
     @Override
-    public void integrate(Vector position, Vector acceleration, Vector velocity, double timeStep) {
+    public void integrate(Vector position, Vector velocity, Vector acceleration, double timeStep) {
         position.plus(velocity
                 .times(timeStep)
                 .plus(acceleration.times(Math.pow(timeStep, 2) / 2))

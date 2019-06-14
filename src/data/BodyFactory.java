@@ -75,7 +75,7 @@ public class BodyFactory {
             )
     };
 
-    public static Body create(String someName) {
+    public static Body find(String someName) {
         String name = someName.toLowerCase();
 
         for (Body prototype : prototypes)

@@ -6,13 +6,15 @@ import simulation.gui.GUIImpl;
 import simulation.universe.UniverseImpl;
 import simulation.universe.Universe;
 
+import java.util.List;
+
 public final class SimulationImpl implements Simulation {
     private double timeStep;
 
     private final Universe universe;
     private final GUI gui;
 
-    SimulationImpl(double timeStep){
+    public SimulationImpl(double timeStep){
         this.timeStep = timeStep;
 
         this.universe = UniverseImpl.newSolarSystem();
@@ -27,7 +29,7 @@ public final class SimulationImpl implements Simulation {
 
     @Override
     public void iterate(Universe universe) {
-        // TODO: implement
+        universe.iteratePhysics(this.timeStep);
     }
 
     @Override
@@ -35,5 +37,9 @@ public final class SimulationImpl implements Simulation {
         return this.timeStep;
     }
 
-
+    @Override
+    public void bodies() {
+        for (Body body : universe.bodies())
+            System.out.println(body.name());
+    }
 }

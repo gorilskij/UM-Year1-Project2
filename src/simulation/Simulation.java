@@ -3,6 +3,8 @@ package simulation;
 import body.interfaces.Body;
 import simulation.universe.Universe;
 
+import java.util.List;
+
 
 public interface Simulation {
     /**
@@ -23,5 +25,9 @@ public interface Simulation {
      */
     double timeStep();
 
+    /**
+     * list of current celestial objects in the simulation
+     */
+    void bodies();
 
 }

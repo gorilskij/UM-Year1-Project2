@@ -9,6 +9,7 @@ import general_support.Vector;
 import data.BodyFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public final class UniverseImpl implements Universe {
@@ -17,7 +18,6 @@ public final class UniverseImpl implements Universe {
     private final List<Moving> spaceShips = new ArrayList<>();
     private final List<Moving> movingBodies = new ArrayList<>();
     private final List<Body> attractors = new ArrayList<>();
-    private Stable star = null;
     public Integrator integrator = new LeapFrog();
 
     private UniverseImpl() {} // shouldn't be used outside class
@@ -35,10 +35,6 @@ public final class UniverseImpl implements Universe {
     public void addBody(Body body) {
 
         allBodies.add(body);
-
-        if (body instanceof Stable) {
-            star = (Stable) body;
-        }
 
         if (body instanceof SpaceShip) {
             spaceShips.add((Moving) body);
@@ -59,7 +55,7 @@ public final class UniverseImpl implements Universe {
     @Override
     public void iteratePhysics(double timeStep) {
 
-        for (Body body : allBodies) {
+        for (Moving body : movingBodies) {
             Vector acceleration = Vector.ZERO;
             for (Body attractor : attractors) {
                 if (body == attractor) continue;
@@ -72,7 +68,13 @@ public final class UniverseImpl implements Universe {
                 acceleration.plus(directionToAttractor.times(accelerationMagnitude));
 
             }
+            integrator.integrate(body.position(), body.velocity(), acceleration, timeStep);
         }
 
+    }
+
+    @Override
+    public List<Body> bodies() {
+        return new ArrayList<>(allBodies);
     }
 }
