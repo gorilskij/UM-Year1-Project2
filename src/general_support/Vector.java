@@ -100,4 +100,9 @@ public final class Vector {
     public Point.Double toXYPoint(double scale) {
         return new Point.Double(x * scale, y * scale);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return (x == ((Vector) obj).x && y == ((Vector) obj).y &&  z == ((Vector) obj).z);
+    }
 }
