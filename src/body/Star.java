@@ -1,11 +1,11 @@
 package body;
 
-import body.interfaces.Drawable;
+import general_support.CirclePainter;
 import general_support.Vector;
 
 import java.awt.*;
 
-public class Star extends BaseBody implements Drawable {
+public class Star extends BaseBody {
     public Star copy() {
         return new Star(name(), mass(), radius, color());
     }
@@ -21,7 +21,7 @@ public class Star extends BaseBody implements Drawable {
         this.radius = radius;
     }
 
-    public void draw(Graphics g) {
-        // TODO: implement
+    public void paint(Graphics g) {
+        CirclePainter.paintCircle(g, position(), radius, color());
     }
 }

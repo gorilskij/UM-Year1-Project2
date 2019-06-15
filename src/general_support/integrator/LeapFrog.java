@@ -1,7 +1,6 @@
 package general_support.integrator;
 
 import general_support.Vector;
-import general_support.integrator.Integrator;
 
 public class LeapFrog implements Integrator {
 

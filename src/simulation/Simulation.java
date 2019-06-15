@@ -1,12 +1,13 @@
 package simulation;
 
-public interface Simulation {
+import simulation.universe.Universe;
+
+public interface Simulation extends PlayPause {
     /**
      *
      * @return current time
      */
     long timePassedS();
 
-    void startPhysics();
-    void stopPhysics();
+    Universe universe();
 }

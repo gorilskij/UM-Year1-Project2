@@ -1,13 +1,13 @@
 package body;
 
-import body.interfaces.Drawable;
 import body.interfaces.Moving;
+import general_support.CirclePainter;
 import general_support.Vector;
 import ship_support.ThrustSystem;
 
 import java.awt.*;
 
-public class SpaceShip extends BaseBody implements Moving, Drawable {
+public class SpaceShip extends BaseBody implements Moving {
     public SpaceShip copy() {
         return new SpaceShip(name(), color(), mass());
     }
@@ -53,7 +53,7 @@ public class SpaceShip extends BaseBody implements Moving, Drawable {
         super(name, color, mass);
     }
 
-    public void draw(Graphics g) {
+    public void paint(Graphics g) {
         // TODO: implement
     }
 }

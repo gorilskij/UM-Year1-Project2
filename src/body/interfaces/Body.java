@@ -30,4 +30,6 @@ public interface Body {
      * @return current position
      */
     Vector position();
+
+    void paint(Graphics g);
 }

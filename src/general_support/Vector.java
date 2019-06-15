@@ -1,5 +1,6 @@
 package general_support;
 
+import java.awt.*;
 import java.util.Locale;
 
 public final class Vector {
@@ -90,5 +91,9 @@ public final class Vector {
                 (y + other.y)/2,
                 (z + other.z)/2
         );
+    }
+
+    public Point.Double toXYPoint() {
+        return new Point.Double(x, y);
     }
 }
