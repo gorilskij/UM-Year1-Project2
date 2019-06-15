@@ -14,12 +14,14 @@ public class WindowImpl implements Window {
 
     private static final double ZOOM = 1.2;
 
+    private final Simulation simulation;
     private final Universe universe;
 
     private final JPanel space;
     private final JButton playPauseButton = new JButton();
 
     private final JLabel scaleLabel;
+    private final JLabel timePassedLabel;
 
     private double scale = 1e-7;
 
@@ -27,11 +29,12 @@ public class WindowImpl implements Window {
 
     private void setScale(double newScale) {
         scale = newScale;
-        scaleLabel.setText(String.format(Locale.US, "1 : %.2e", 1 / newScale));
+        scaleLabel.setText(String.format(Locale.US, "scale: 1 : %.2e", 1 / newScale));
         paint();
     }
 
     public WindowImpl(Simulation simulation, Universe universe) {
+        this.simulation = simulation;
         this.universe = universe;
 
         JFrame frame = new JFrame("going to titan");
@@ -49,11 +52,8 @@ public class WindowImpl implements Window {
         };
         space.setBackground(Color.BLACK);
 
-        JPanel bottomLeftPanel = new JPanel();
-        bottomLeftPanel.setLayout(new BoxLayout(bottomLeftPanel, BoxLayout.X_AXIS));
-
-        JPanel bottomRightPanel = new JPanel();
-        bottomRightPanel.setLayout(new BoxLayout(bottomRightPanel, BoxLayout.X_AXIS));
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));
 
         playPauseButton.addActionListener(e -> {
             if (playPauseButton.getText().equals(PLAY_TEXT))
@@ -71,16 +71,18 @@ public class WindowImpl implements Window {
         scaleLabel = new JLabel();
         setScale(scale); // refresh scaleLabel
 
+        timePassedLabel = new JLabel("-");
+
         contentPane.add(space);
 
-        bottomLeftPanel.add(playPauseButton);
-        bottomLeftPanel.add(increaseScaleButton);
-        bottomLeftPanel.add(decreaseScaleButton);
+        bottomPanel.add(playPauseButton);
+        bottomPanel.add(increaseScaleButton);
+        bottomPanel.add(decreaseScaleButton);
 
-        bottomRightPanel.add(scaleLabel);
+        bottomPanel.add(scaleLabel);
+        bottomPanel.add(timePassedLabel);
 
-        contentPane.add(bottomLeftPanel);
-        contentPane.add(bottomRightPanel);
+        contentPane.add(bottomPanel);
 
         frame.setContentPane(contentPane);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -116,5 +118,7 @@ public class WindowImpl implements Window {
 //        translateToCenterBody(g);
         for (Body body : universe.allBodies())
             body.paint(g, scale);
+
+        timePassedLabel.setText("time passed: " + simulation.timePassedS() + "s");
     }
 }
