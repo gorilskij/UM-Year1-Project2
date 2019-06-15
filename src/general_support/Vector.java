@@ -77,6 +77,14 @@ public final class Vector {
         );
     }
 
+    public String toStringPrecise() {
+        return String.format(
+                Locale.US,
+                "(%f, %f, %f)",
+                x, y, z
+        );
+    }
+
     public String toString() {
         return String.format(
                 Locale.US,

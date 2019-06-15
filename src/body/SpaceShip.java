@@ -54,10 +54,6 @@ public class SpaceShip extends BaseBody implements Moving {
         super(name, color, mass);
     }
 
-    public void paint(Graphics g, double scale) {
-        // TODO: implement
-    }
-
     public void setThrustSystem(ThrustSystem thrustSystem) {
         this.thrustSystem = thrustSystem;
     }
@@ -72,6 +68,7 @@ public class SpaceShip extends BaseBody implements Moving {
 
     public void rotate_left() {
         this.thrustSystem.rotate_right(fuel_ejection, mass());
+//        velocity = velocity.plus(thrustSystem.thrust(1, mass()));
     }
 
     public Vector pointing() {
@@ -84,5 +81,12 @@ public class SpaceShip extends BaseBody implements Moving {
 
     public void start() {
 
+    }
+
+
+
+
+    public void paint(Graphics g, double scale) {
+        // TODO: implement
     }
 }

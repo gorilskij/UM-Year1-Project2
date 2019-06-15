@@ -39,6 +39,16 @@ public final class UniverseImpl implements Universe {
         for (Body body : BodyFactory.createSolarSystem())
             universe.addBody(body);
 
+        // fix relative positions
+        Moving moon = (Moving) universe.getBodyByName("moon");
+        Moving earth = (Moving) universe.getBodyByName("earth");
+
+        Moving titan = (Moving) universe.getBodyByName("titan");
+        Moving saturn = (Moving) universe.getBodyByName("saturn");
+
+        moon.setPosition(moon.position().plus(earth.position()));
+        titan.setPosition(titan.position().plus(saturn.position()));
+
         return universe;
     }
 

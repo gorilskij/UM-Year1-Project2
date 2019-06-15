@@ -1,17 +1,22 @@
 package body;
 
 import body.interfaces.Moving;
-import general_support.CirclePainter;
+import body.interfaces.Round;
+import general_support.PaintingTools;
 import general_support.Vector;
 
 import java.awt.*;
 
-public class Planet extends BaseBody implements Moving {
+public class Planet extends BaseBody implements Round, Moving {
 
     private Vector position;
     private Vector velocity;
     private Vector acceleration = null;
-    public final double radius;
+    private final double radius;
+
+    public double radius() {
+        return radius;
+    }
 
     public Planet copy() {
         return new Planet(name(), mass(), radius, position, velocity, color());
@@ -51,6 +56,6 @@ public class Planet extends BaseBody implements Moving {
     }
 
     public void paint(Graphics g, double scale) {
-        CirclePainter.paintCircle(g, scale, position(), radius, color());
+        PaintingTools.paintCircularObject(g, scale, this);
     }
 }
