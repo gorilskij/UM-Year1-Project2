@@ -1,4 +1,6 @@
-package general_support;
+package general_support.integrator;
+
+import general_support.Vector;
 
 public interface Integrator {
 

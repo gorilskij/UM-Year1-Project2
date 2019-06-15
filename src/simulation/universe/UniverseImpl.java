@@ -3,8 +3,8 @@ package simulation.universe;
 import body.SpaceShip;
 import body.interfaces.*;
 import data.Constants;
-import general_support.Integrator;
-import general_support.LeapFrog;
+import general_support.integrator.Integrator;
+import general_support.integrator.LeapFrog;
 import general_support.Vector;
 import data.BodyFactory;
 
