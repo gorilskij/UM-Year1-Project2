@@ -1,14 +1,13 @@
 package general_support.integrator;
 
 import general_support.Vector;
-import general_support.integrator.Integrator;
 
 public class LeapFrog implements Integrator {
 
     private Vector lastAcceleration = Vector.ZERO;
 
     @Override
-    public void integrate(Vector position, Vector velocity, Vector acceleration, int timeStep) {
+    public void integrate(Vector position, Vector velocity, Vector acceleration, double timeStep) {
         position.plus(velocity
                 .times(timeStep)
                 .plus(acceleration.times(Math.pow(timeStep, 2) / 2))

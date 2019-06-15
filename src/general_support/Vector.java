@@ -48,11 +48,27 @@ public final class Vector {
         );
     }
 
+    public Vector plus(double scalar) {
+        return new Vector(
+                x + scalar,
+                y + scalar,
+                z + scalar
+        );
+    }
+
     public Vector minus(Vector other) {
         return new Vector(
                 x - other.x,
                 y - other.y,
                 z - other.z
+        );
+    }
+
+    public Vector minus(double scalar) {
+        return new Vector(
+                x + scalar,
+                y + scalar,
+                z + scalar
         );
     }
 
