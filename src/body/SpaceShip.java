@@ -14,6 +14,7 @@ public class SpaceShip extends BaseBody implements Moving {
 
     private Vector position = null;
     private Vector velocity = null;
+    private Vector pointing = null;
     private Vector acceleration = null;
     private ThrustSystem thrustSystem = null;
 
@@ -55,5 +56,25 @@ public class SpaceShip extends BaseBody implements Moving {
 
     public void paint(Graphics g, double scale) {
         // TODO: implement
+    }
+
+    public void setThrustSystem(ThrustSystem thrustSystem) {
+        this.thrustSystem = thrustSystem;
+    }
+
+    public void thrust() {
+        this.velocity.plus(this.thrustSystem.thrust(1, this.mass()));
+    }
+
+    public Vector pointing() {
+        return pointing;
+    }
+
+    public void setPointing(Vector pointing) {
+        this.pointing = pointing;
+    }
+
+    public void rotate(Vector direction) {
+
     }
 }

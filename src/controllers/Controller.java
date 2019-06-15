@@ -11,7 +11,8 @@ public interface Controller {
      * name is shit, TODO: change the name
      * @param ship spaceship to thrust
      * @param velocity how much velocity to gain
+     * @param destination where to fly
      */
-    void control(SpaceShip ship, Vector velocity);
+    void control(SpaceShip ship, Vector velocity, String destination);
 
 }
