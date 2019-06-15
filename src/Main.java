@@ -1,3 +1,6 @@
+import body.interfaces.Moving;
+import data.BodyFactory;
+import general_support.Vector;
 import simulation.Simulation;
 import simulation.SimulationImpl;
 

@@ -4,6 +4,8 @@ import general_support.Vector;
 
 public interface Moving extends Body {
 
+    void setPosition(Vector position);
+
     /**
      *
      * @return velocity

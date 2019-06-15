@@ -61,6 +61,8 @@ public class BodyFactory {
                     new Vector(1.336208377346853e3, 5.291072248378655e3, -1.405551000735563e2),
                     new Color(35, 9, 130)
             ),
+
+            // moon positions relative to their parent planet
             new Planet(
                     "moon", 7.345e22, 1.737e6,
                     new Vector(-2.860800707081836e8, -2.584807922023280e8, 3.428195728332768e7),
@@ -74,16 +76,6 @@ public class BodyFactory {
                     new Color(200, 180, 100)
             )
     };
-
-    public static Body find(String someName) {
-        String name = someName.toLowerCase();
-
-        for (Body prototype : prototypes)
-            if (prototype.name().toLowerCase().equals(name))
-                return prototype.copy();
-
-        throw new IllegalStateException("body with name " + someName + " not found");
-    }
 
     public static Body[] createSolarSystem() {
         Body[] copies = new Body[prototypes.length];

@@ -1,16 +1,21 @@
 package body;
 
-import general_support.CirclePainter;
+import body.interfaces.Round;
+import general_support.PaintingTools;
 import general_support.Vector;
 
 import java.awt.*;
 
-public class Star extends BaseBody {
+public class Star extends BaseBody implements Round {
     public Star copy() {
         return new Star(name(), mass(), radius, color());
     }
 
-    public final double radius;
+    private final double radius;
+
+    public double radius() {
+        return radius;
+    }
 
     public Vector position() {
         return Vector.ZERO;
@@ -22,6 +27,6 @@ public class Star extends BaseBody {
     }
 
     public void paint(Graphics g, double scale) {
-        CirclePainter.paintCircle(g, scale, position(), radius, color());
+        PaintingTools.paintCircularObject(g, scale, this);
     }
 }

@@ -1,7 +1,6 @@
 package body;
 
 import body.interfaces.Moving;
-import general_support.CirclePainter;
 import general_support.Vector;
 import ship_support.ThrustSystem;
 
@@ -54,16 +53,12 @@ public class SpaceShip extends BaseBody implements Moving {
         super(name, color, mass);
     }
 
-    public void paint(Graphics g, double scale) {
-        // TODO: implement
-    }
-
     public void setThrustSystem(ThrustSystem thrustSystem) {
         this.thrustSystem = thrustSystem;
     }
 
     public void thrust() {
-        this.velocity.plus(this.thrustSystem.thrust(1, this.mass()));
+//        velocity = velocity.plus(thrustSystem.thrust(1, mass()));
     }
 
     public Vector pointing() {
@@ -76,5 +71,12 @@ public class SpaceShip extends BaseBody implements Moving {
 
     public void rotate(Vector direction) {
 
+    }
+
+
+
+
+    public void paint(Graphics g, double scale) {
+        // TODO: implement
     }
 }
