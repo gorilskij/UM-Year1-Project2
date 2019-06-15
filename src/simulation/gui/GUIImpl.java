@@ -1,5 +1,6 @@
 package simulation.gui;
 
+import body.interfaces.Body;
 import simulation.Simulation;
 import simulation.gui.window.Window;
 import simulation.gui.window.WindowImpl;
@@ -13,7 +14,9 @@ public final class GUIImpl implements GUI {
     }
 
     public void iterateGraphics(Universe universe) {
-        System.out.println("iterate graphics");
+        for (Body body : universe.allBodies()) {
+            // TODO: paint body
+        }
     }
 
     public void play() {

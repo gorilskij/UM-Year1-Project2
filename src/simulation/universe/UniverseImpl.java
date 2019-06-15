@@ -13,12 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class UniverseImpl implements Universe {
-
     private final List<Body> allBodies = new ArrayList<>();
     private final List<Moving> spaceShips = new ArrayList<>();
     private final List<Moving> movingBodies = new ArrayList<>();
     private final List<Body> attractors = new ArrayList<>();
-    public Integrator integrator = new LeapFrog();
+    private Integrator integrator = new LeapFrog();
+
+    public List<Body> allBodies() {
+        return allBodies;
+    }
 
     private UniverseImpl() {} // shouldn't be used outside class
 
