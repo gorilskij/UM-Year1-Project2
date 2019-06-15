@@ -16,6 +16,10 @@ public class TimeHandler {
         return timeStep;
     }
 
+    public void setTimeStep(int timeStep) {
+        this.timeStep = timeStep;
+    }
+
     long timePassedS() {
         return timePassedS;
     }

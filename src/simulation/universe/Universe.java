@@ -2,6 +2,8 @@ package simulation.universe;
 
 import body.interfaces.Body;
 
+import java.util.List;
+
 public interface Universe {
 
     /**
@@ -26,4 +28,6 @@ public interface Universe {
      * print all the current data about universe
      */
     void getCurrentData();
+
+    List<Body> allBodies();
 }

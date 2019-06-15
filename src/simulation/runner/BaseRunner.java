@@ -1,5 +1,7 @@
 package simulation.runner;
 
+import simulation.PlayPause;
+
 public abstract class BaseRunner implements Runner {
     private volatile long minFrameTimeNs;
     private Thread runnerThread = null;
@@ -12,18 +14,14 @@ public abstract class BaseRunner implements Runner {
         return minFrameTimeNs;
     }
 
-    @Override
     public void setMinFrameTime(long minFrameTimeNs) {
         this.minFrameTimeNs = minFrameTimeNs;
         restartIfRunning();
     }
 
-    @Override
-    public void start() {
-        start(minFrameTimeNs);
-    }
+    public void play() {
+        final long localMinFrameTime = minFrameTimeNs();
 
-    private void start(final long minFrameTimeNs) {
         if (runnerThread != null) return;
         runnerThread = new Thread(() -> {
             try {
@@ -34,15 +32,14 @@ public abstract class BaseRunner implements Runner {
                     long timeTakenNs = endTimeNs - startTimeNs;
 
                     // if execution was more than 10 ns faster than it should be
-                    if (minFrameTimeNs - timeTakenNs > 10)
-                        Thread.sleep(minFrameTimeNs - timeTakenNs);
+                    if (localMinFrameTime - timeTakenNs > 10)
+                        Thread.sleep(localMinFrameTime - timeTakenNs);
                 }
             } catch (InterruptedException ignored) {}
         });
     }
 
-    @Override
-    public void stop() {
+    public void pause() {
         if (runnerThread == null) return;
         runnerThread.interrupt();
 
@@ -60,8 +57,8 @@ public abstract class BaseRunner implements Runner {
     @Override
     public void restartIfRunning() {
         if (runnerThread != null) {
-            stop();
-            start(minFrameTimeNs);
+            pause();
+            play();
         }
     }
 }

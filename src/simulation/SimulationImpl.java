@@ -15,30 +15,38 @@ public final class SimulationImpl implements Simulation {
     }
 
     private final Universe universe;
-    private final GUI gui;
+    public Universe universe() {
+        return universe;
+    }
 
     private final UniverseRunner universeRunner;
     private final GUIRunner guiRunner;
 
     public SimulationImpl(int initialTimeStep) {
-        timeHandler = new TimeHandler(initialTimeStep);
+        timeHandler = new TimeHandler(initialTimeStep) {
+            @Override
+            public void setTimeStep(int timeStep) {
+                super.setTimeStep(timeStep);
+                universeRunner.setTimeStep(timeStep);
+            }
+        };
 
         universe = UniverseImpl.newSolarSystem();
-        gui = new GUIImpl(this);
+        GUI gui = new GUIImpl(this);
 
         universeRunner = new UniverseRunner(universe, timeHandler.timeStep());
         guiRunner = new GUIRunner(gui, universe);
 
-        guiRunner.start();
+        guiRunner.play();
     }
 
-    public void startPhysics() {
-        universeRunner.start();
-        guiRunner.setRunningFPS();
+    public void play() {
+        universeRunner.play();
+        guiRunner.play();
     }
 
-    public void stopPhysics() {
-        universeRunner.stop();
-        guiRunner.setRestingFPS();
+    public void pause() {
+        universeRunner.pause();
+        guiRunner.pause();
     }
 }

@@ -1,8 +1,8 @@
 package simulation.runner;
 
-public interface Runner {
-    void start();
-    void stop();
+import simulation.PlayPause;
+
+public interface Runner extends PlayPause {
     void restartIfRunning();
     void setMinFrameTime(long minFrameTimeNs);
 

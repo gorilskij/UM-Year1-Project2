@@ -1,12 +1,12 @@
 package body;
 
-import body.interfaces.Drawable;
 import body.interfaces.Moving;
+import general_support.CirclePainter;
 import general_support.Vector;
 
 import java.awt.*;
 
-public class Planet extends BaseBody implements Moving, Drawable {
+public class Planet extends BaseBody implements Moving {
 
     private Vector position;
     private Vector velocity;
@@ -50,7 +50,7 @@ public class Planet extends BaseBody implements Moving, Drawable {
         this.radius = radius;
     }
 
-    public void draw(Graphics g) {
-        // TODO: implement
+    public void paint(Graphics g) {
+        CirclePainter.paintCircle(g, position(), radius, color());
     }
 }
