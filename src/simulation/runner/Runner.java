@@ -1,7 +1,7 @@
 package simulation.runner;
 
 public interface Runner {
-    void start(final long minFrameTimeNs);
+    void start();
     void stop();
     void restartIfRunning();
     void setMinFrameTime(long minFrameTimeNs);

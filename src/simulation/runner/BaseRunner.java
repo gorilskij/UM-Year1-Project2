@@ -19,7 +19,11 @@ public abstract class BaseRunner implements Runner {
     }
 
     @Override
-    public void start(final long minFrameTimeNs) {
+    public void start() {
+        start(minFrameTimeNs);
+    }
+
+    private void start(final long minFrameTimeNs) {
         if (runnerThread != null) return;
         runnerThread = new Thread(() -> {
             try {

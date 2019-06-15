@@ -10,7 +10,6 @@ import data.BodyFactory;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public final class UniverseImpl implements Universe {
@@ -57,7 +56,7 @@ public final class UniverseImpl implements Universe {
     }
 
     @Override
-    public void iteratePhysics(double timeStep) {
+    public void iteratePhysics(int timeStep) {
 
         for (Moving body : movingBodies) {
             Vector acceleration = Vector.ZERO;

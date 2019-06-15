@@ -4,13 +4,13 @@ import simulation.universe.Universe;
 
 public class UniverseRunner extends BaseRunner {
     private final Universe universe;
-    private double timeStep;
+    private int timeStep;
 
-    public void setTimeStep(double timeStep) {
+    public void setTimeStep(int timeStep) {
         this.timeStep = timeStep;
     }
 
-    public UniverseRunner(Universe universe, double timeStep) {
+    public UniverseRunner(Universe universe, int timeStep) {
         super(0);
         this.universe = universe;
         this.timeStep = timeStep;

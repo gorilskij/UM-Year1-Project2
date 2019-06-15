@@ -9,13 +9,28 @@ public class GUIRunner extends BaseRunner {
 
     public GUIRunner(GUI gui, Universe universe) {
         // every 1/30th of a second
-        super((long) ((1.0 / 30) * 1e9));
+        super(0); // 0 is a placeholder
+
         this.gui = gui;
         this.universe = universe;
+
+        setRunningFPS();
     }
 
     @Override
     public void doFrame() {
         gui.iterateGraphics(universe);
+    }
+
+    private void setFPS(int fps) {
+        setMinFrameTime((long) (1e9 * (1.0 / fps)));
+    }
+
+    public void setRunningFPS() {
+        setFPS(40);
+    }
+
+    public void setRestingFPS() {
+        setFPS(10);
     }
 }
