@@ -14,9 +14,10 @@ import java.util.List;
 
 public final class UniverseImpl implements Universe {
     private final List<Body> allBodies = new ArrayList<>();
-    private final List<Moving> spaceShips = new ArrayList<>();
+    private final List<Attractive> attractors = new ArrayList<>();
     private final List<Moving> movingBodies = new ArrayList<>();
-    private final List<Body> attractors = new ArrayList<>();
+    private final List<Moving> spaceShips = new ArrayList<>();
+
     private Integrator integrator = new LeapFrog();
 
     public List<Body> allBodies() {
@@ -57,15 +58,14 @@ public final class UniverseImpl implements Universe {
 
         allBodies.add(body);
 
-        if (body instanceof SpaceShip) {
-            spaceShips.add((Moving) body);
-        } else {
-            attractors.add(body);
-        }
+        if (body instanceof Attractive)
+            attractors.add((Attractive) body);
 
-        if (body instanceof Moving) {
+        if (body instanceof Moving)
             movingBodies.add((Moving) body);
-        }
+
+        if (body instanceof SpaceShip)
+            spaceShips.add((SpaceShip) body);
     }
 
     @Override
@@ -81,7 +81,7 @@ public final class UniverseImpl implements Universe {
 
         for (Moving body : movingBodies) {
             Vector acceleration = Vector.ZERO;
-            for (Body attractor : attractors) {
+            for (Attractive attractor : attractors) {
                 if (body == attractor) continue;
 
                 Vector vectorToAttractor = body.position().vectorTo(attractor.position());

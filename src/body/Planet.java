@@ -1,5 +1,6 @@
 package body;
 
+import body.interfaces.Attractive;
 import body.interfaces.Moving;
 import body.interfaces.Round;
 import general_support.PaintingTools;
@@ -7,8 +8,7 @@ import general_support.Vector;
 
 import java.awt.*;
 
-public class Planet extends BaseBody implements Round, Moving {
-
+public class Planet extends BaseBody implements Round, Moving, Attractive {
     private Vector position;
     private Vector velocity;
     private Vector acceleration = null;

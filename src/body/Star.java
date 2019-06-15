@@ -1,12 +1,13 @@
 package body;
 
+import body.interfaces.Attractive;
 import body.interfaces.Round;
 import general_support.PaintingTools;
 import general_support.Vector;
 
 import java.awt.*;
 
-public class Star extends BaseBody implements Round {
+public class Star extends BaseBody implements Round, Attractive {
     public Star copy() {
         return new Star(name(), mass(), radius, color());
     }
