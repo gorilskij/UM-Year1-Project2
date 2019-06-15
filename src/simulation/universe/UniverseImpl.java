@@ -23,6 +23,14 @@ public final class UniverseImpl implements Universe {
         return allBodies;
     }
 
+    public Body getBodyByName(String name) {
+        for (Body body : allBodies)
+            if (body.name().equals(name))
+                return body;
+
+        throw new IllegalStateException("body with name \"" + name + "\" not in universe");
+    }
+
     private UniverseImpl() {} // shouldn't be used outside class
 
     public static Universe newSolarSystem() {

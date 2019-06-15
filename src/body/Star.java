@@ -21,7 +21,7 @@ public class Star extends BaseBody {
         this.radius = radius;
     }
 
-    public void paint(Graphics g) {
-        CirclePainter.paintCircle(g, position(), radius, color());
+    public void paint(Graphics g, double scale) {
+        CirclePainter.paintCircle(g, scale, position(), radius, color());
     }
 }

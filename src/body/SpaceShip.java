@@ -53,7 +53,7 @@ public class SpaceShip extends BaseBody implements Moving {
         super(name, color, mass);
     }
 
-    public void paint(Graphics g) {
+    public void paint(Graphics g, double scale) {
         // TODO: implement
     }
 }

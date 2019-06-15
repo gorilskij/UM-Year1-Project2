@@ -31,5 +31,5 @@ public interface Body {
      */
     Vector position();
 
-    void paint(Graphics g);
+    void paint(Graphics g, double scale);
 }

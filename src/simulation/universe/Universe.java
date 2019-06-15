@@ -30,4 +30,6 @@ public interface Universe {
     void getCurrentData();
 
     List<Body> allBodies();
+
+    Body getBodyByName(String name);
 }

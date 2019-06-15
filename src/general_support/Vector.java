@@ -96,4 +96,8 @@ public final class Vector {
     public Point.Double toXYPoint() {
         return new Point.Double(x, y);
     }
+
+    public Point.Double toXYPoint(double scale) {
+        return new Point.Double(x * scale, y * scale);
+    }
 }
