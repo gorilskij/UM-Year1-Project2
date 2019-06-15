@@ -3,7 +3,7 @@ package general_support;
 import java.awt.*;
 import java.util.Locale;
 
-public final class Vector {
+public final class Vector implements Comparable {
     public final double x, y, z;
 
     public static final Vector ZERO = new Vector(0, 0, 0);
@@ -16,6 +16,18 @@ public final class Vector {
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public double x() {
+        return x;
+    }
+
+    public double y() {
+        return y;
+    }
+
+    public double z() {
+        return z;
     }
 
     public double magnitude() {
@@ -111,5 +123,19 @@ public final class Vector {
 
     public Point.Double toXYPoint() {
         return new Point.Double(x, y);
+    }
+
+    @Override
+    public int compareTo(Object obj) {
+        return Double.compare(((Vector) obj).magnitude(), magnitude());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Vector) {
+            return (x() == ((Vector) obj).x() && y() == ((Vector) obj).y() && z() == ((Vector) obj).z());
+        } else {
+            return false;
+        }
     }
 }
