@@ -40,12 +40,11 @@ public class WindowImpl implements Window {
         JPanel contentPane = new JPanel();
         contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 
-        WindowImpl self = this;
         space = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                self.paintPanel(g);
+                WindowImpl.this.paintPanel(g);
             }
         };
         space.setBackground(Color.BLACK);

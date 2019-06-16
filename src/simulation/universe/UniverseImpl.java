@@ -5,9 +5,9 @@ import body.interfaces.*;
 import data.Constants;
 import general_support.integrator.Euler;
 import general_support.integrator.Integrator;
-import general_support.integrator.LeapFrog;
 import general_support.Vector;
 import data.BodyFactory;
+import general_support.integrator.Euler;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public final class UniverseImpl implements Universe {
     private final List<Moving> movingBodies = new ArrayList<>();
     private final List<Moving> spaceShips = new ArrayList<>();
 
-    private Integrator integrator = new LeapFrog();
+    private Integrator integrator = new Euler();
 
     public List<Body> allBodies() {
         return allBodies;
@@ -41,15 +41,18 @@ public final class UniverseImpl implements Universe {
         for (Body body : BodyFactory.createSolarSystem())
             universe.addBody(body);
 
-        // fix relative positions
+        // fix relative positions and velocities
+        // moon
         Moving moon = (Moving) universe.getBodyByName("moon");
         Moving earth = (Moving) universe.getBodyByName("earth");
+        moon.setPosition(moon.position().plus(earth.position()));
+        moon.setVelocity(moon.velocity().plus(earth.velocity()));
 
+        // titan
         Moving titan = (Moving) universe.getBodyByName("titan");
         Moving saturn = (Moving) universe.getBodyByName("saturn");
-
-        moon.setPosition(moon.position().plus(earth.position()));
         titan.setPosition(titan.position().plus(saturn.position()));
+        titan.setVelocity(titan.velocity().plus(saturn.velocity()));
 
         return universe;
     }
