@@ -5,7 +5,6 @@ import general_support.Vector;
 
 public class LeapFrog implements Integrator {
 
-    private Vector lastAcceleration = Vector.ZERO;
 
     @Override
     public void integrate(Moving body, Vector acceleration, double timeStep) {
@@ -14,9 +13,9 @@ public class LeapFrog implements Integrator {
                 .times(timeStep)
                 .plus(acceleration.times(Math.pow(timeStep, 2) / 2))
         );
-        Vector newVelocity = body.velocity().plus(acceleration.averageWith(acceleration).times(timeStep));
-        //lastAcceleration = acceleration;
+        Vector newVelocity = body.velocity().plus(acceleration.averageWith(body.lastAcceleration()).times(timeStep));
 
+        body.setLastAcceleration(acceleration);
         body.setPosition(newPosition);
         body.setVelocity(newVelocity);
     }

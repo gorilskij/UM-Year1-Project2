@@ -12,6 +12,7 @@ public class Planet extends BaseBody implements Round, Moving, Attractive {
     private Vector position;
     private Vector velocity;
     private Vector acceleration = null;
+    private Vector lastAcceleration = Vector.ZERO;
     private final double radius;
 
     public double radius() {
@@ -46,6 +47,14 @@ public class Planet extends BaseBody implements Round, Moving, Attractive {
 
     public void setAcceleration(Vector acceleration) {
         this.acceleration = acceleration;
+    }
+
+    public Vector lastAcceleration(){
+        return this.lastAcceleration;
+    }
+
+    public void setLastAcceleration(Vector lastAcceleration) {
+        this.lastAcceleration = lastAcceleration;
     }
 
     public Planet(String name, double mass, double radius, Vector position, Vector velocity, Color color) {

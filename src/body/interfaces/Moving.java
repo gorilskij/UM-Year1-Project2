@@ -31,4 +31,12 @@ public interface Moving extends Body {
      *
      */
     void setAcceleration(Vector acceleration);
+
+    /**
+     *
+     * @return previous acceleration
+     */
+    Vector lastAcceleration();
+
+    void setLastAcceleration(Vector lastAcceleration);
 }
