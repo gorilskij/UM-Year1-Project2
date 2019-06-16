@@ -78,7 +78,6 @@ public final class UniverseImpl implements Universe {
 
     @Override
     public void iteratePhysics(int timeStep) {
-
         for (Moving body : movingBodies) {
             Vector acceleration = Vector.ZERO;
             for (Attractive attractor : attractors) {
@@ -89,12 +88,11 @@ public final class UniverseImpl implements Universe {
                 Vector directionToAttractor = vectorToAttractor.direction();
 
                 double accelerationMagnitude = Constants.G * attractor.mass() / Math.pow(distance, 2);
-                acceleration.plus(directionToAttractor.times(accelerationMagnitude));
+                acceleration = acceleration.plus(directionToAttractor.times(accelerationMagnitude));
 
             }
             integrator.integrate(body.position(), body.velocity(), acceleration, timeStep);
         }
-
     }
 
     @Override

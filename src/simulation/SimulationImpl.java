@@ -34,7 +34,7 @@ public final class SimulationImpl implements Simulation {
         universeRunner = new UniverseRunner(universe, timeHandler.timeStep());
         guiRunner = new GUIRunner(gui, universe);
 
-        guiRunner.play();
+        pause();
     }
 
     public void play() {
