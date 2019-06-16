@@ -3,6 +3,7 @@ package body;
 import body.interfaces.Moving;
 import general_support.Vector;
 import ship_support.ThrustSystem;
+import simulation.universe.Universe;
 
 import java.awt.*;
 
@@ -15,7 +16,9 @@ public class SpaceShip extends BaseBody implements Moving {
     private Vector velocity = null;
     private Vector pointing = null;
     private Vector acceleration = null;
-    private ThrustSystem thrustSystem = null;
+    private ThrustSystem thrustSystem;
+    private double fuel_ejection;
+    public Universe universe = null;
 
     //create's, set's
 
@@ -58,6 +61,15 @@ public class SpaceShip extends BaseBody implements Moving {
     }
 
     public void thrust() {
+        this.velocity = this.velocity.plus(this.pointing.times(this.thrustSystem.thrust(fuel_ejection, mass())));
+    }
+
+    public void rotate_right() {
+        this.thrustSystem.rotate_right(fuel_ejection, mass());
+    }
+
+    public void rotate_left() {
+        this.thrustSystem.rotate_right(fuel_ejection, mass());
 //        velocity = velocity.plus(thrustSystem.thrust(1, mass()));
     }
 
@@ -69,7 +81,7 @@ public class SpaceShip extends BaseBody implements Moving {
         this.pointing = pointing;
     }
 
-    public void rotate(Vector direction) {
+    public void start() {
 
     }
 

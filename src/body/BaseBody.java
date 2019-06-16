@@ -1,6 +1,7 @@
 package body;
 
 import body.interfaces.Body;
+import simulation.universe.Universe;
 
 import java.awt.*;
 

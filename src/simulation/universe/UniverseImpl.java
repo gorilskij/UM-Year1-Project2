@@ -66,6 +66,7 @@ public final class UniverseImpl implements Universe {
 
         if (body instanceof SpaceShip)
             spaceShips.add((SpaceShip) body);
+            ((SpaceShip) body).universe = this;
     }
 
     @Override
