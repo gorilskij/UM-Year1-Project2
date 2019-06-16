@@ -16,14 +16,16 @@ public final class SimulationImpl implements Simulation {
     }
 
     private final UniverseRunner universeRunner;
+
+    private final GUI gui;
     private final GUIRunner guiRunner;
 
     public SimulationImpl(int initialTimeStep) {
         timer = new Timer();
         timeStep = initialTimeStep;
 
-        Universe universe = UniverseImpl.newSolarSystem();
-        GUI gui = new GUIImpl(this, universe);
+        Universe universe = UniverseImpl.newSolarSystem(this);
+        gui = new GUIImpl(this, universe);
 
         universeRunner = new UniverseRunner(timer, universe, timeStep);
         guiRunner = new GUIRunner(gui, universe);
@@ -39,5 +41,9 @@ public final class SimulationImpl implements Simulation {
     public void pause() {
         universeRunner.pause();
         guiRunner.pause();
+    }
+
+    public void shipLaunched() {
+        gui.shipLaunched();
     }
 }

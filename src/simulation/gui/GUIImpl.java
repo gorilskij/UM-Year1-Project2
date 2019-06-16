@@ -23,4 +23,8 @@ public final class GUIImpl implements GUI {
     public void pause() {
         window.pause();
     }
+
+    public void shipLaunched() {
+        window.shipLaunched();
+    }
 }

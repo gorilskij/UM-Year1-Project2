@@ -1,6 +1,6 @@
 package simulation.runner;
 
-import simulation.PlayPause;
+import simulation.interfaces.PlayPause;
 
 public interface Runner extends PlayPause {
     void restartIfRunning();
