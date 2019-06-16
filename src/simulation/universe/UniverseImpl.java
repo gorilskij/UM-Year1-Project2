@@ -3,6 +3,7 @@ package simulation.universe;
 import body.SpaceShip;
 import body.interfaces.*;
 import data.Constants;
+import general_support.integrator.Euler;
 import general_support.integrator.Integrator;
 import general_support.integrator.LeapFrog;
 import general_support.Vector;
@@ -64,21 +65,19 @@ public final class UniverseImpl implements Universe {
         if (body instanceof Moving)
             movingBodies.add((Moving) body);
 
-        if (body instanceof SpaceShip)
+        if (body instanceof SpaceShip) {
             spaceShips.add((SpaceShip) body);
+            ((SpaceShip) body).setUniverse(this);
+        }
     }
 
     @Override
     public void addLaunch() {
         // TODO: implement
-        SpaceShip fr = new SpaceShip("fr", Color.WHITE, 962, this);
-        SpaceShip sr = new SpaceShip("sr", Color.WHITE, 1871, this);
-        SpaceShip tr = new SpaceShip( "tr", Color.WHITE, 1933, this);
     }
 
     @Override
     public void iteratePhysics(int timeStep) {
-
         for (Moving body : movingBodies) {
             Vector acceleration = Vector.ZERO;
             for (Attractive attractor : attractors) {
@@ -89,12 +88,11 @@ public final class UniverseImpl implements Universe {
                 Vector directionToAttractor = vectorToAttractor.direction();
 
                 double accelerationMagnitude = Constants.G * attractor.mass() / Math.pow(distance, 2);
-                acceleration.plus(directionToAttractor.times(accelerationMagnitude));
+                acceleration = acceleration.plus(directionToAttractor.times(accelerationMagnitude));
 
             }
-            integrator.integrate(body.position(), body.velocity(), acceleration, timeStep);
+            integrator.integrate(body, acceleration, timeStep);
         }
-
     }
 
     @Override

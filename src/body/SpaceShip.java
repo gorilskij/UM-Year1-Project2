@@ -63,6 +63,10 @@ public class SpaceShip extends BaseBody implements Moving {
         return this.universe;
     }
 
+    public void setUniverse(Universe universe) {
+        this.universe = universe;
+    }
+
     public void setThrustSystem(ThrustSystem thrustSystem) {
         this.thrustSystem = thrustSystem;
     }

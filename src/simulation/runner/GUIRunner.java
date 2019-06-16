@@ -1,6 +1,5 @@
 package simulation.runner;
 
-import simulation.PlayPause;
 import simulation.gui.GUI;
 import simulation.universe.Universe;
 
@@ -14,8 +13,6 @@ public class GUIRunner extends BaseRunner {
 
         this.gui = gui;
         this.universe = universe;
-
-        play();
     }
 
     @Override
@@ -23,17 +20,15 @@ public class GUIRunner extends BaseRunner {
         gui.iterateGraphics(universe);
     }
 
-    private void setFPS(int fps) {
-        setMinFrameTime((long) (1e9 * (1.0 / fps)));
-    }
-
+    @Override
     public void play() {
-        setFPS(50);
+        super.play();
         gui.play();
     }
 
+    @Override
     public void pause() {
-        setFPS(10);
+        super.pause();
         gui.pause();
     }
 }

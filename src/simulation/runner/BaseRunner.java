@@ -1,7 +1,5 @@
 package simulation.runner;
 
-import simulation.PlayPause;
-
 public abstract class BaseRunner implements Runner {
     private volatile long minFrameTimeNs;
     private Thread runnerThread = null;
@@ -25,7 +23,7 @@ public abstract class BaseRunner implements Runner {
         if (runnerThread != null) return;
         runnerThread = new Thread(() -> {
             try {
-                while (true) {
+                while (!runnerThread.isInterrupted()) {
                     long startTimeNs = System.nanoTime();
                     doFrame();
                     long endTimeNs = System.nanoTime();
@@ -35,8 +33,10 @@ public abstract class BaseRunner implements Runner {
                     if (localMinFrameTime - timeTakenNs > 10)
                         Thread.sleep(localMinFrameTime - timeTakenNs);
                 }
-            } catch (InterruptedException ignored) {}
+            } catch (InterruptedException ignored) {
+            }
         });
+        runnerThread.start();
     }
 
     public void pause() {

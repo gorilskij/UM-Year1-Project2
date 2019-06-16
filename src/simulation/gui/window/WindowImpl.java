@@ -9,9 +9,7 @@ import java.awt.*;
 import java.util.Locale;
 
 public class WindowImpl implements Window {
-    private static final String PLAY_TEXT = "Play";
-    private static final String PAUSE_TEXT = "Pause";
-
+    private boolean playing = false;
     private static final double ZOOM = 1.2;
 
     private final Simulation simulation;
@@ -56,7 +54,7 @@ public class WindowImpl implements Window {
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));
 
         playPauseButton.addActionListener(e -> {
-            if (playPauseButton.getText().equals(PLAY_TEXT))
+            if (playing)
                 simulation.pause();
             else
                 simulation.play();
@@ -94,11 +92,13 @@ public class WindowImpl implements Window {
     }
 
     public void play() {
-        playPauseButton.setText(PLAY_TEXT);
+        playing = true;
+        playPauseButton.setText("Pause");
     }
 
     public void pause() {
-        playPauseButton.setText(PAUSE_TEXT);
+        playing = false;
+        playPauseButton.setText("Play");
     }
 
     public void paint() {

@@ -16,6 +16,6 @@ public class FeedBackController implements Controller {
 //        if (!ship.pointing().equals(directionTotTitan)) {
 //            ship.setPointing(directionTotTitan);
 //        ship.thrust();
-//      }
+    //  }
     }
 }
