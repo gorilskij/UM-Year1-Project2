@@ -8,30 +8,24 @@ import simulation.universe.UniverseImpl;
 import simulation.universe.Universe;
 
 public final class SimulationImpl implements Simulation {
-    private final TimeHandler timeHandler;
+    private final Timer timer;
+    private int timeStep;
 
     public long timePassedS() {
-        return timeHandler.timePassedS();
+        return timer.timePassedS();
     }
-
-    private final Universe universe;
 
     private final UniverseRunner universeRunner;
     private final GUIRunner guiRunner;
 
     public SimulationImpl(int initialTimeStep) {
-        timeHandler = new TimeHandler(initialTimeStep) {
-            @Override
-            public void setTimeStep(int timeStep) {
-                super.setTimeStep(timeStep);
-                universeRunner.setTimeStep(timeStep);
-            }
-        };
+        timer = new Timer();
+        timeStep = initialTimeStep;
 
-        universe = UniverseImpl.newSolarSystem();
+        Universe universe = UniverseImpl.newSolarSystem();
         GUI gui = new GUIImpl(this, universe);
 
-        universeRunner = new UniverseRunner(universe, timeHandler.timeStep());
+        universeRunner = new UniverseRunner(timer, universe, timeStep);
         guiRunner = new GUIRunner(gui, universe);
 
         pause();

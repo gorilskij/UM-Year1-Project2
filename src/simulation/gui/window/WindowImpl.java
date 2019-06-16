@@ -21,7 +21,7 @@ public class WindowImpl implements Window {
     private final JLabel scaleLabel;
     private final JLabel timePassedLabel;
 
-    private double scale = 1e-7;
+    private double scale = 1e-9;
 
     private String centerBodyName = null;
 
@@ -118,6 +118,6 @@ public class WindowImpl implements Window {
         for (Body body : universe.allBodies())
             body.paint(g, scale);
 
-        timePassedLabel.setText("time passed: " + simulation.timePassedS() + "s");
+        timePassedLabel.setText("  time passed: " + simulation.timePassedS() + "s");
     }
 }
