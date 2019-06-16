@@ -3,6 +3,7 @@ package body;
 import body.interfaces.Moving;
 import general_support.Vector;
 import ship_support.ThrustSystem;
+import simulation.universe.Universe;
 
 import java.awt.*;
 
@@ -17,6 +18,7 @@ public class SpaceShip extends BaseBody implements Moving {
     private Vector acceleration = null;
     private ThrustSystem thrustSystem;
     private double fuel_ejection;
+    public Universe universe = null;
 
     //create's, set's
 
