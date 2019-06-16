@@ -66,15 +66,14 @@ public final class UniverseImpl implements Universe {
 
         if (body instanceof SpaceShip)
             spaceShips.add((SpaceShip) body);
-            ((SpaceShip) body).universe = this;
     }
 
     @Override
     public void addLaunch() {
         // TODO: implement
-        SpaceShip fr = new SpaceShip("fr", Color.WHITE, 962);
-        SpaceShip sr = new SpaceShip("sr", Color.WHITE, 1871);
-        SpaceShip tr = new SpaceShip( "tr", Color.WHITE, 1933);
+        SpaceShip fr = new SpaceShip("fr", Color.WHITE, 962, this);
+        SpaceShip sr = new SpaceShip("sr", Color.WHITE, 1871, this);
+        SpaceShip tr = new SpaceShip( "tr", Color.WHITE, 1933, this);
     }
 
     @Override

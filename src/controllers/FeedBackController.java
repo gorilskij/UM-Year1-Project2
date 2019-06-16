@@ -9,7 +9,7 @@ public class FeedBackController implements Controller {
     @Override
     public void control(SpaceShip ship, Vector velocity) {
         Vector ship_position = ship.position();
-        Body destination = ship.universe.getBodyByName("titan");
+        Body destination = ship.universe().getBodyByName("titan");
 
 //        Vector vectorToTitan =  ship_position.vectorTo(our_destination);
 //        Vector directionTotTitan = vectorToTitan.direction();

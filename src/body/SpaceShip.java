@@ -9,7 +9,7 @@ import java.awt.*;
 
 public class SpaceShip extends BaseBody implements Moving {
     public SpaceShip copy() {
-        return new SpaceShip(name(), color(), mass());
+        return new SpaceShip(name(), color(), mass(), universe());
     }
 
     private Vector position = null;
@@ -18,9 +18,16 @@ public class SpaceShip extends BaseBody implements Moving {
     private Vector acceleration = null;
     private ThrustSystem thrustSystem;
     private double fuel_ejection;
-    public Universe universe = null;
+    private Universe universe;
 
     //create's, set's
+
+
+
+    public SpaceShip(String name, Color color, double mass, Universe universe) {
+        super(name, color, mass);
+        this.universe = universe;
+    }
 
     public Vector position() {
         if (position == null)
@@ -52,8 +59,8 @@ public class SpaceShip extends BaseBody implements Moving {
         this.acceleration = acceleration;
     }
 
-    public SpaceShip(String name, Color color, double mass) {
-        super(name, color, mass);
+    public Universe universe() {
+        return this.universe;
     }
 
     public void setThrustSystem(ThrustSystem thrustSystem) {
