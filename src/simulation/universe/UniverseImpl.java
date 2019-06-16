@@ -64,9 +64,10 @@ public final class UniverseImpl implements Universe {
         if (body instanceof Moving)
             movingBodies.add((Moving) body);
 
-        if (body instanceof SpaceShip)
+        if (body instanceof SpaceShip) {
             spaceShips.add((SpaceShip) body);
             ((SpaceShip) body).universe = this;
+        }
     }
 
     @Override
@@ -92,7 +93,7 @@ public final class UniverseImpl implements Universe {
                 acceleration = acceleration.plus(directionToAttractor.times(accelerationMagnitude));
 
             }
-            integrator.integrate(body.position(), body.velocity(), acceleration, timeStep);
+            integrator.integrate(body, acceleration, timeStep);
         }
     }
 
