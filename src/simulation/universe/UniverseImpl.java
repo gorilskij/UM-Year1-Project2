@@ -7,6 +7,7 @@ import general_support.integrator.Integrator;
 import general_support.Vector;
 import data.BodyFactory;
 import general_support.integrator.Euler;
+import general_support.integrator.LeapFrog;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public final class UniverseImpl implements Universe {
     private final List<Moving> movingBodies = new ArrayList<>();
     private final List<Moving> spaceShips = new ArrayList<>();
 
-    private Integrator integrator = new Euler();
+    private Integrator integrator = new LeapFrog();
 
     public List<Body> allBodies() {
         return allBodies;
