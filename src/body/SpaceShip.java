@@ -69,10 +69,6 @@ public class SpaceShip extends BaseBody implements Moving {
         this.lastAcceleration = lastAcceleration;
     }
 
-    public SpaceShip(String name, Color color, double mass) {
-        super(name, color, mass);
-    }
-
     public void setThrustSystem(ThrustSystem thrustSystem) {
         this.thrustSystem = thrustSystem;
     }
@@ -102,8 +98,13 @@ public class SpaceShip extends BaseBody implements Moving {
 
     }
 
+    public Universe universe() {
+        return this.universe;
+    }
 
-
+    public void setUniverse(Universe universe) {
+        this.universe = universe;
+    }
 
     public void paint(Graphics g, double scale) {
         // TODO: implement
