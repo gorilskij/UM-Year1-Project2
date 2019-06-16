@@ -16,6 +16,7 @@ public class SpaceShip extends BaseBody implements Moving {
     private Vector velocity = null;
     private Vector pointing = null;
     private Vector acceleration = null;
+    private Vector lastAcceleration = Vector.ZERO;
     private ThrustSystem thrustSystem;
     private double fuel_ejection;
     public Universe universe = null;
@@ -48,8 +49,17 @@ public class SpaceShip extends BaseBody implements Moving {
         return acceleration;
     }
 
-    public void setAcceleration(Vector acceleration) {
+    public Vector lastAcceleration(){
+        return this.lastAcceleration;
+    }
+
+    public void setAcceleration(Vector acceleration)
+    {
         this.acceleration = acceleration;
+    }
+
+    public void setLastAcceleration(Vector lastAcceleration) {
+        this.lastAcceleration = lastAcceleration;
     }
 
     public SpaceShip(String name, Color color, double mass) {
