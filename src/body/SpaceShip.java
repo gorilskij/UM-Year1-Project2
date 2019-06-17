@@ -1,13 +1,15 @@
 package body;
 
 import body.interfaces.Moving;
+import body.interfaces.Round;
+import general_support.PaintingTools;
 import general_support.Vector;
 import ship_support.ThrustSystem;
 import simulation.universe.Universe;
 
 import java.awt.*;
 
-public class SpaceShip extends BaseBody implements Moving {
+public class SpaceShip extends BaseBody implements Moving, Round {
     public SpaceShip copy() {
         return new SpaceShip(name(), color(), mass(), universe());
     }
@@ -18,9 +20,9 @@ public class SpaceShip extends BaseBody implements Moving {
     private Vector acceleration = null;
     private Vector lastAcceleration = Vector.ZERO;
     private ThrustSystem thrustSystem;
-    private double fuel_ejection;
+    private double fuel_ejection = 10;
     private Universe universe;
-
+    private double radius;
     //create's, set's
 
 
@@ -28,6 +30,14 @@ public class SpaceShip extends BaseBody implements Moving {
     public SpaceShip(String name, Color color, double mass, Universe universe) {
         super(name, color, mass);
         this.universe = universe;
+    }
+
+    public double radius() {
+        return radius;
+    }
+
+    public void setRadius(double radius) {
+        this.radius = radius;
     }
 
     public Vector position() {
@@ -107,6 +117,19 @@ public class SpaceShip extends BaseBody implements Moving {
     }
 
     public void paint(Graphics g, double scale) {
-        // TODO: implement
+        PaintingTools.paintCircularObject(g, scale, this);
+        /*g.setColor(color());
+        Point.Double pos = position().toXYPoint();
+        int radius = 10000000;
+        int diameter = (int) Math.round(radius * 2 * scale);
+
+        g.fillOval(
+                (int) Math.round((pos.x - radius) * scale),
+                (int) Math.round((pos.y - radius) * scale),
+                diameter, diameter
+        );
+
+        PaintingTools.paintLabel(g, scale, pos, name());
+        PaintingTools.paintHighlightCircle(g, scale, pos);*/
     }
 }

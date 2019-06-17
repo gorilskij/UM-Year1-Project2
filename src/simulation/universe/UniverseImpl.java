@@ -7,6 +7,7 @@ import general_support.integrator.Euler;
 import general_support.integrator.Integrator;
 import general_support.Vector;
 import data.BodyFactory;
+import general_support.integrator.Euler;
 import general_support.integrator.LeapFrog;
 import simulation.interfaces.ShipLaunched;
 
@@ -82,9 +83,9 @@ public final class UniverseImpl implements Universe {
     @Override
     public void addLaunch() {
         // TODO: implement
-        SpaceShip fr = new SpaceShip("fr", Color.WHITE, 962);
-        SpaceShip sr = new SpaceShip("sr", Color.WHITE, 1871);
-        SpaceShip tr = new SpaceShip( "tr", Color.WHITE, 1933);
+        SpaceShip fr = new SpaceShip("fr", Color.WHITE, 962, this);
+        SpaceShip sr = new SpaceShip("sr", Color.WHITE, 1871, this);
+        SpaceShip tr = new SpaceShip( "tr", Color.WHITE, 1933, this);
 
         shipListener.shipLaunched();
     }

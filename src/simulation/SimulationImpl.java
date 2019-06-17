@@ -30,6 +30,8 @@ public final class SimulationImpl implements Simulation {
         universeRunner = new UniverseRunner(timer, universe, timeStep);
         guiRunner = new GUIRunner(gui, universe);
 
+        universe.getCurrentData();
+
         pause();
     }
 
