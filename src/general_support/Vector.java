@@ -111,6 +111,10 @@ public final class Vector {
 
     @Override
     public boolean equals(Object obj) {
-        return (x == ((Vector) obj).x && y == ((Vector) obj).y &&  z == ((Vector) obj).z);
+        if (obj instanceof Vector) {
+            return (x == ((Vector) obj).x && y == ((Vector) obj).y && z == ((Vector) obj).z);
+        } else {
+            return false;
+        }
     }
 }

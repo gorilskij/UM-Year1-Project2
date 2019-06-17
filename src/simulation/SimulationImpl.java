@@ -1,5 +1,6 @@
 package simulation;
 
+import body.SpaceShip;
 import simulation.gui.GUI;
 import simulation.gui.GUIImpl;
 import simulation.runner.GUIRunner;
@@ -19,12 +20,13 @@ public final class SimulationImpl implements Simulation {
 
     private final GUI gui;
     private final GUIRunner guiRunner;
+    private final Universe universe;
 
     public SimulationImpl(int initialTimeStep) {
         timer = new Timer();
         timeStep = initialTimeStep;
 
-        Universe universe = UniverseImpl.newSolarSystem(this);
+        universe = UniverseImpl.newSolarSystem(this);
         gui = new GUIImpl(this, universe);
 
         universeRunner = new UniverseRunner(timer, universe, timeStep);
@@ -45,5 +47,13 @@ public final class SimulationImpl implements Simulation {
 
     public void shipLaunched() {
         gui.shipLaunched();
+    }
+
+    public void addLaunch() {
+        universe.addLaunch();
+    }
+
+    public void getCurrenData() {
+        universe.getCurrentData();
     }
 }

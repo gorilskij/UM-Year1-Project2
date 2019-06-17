@@ -9,4 +9,9 @@ public interface Simulation extends PlayPause, ShipLaunched {
      * @return current time
      */
     long timePassedS();
+
+    /**
+     * add launch
+     */
+    void addLaunch();
 }
