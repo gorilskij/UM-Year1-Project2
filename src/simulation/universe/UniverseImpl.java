@@ -3,11 +3,9 @@ package simulation.universe;
 import body.SpaceShip;
 import body.interfaces.*;
 import data.Constants;
-import general_support.integrator.Euler;
 import general_support.integrator.Integrator;
 import general_support.Vector;
 import data.BodyFactory;
-import general_support.integrator.Euler;
 import general_support.integrator.LeapFrog;
 import simulation.interfaces.ShipLaunched;
 
@@ -41,6 +39,20 @@ public final class UniverseImpl implements Universe {
         this.shipListener = shipListener;
     }
 
+    public void addShip(SpaceShip ss) {
+        Round earth = (Round) getBodyByName("earth");
+        ss.setPosition(getBodyByName("sun")
+                .position()
+                .vectorTo(earth
+                        .position())
+                .direction()
+                .times(earth
+                        .radius())
+                .plus(earth.position()));
+
+        ss.setVelocity(((Moving) earth).velocity());
+    }
+
     public static Universe newSolarSystem(ShipLaunched shipListener) {
         Universe universe = new UniverseImpl(shipListener);
 
@@ -53,6 +65,8 @@ public final class UniverseImpl implements Universe {
         Moving earth = (Moving) universe.getBodyByName("earth");
         moon.setPosition(moon.position().plus(earth.position()));
         moon.setVelocity(moon.velocity().plus(earth.velocity()));
+
+
 
         // titan
         Moving titan = (Moving) universe.getBodyByName("titan");
@@ -77,6 +91,7 @@ public final class UniverseImpl implements Universe {
         if (body instanceof SpaceShip) {
             spaceShips.add((SpaceShip) body);
             ((SpaceShip) body).setUniverse(this);
+            addShip((SpaceShip) body);
         }
     }
 
@@ -86,6 +101,10 @@ public final class UniverseImpl implements Universe {
         SpaceShip fr = new SpaceShip("fr", Color.WHITE, 962, this);
         SpaceShip sr = new SpaceShip("sr", Color.WHITE, 1871, this);
         SpaceShip tr = new SpaceShip( "tr", Color.WHITE, 1933, this);
+
+        addBody(fr);
+        addBody(sr);
+        addBody(tr);
 
         shipListener.shipLaunched();
     }
@@ -106,6 +125,7 @@ public final class UniverseImpl implements Universe {
 
             }
             integrator.integrate(body, acceleration, timeStep);
+            getCurrentData();
         }
     }
 
