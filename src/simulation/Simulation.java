@@ -1,6 +1,9 @@
 package simulation;
 
-public interface Simulation extends PlayPause {
+import simulation.interfaces.PlayPause;
+import simulation.interfaces.ShipLaunched;
+
+public interface Simulation extends PlayPause, ShipLaunched {
     /**
      *
      * @return current time
