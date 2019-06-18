@@ -48,7 +48,7 @@ public final class UniverseImpl implements Universe {
                         .position())
                 .direction()
                 .times(earth
-                        .radius() - 1e10)
+                        .radius())
                 .plus(earth.position()));
 
         ss.setVelocity(((Moving) earth).velocity());
