@@ -8,18 +8,28 @@ import java.util.List;
 
 public class PID implements Controller {
 
-    private Trajectory trajectory;
+    private Vector setPoint;
     private List<Double> errors;
     private double integral;
     private double lastError; // Could also retrieve this from errors. Technically a waste of memory but I like it.
+    private double P;
+    private double I;
+    private double D;
+
+    public PID(Vector setPoint, double P, double I, double D){
+        this.setPoint = setPoint;
+        this.P = P;
+        this.I = I;
+        this.D = D;
+    }
 
     @Override
     public void control(SpaceShip ship, Vector velocity) {
         double error = this.proportional(ship.position());
         this.updateErrors(error);
         double integralError = this.updateIntegral(error);
-        double derivativeError = this.derivative();
         this.lastError = error;
+        double controlVariable = P*error + I*integralError + D*velocity.magnitude();
 
     }
 
@@ -33,7 +43,7 @@ public class PID implements Controller {
     }
 
     private double proportional(Vector position){
-        return position.distanceTo(trajectory.nextSetPoint());
+        return position.distanceTo(this.setPoint);
     }
 
     private double updateIntegral(double error){
@@ -47,24 +57,7 @@ public class PID implements Controller {
         return this.integral;
     }
 
-    private double derivative(){
-        assert this.errors.size() > 0;
-        assert this.errors.size() < 4;
-        if(errors.size() == 1)
-            return 0;
-        else if(errors.size() == 2)
-            return Numerical.TwoPointDerivativeBackWard(this.errors);
-        else
-            return Numerical.ThreePointDerivativeBackWard(this.errors);
-    }
 
-    private class Trajectory{
 
-        private Vector[] setPoints;
 
-        Vector nextSetPoint(){
-            return Vector.ZERO;
-        }
-
-    }
 }
