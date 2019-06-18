@@ -113,11 +113,11 @@ public final class UniverseImpl implements Universe {
         for (Moving body : movingBodies) {
             Vector acceleration = Vector.ZERO;
             if (body instanceof SpaceShip) {
-                /*acceleration = acceleration.plus(
+                acceleration = acceleration.plus(
                         ((SpaceShip) body)
                                 .steering()
                                 .getAccelerationAndPerformRotation(timeStep)
-                );*/
+                );
                 for (Attractive attractor : attractors) {
                     if (((SpaceShip) body).isOn((Round) attractor)) {
                         body.setVelocity(((Moving) attractor).velocity());
