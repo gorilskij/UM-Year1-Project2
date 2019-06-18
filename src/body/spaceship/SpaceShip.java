@@ -2,6 +2,7 @@ package body.spaceship;
 
 import body.BaseBody;
 import body.interfaces.Moving;
+import body.interfaces.Round;
 import body.spaceship.steering.Steering;
 import body.spaceship.steering.SteeringImpl;
 import general_support.PaintingTools;
@@ -98,5 +99,9 @@ public class SpaceShip extends BaseBody implements Moving {
         Point.Double pos = position.toXYPoint();
         PaintingTools.paintHighlightCircle(g, scale, pos);
         PaintingTools.paintLabel(g, scale, pos, name());
+    }
+
+    public boolean isOn(Round round) {
+        return (position.distanceTo(round.position()) - round.radius()) < 0.1;
     }
 }

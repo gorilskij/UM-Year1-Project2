@@ -112,31 +112,28 @@ public final class UniverseImpl implements Universe {
     public void iteratePhysics(double timeStep) {
         for (Moving body : movingBodies) {
             Vector acceleration = Vector.ZERO;
-            for (Attractive attractor : attractors) {
-                if (body == attractor) continue;
-
-                Vector vectorToAttractor = body.position().vectorTo(attractor.position());
-                double distance = vectorToAttractor.magnitude();
-                Vector directionToAttractor = vectorToAttractor.direction();
-
-                double accelerationMagnitude = Constants.G * attractor.mass() / Math.pow(distance, 2);
-                acceleration = acceleration.plus(directionToAttractor.times(accelerationMagnitude));
-            }
-
             if (body instanceof SpaceShip) {
-                acceleration = acceleration.plus(
+                /*acceleration = acceleration.plus(
                         ((SpaceShip) body)
                                 .steering()
                                 .getAccelerationAndPerformRotation(timeStep)
-                );
+                );*/
                 for (Attractive attractor : attractors) {
-                    if (body.position().distanceTo(attractor.position()) < ((Round) attractor).radius()) {
-                        body.setVelocity(
-                                ((Moving) attractor).velocity());
+                    if (((SpaceShip) body).isOn((Round) attractor)) {
+                        body.setVelocity(((Moving) attractor).velocity());
                     }
                 }
-            }
+            } else {
+                for (Attractive attractor : attractors) {
+                    if (body == attractor) continue;
 
+                    Vector vectorToAttractor = body.position().vectorTo(attractor.position());
+                    double distance = vectorToAttractor.magnitude();
+                    Vector directionToAttractor = vectorToAttractor.direction();
+                    double accelerationMagnitude = Constants.G * attractor.mass() / Math.pow(distance, 2);
+                    acceleration = acceleration.plus(directionToAttractor.times(accelerationMagnitude));
+                }
+            }
             integrator.integrate(body, acceleration, timeStep);
         }
     }
