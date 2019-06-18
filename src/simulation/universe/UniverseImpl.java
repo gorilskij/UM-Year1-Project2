@@ -1,7 +1,8 @@
 package simulation.universe;
 
-import body.SpaceShip;
+import body.spaceship.SpaceShip;
 import body.interfaces.*;
+import body.spaceship.steering.Action;
 import data.Constants;
 import general_support.integrator.Integrator;
 import general_support.Vector;
@@ -66,8 +67,6 @@ public final class UniverseImpl implements Universe {
         moon.setPosition(moon.position().plus(earth.position()));
         moon.setVelocity(moon.velocity().plus(earth.velocity()));
 
-
-
         // titan
         Moving titan = (Moving) universe.getBodyByName("titan");
         Moving saturn = (Moving) universe.getBodyByName("saturn");
@@ -98,9 +97,9 @@ public final class UniverseImpl implements Universe {
     @Override
     public void addLaunch() {
         // TODO: implement
-        SpaceShip fr = new SpaceShip("fr", Color.WHITE, 962, this);
-        SpaceShip sr = new SpaceShip("sr", Color.WHITE, 1871, this);
-        SpaceShip tr = new SpaceShip( "tr", Color.WHITE, 1933, this);
+        SpaceShip fr = new SpaceShip("1", Color.WHITE, 962, this);
+        SpaceShip sr = new SpaceShip("2", Color.WHITE, 1871, this);
+        SpaceShip tr = new SpaceShip( "3", Color.WHITE, 1933, this);
 
         addBody(fr);
         addBody(sr);
@@ -110,7 +109,7 @@ public final class UniverseImpl implements Universe {
     }
 
     @Override
-    public void iteratePhysics(int timeStep) {
+    public void iteratePhysics(double timeStep) {
         for (Moving body : movingBodies) {
             Vector acceleration = Vector.ZERO;
             for (Attractive attractor : attractors) {
@@ -122,10 +121,17 @@ public final class UniverseImpl implements Universe {
 
                 double accelerationMagnitude = Constants.G * attractor.mass() / Math.pow(distance, 2);
                 acceleration = acceleration.plus(directionToAttractor.times(accelerationMagnitude));
-
             }
+
+            if (body instanceof SpaceShip) {
+                acceleration = acceleration.plus(
+                        ((SpaceShip) body)
+                                .steering()
+                                .getAccelerationAndPerformRotation(timeStep)
+                );
+            }
+
             integrator.integrate(body, acceleration, timeStep);
-            getCurrentData();
         }
     }
 

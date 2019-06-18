@@ -1,8 +1,7 @@
 package controllers;
 
-import body.SpaceShip;
+import body.spaceship.SpaceShip;
 import general_support.Vector;
-import ship_support.Thruster;
 
 public interface Controller {
 
