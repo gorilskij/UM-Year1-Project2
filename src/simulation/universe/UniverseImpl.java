@@ -48,7 +48,7 @@ public final class UniverseImpl implements Universe {
                         .position())
                 .direction()
                 .times(earth
-                        .radius())
+                        .radius() - 1e10)
                 .plus(earth.position()));
 
         ss.setVelocity(((Moving) earth).velocity());
@@ -129,6 +129,12 @@ public final class UniverseImpl implements Universe {
                                 .steering()
                                 .getAccelerationAndPerformRotation(timeStep)
                 );
+                for (Attractive attractor : attractors) {
+                    if (body.position().distanceTo(attractor.position()) < ((Round) attractor).radius()) {
+                        body.setVelocity(
+                                ((Moving) attractor).velocity());
+                    }
+                }
             }
 
             integrator.integrate(body, acceleration, timeStep);

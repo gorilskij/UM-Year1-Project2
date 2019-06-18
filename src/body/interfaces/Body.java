@@ -31,5 +31,10 @@ public interface Body {
      */
     Vector position();
 
+    /**
+     *
+     * @param g graphics
+     * @param scale scale
+     */
     void paint(Graphics g, double scale);
 }

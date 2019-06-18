@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Numerical {
 
-    //TODO: This method is probably not needed. Might deimplement eventually.
+    //TODO: This method is probably not needed. Might de-implement eventually.
     public static double TrapezoidIntegral(List<Double> f){
         int size = f.size();
         double result = 0;
