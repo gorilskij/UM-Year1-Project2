@@ -102,6 +102,6 @@ public class SpaceShip extends BaseBody implements Moving {
     }
 
     public boolean isOn(Round round) {
-        return (position.distanceTo(round.position()) - round.radius()) < 0.1;
+        return (position.distanceTo(round.position()) - round.radius()) < 100;
     }
 }
