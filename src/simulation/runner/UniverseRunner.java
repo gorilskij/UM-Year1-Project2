@@ -23,7 +23,8 @@ public class UniverseRunner extends BaseRunner {
 
     @Override
     public void doFrame() {
-        universe.iteratePhysics(timeStep);
+        universe.iterateCelestials(timeStep);
+        universe.iterateShips(timeStep);
         timer.iterate(timeStep);
     }
 }

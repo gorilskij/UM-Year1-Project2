@@ -108,35 +108,75 @@ public final class UniverseImpl implements Universe {
         shipListener.shipLaunched();
     }
 
+    private Vector computeAcceleration(Body body, Vector acceleration, Attractive attractor) {
+        acceleration = acceleration
+                .plus(
+                        body
+                                .position()
+                                .vectorTo(
+                                        attractor
+                                                .position()
+                                )
+                                .direction()
+                                .times(
+                                        Constants.G * attractor.mass() / Math.pow(
+                                                body
+                                                        .position()
+                                                        .distanceTo(
+                                                                attractor
+                                                                        .position()
+                                                        ),
+                                                2
+                                        )
+                                )
+                );
+        return acceleration;
+    }
+
     @Override
-    public void iteratePhysics(double timeStep) {
+    public void iterateCelestials(double timeStep) {
         for (Moving body : movingBodies) {
             Vector acceleration = Vector.ZERO;
             for (Attractive attractor : attractors) {
-                if (body == attractor) continue;
-
-                Vector vectorToAttractor = body.position().vectorTo(attractor.position());
-                double distance = vectorToAttractor.magnitude();
-                Vector directionToAttractor = vectorToAttractor.direction();
-                double accelerationMagnitude = Constants.G * attractor.mass() / Math.pow(distance, 2);
-                acceleration = acceleration.plus(directionToAttractor.times(accelerationMagnitude));
-
-                if (body instanceof SpaceShip) {
-                    /*acceleration = acceleration.plus(
-                            ((SpaceShip) body)
-                                    .steering()
-                                    .getAccelerationAndPerformRotation(timeStep)
-                    );*/
-                    if (((SpaceShip) body).isOn((Round) attractor)) {
-                        if (((SpaceShip) body).parent() == null) {
-                            ((SpaceShip) body).setParent((Body) attractor);
-                        }
-                        body.setPosition(((SpaceShip) body).relativePosition((Body) attractor));
+                if (! (body instanceof SpaceShip)) {
+                    if (body == attractor) continue;
+                    if (attractor.mass() == 0) continue;
+                    if (body.acceleration() == null) {
+                        body.setAcceleration(acceleration);
                     }
+                    acceleration = computeAcceleration(body, acceleration, attractor);
+                    /*Vector vectorToAttractor = body.position().vectorTo(attractor.position());
+                    Vector directionToAttractor = vectorToAttractor.direction();
+                    double distance = vectorToAttractor.magnitude();
+                    double accelerationMagnitude = Constants.G * attractor.mass() / Math.pow(distance, 2);
+                    acceleration = acceleration.plus(directionToAttractor.times(accelerationMagnitude));*/
                 }
             }
             integrator.integrate(body, acceleration, timeStep);
         }
+    }
+
+    @Override
+    public void iterateShips(double timeStep) {
+        for (Moving ss : spaceShips) {
+            Vector acceleration = Vector.ZERO;
+            for (Attractive attractor : attractors) {
+                if (attractor.mass() == 0) continue;
+                if (ss.acceleration() == null) {
+                    ss.setAcceleration(acceleration);
+                }
+                if (((SpaceShip) ss).parent() != null) {
+                    ((SpaceShip) ss).setRelativePosition();
+                } else if (((SpaceShip) ss).isOn((Body) attractor)) {
+                    ((SpaceShip) ss).setParent((Body) attractor);
+                    ((SpaceShip) ss).setRelativePosition();
+                } else {
+                    acceleration = computeAcceleration(ss, acceleration, attractor);
+                }
+            }
+            integrator.integrate(ss, acceleration, timeStep);
+        }
+
     }
 
     @Override

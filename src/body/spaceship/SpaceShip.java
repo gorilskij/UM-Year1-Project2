@@ -112,8 +112,8 @@ public class SpaceShip extends BaseBody implements Moving {
         PaintingTools.paintLabel(g, scale, pos, name());
     }
 
-    public boolean isOn(Round round) {
-        if ((position.distanceTo(round.position()) - round.radius()) < SurfaceImpl.EPSILON) {
+    public boolean isOn(Body body) {
+        if ((position.distanceTo(body.position()) - ((Round) body).radius()) < SurfaceImpl.EPSILON) {
             return true;
         }
         return false;
@@ -123,8 +123,24 @@ public class SpaceShip extends BaseBody implements Moving {
      *
      * @return vector from planet center to the spaceship
      */
-    public Vector relativePosition(Body body) {
+    private Vector relativePosition() {
         assert parent != null : "null parent";
-        return position.minus(parent.position());
+        Vector parentPosition = parent.position();
+        Vector parentToShip = position.minus(parentPosition);
+        Vector directionToShip = parentToShip.direction();
+        return directionToShip.times(((Round) parent).radius());
+    }
+
+    public void setRelativePosition() {
+        this
+                .setPosition(
+                        (this)
+                                .parent()
+                                .position()
+                                .plus(
+                                        (this)
+                                                .relativePosition()
+                                )
+                );
     }
 }
