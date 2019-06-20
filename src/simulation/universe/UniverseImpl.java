@@ -120,25 +120,20 @@ public final class UniverseImpl implements Universe {
                 Vector directionToAttractor = vectorToAttractor.direction();
                 double accelerationMagnitude = Constants.G * attractor.mass() / Math.pow(distance, 2);
                 acceleration = acceleration.plus(directionToAttractor.times(accelerationMagnitude));
-            }
 
-            if (body instanceof SpaceShip) {
-                acceleration = acceleration.plus(
-                        ((SpaceShip) body)
-                                .steering()
-                                .getAccelerationAndPerformRotation(timeStep)
-                );
-                // TODO: if spaceship is on body, lock it RELATIVE position
-                /*for (Attractive attractor : attractors) {
+                if (body instanceof SpaceShip) {
+                    /*acceleration = acceleration.plus(
+                            ((SpaceShip) body)
+                                    .steering()
+                                    .getAccelerationAndPerformRotation(timeStep)
+                    );*/
                     if (((SpaceShip) body).isOn((Round) attractor)) {
-                        System.out.println(body.name() + " is on " + ((Round) attractor).name());
-                        body.setVelocity(((Moving) attractor).velocity());
-                        body.setAcceleration(((Moving) attractor).acceleration());
-                        break;
-                    } else {
-                        System.out.println(body.name()+ " not on " + ((Round) attractor).name());
+                        if (((SpaceShip) body).parent() == null) {
+                            ((SpaceShip) body).setParent((Body) attractor);
+                        }
+                        body.setPosition(((SpaceShip) body).relativePosition((Body) attractor));
                     }
-                }*/
+                }
             }
             integrator.integrate(body, acceleration, timeStep);
         }

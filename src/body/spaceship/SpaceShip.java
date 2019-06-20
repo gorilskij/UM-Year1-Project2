@@ -1,10 +1,12 @@
 package body.spaceship;
 
 import body.BaseBody;
+import body.interfaces.Body;
 import body.interfaces.Moving;
 import body.interfaces.Round;
 import body.spaceship.steering.Steering;
 import body.spaceship.steering.SteeringImpl;
+import body.surface.SurfaceImpl;
 import general_support.PaintingTools;
 import general_support.Vector;
 import simulation.universe.Universe;
@@ -25,6 +27,7 @@ public class SpaceShip extends BaseBody implements Moving {
     private Vector lastAcceleration = Vector.ZERO;
     private Universe universe;
     private double radius;
+    private Body parent;
 
     private final Steering steering = new SteeringImpl(this);
 
@@ -94,6 +97,14 @@ public class SpaceShip extends BaseBody implements Moving {
         this.universe = universe;
     }
 
+    public Body parent() {
+        return parent;
+    }
+
+    public void setParent(Body parent) {
+        this.parent = parent;
+    }
+
     public void paint(Graphics g, double scale) {
         g.setColor(color());
         Point.Double pos = position.toXYPoint();
@@ -102,6 +113,18 @@ public class SpaceShip extends BaseBody implements Moving {
     }
 
     public boolean isOn(Round round) {
-        return (position.distanceTo(round.position()) - round.radius()) < 100;
+        if ((position.distanceTo(round.position()) - round.radius()) < SurfaceImpl.EPSILON) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     *
+     * @return vector from planet center to the spaceship
+     */
+    public Vector relativePosition(Body body) {
+        assert parent != null : "null parent";
+        return body.position().plus(position.minus(parent.position()));
     }
 }
