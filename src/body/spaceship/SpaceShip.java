@@ -125,6 +125,6 @@ public class SpaceShip extends BaseBody implements Moving {
      */
     public Vector relativePosition(Body body) {
         assert parent != null : "null parent";
-        return body.position().plus(position.minus(parent.position()));
+        return position.minus(parent.position());
     }
 }
