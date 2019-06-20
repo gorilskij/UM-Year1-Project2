@@ -117,4 +117,16 @@ public final class Vector {
             return false;
         }
     }
+
+    private double dotProduct(Vector other) {
+        return (
+                x*other.x
+                        + y*other.y
+                        + z*other.z
+        );
+    }
+
+    public double angleBetween(Vector other) {
+        return dotProduct(other) / (magnitude() * other.magnitude());
+    }
 }

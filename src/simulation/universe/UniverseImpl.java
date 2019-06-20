@@ -145,11 +145,6 @@ public final class UniverseImpl implements Universe {
                         body.setAcceleration(acceleration);
                     }
                     acceleration = computeAcceleration(body, acceleration, attractor);
-                    /*Vector vectorToAttractor = body.position().vectorTo(attractor.position());
-                    Vector directionToAttractor = vectorToAttractor.direction();
-                    double distance = vectorToAttractor.magnitude();
-                    double accelerationMagnitude = Constants.G * attractor.mass() / Math.pow(distance, 2);
-                    acceleration = acceleration.plus(directionToAttractor.times(accelerationMagnitude));*/
                 }
             }
             integrator.integrate(body, acceleration, timeStep);

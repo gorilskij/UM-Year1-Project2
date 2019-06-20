@@ -112,11 +112,13 @@ public class SpaceShip extends BaseBody implements Moving {
         PaintingTools.paintLabel(g, scale, pos, name());
     }
 
+    @Override
+    public Vector directionTo(Body body) {
+        return position.vectorTo(body.position()).direction();
+    }
+
     public boolean isOn(Body body) {
-        if ((position.distanceTo(body.position()) - ((Round) body).radius()) < SurfaceImpl.EPSILON) {
-            return true;
-        }
-        return false;
+        return ((position.distanceTo(body.position()) - ((Round) body).radius()) < SurfaceImpl.EPSILON);
     }
 
     /**
