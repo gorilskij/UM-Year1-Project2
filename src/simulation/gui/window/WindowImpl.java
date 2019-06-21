@@ -101,6 +101,12 @@ public class WindowImpl implements Window {
         JButton decreaseScaleButton = new JButton("-");
         decreaseScaleButton.addActionListener(e -> setScale(scale / ZOOM));
 
+        JButton fastButton = new JButton("fast");
+        fastButton.addActionListener(e -> simulation.setUniverseRunnerMinFrameTime(100));
+
+        JButton slowButton = new JButton("slow");
+        slowButton.addActionListener(e -> simulation.setUniverseRunnerMinFrameTime(0));
+
         scaleLabel = new JLabel();
         setScale(scale); // refresh scaleLabel
 
@@ -111,6 +117,8 @@ public class WindowImpl implements Window {
         bottomPanel.add(playPauseButton);
         bottomPanel.add(increaseScaleButton);
         bottomPanel.add(decreaseScaleButton);
+        bottomPanel.add(fastButton);
+        bottomPanel.add(slowButton);
 
         JPanel bodySelectorPanel = new JPanel();
         bodySelectorPanel.setSize(new Dimension(0, 0));

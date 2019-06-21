@@ -37,4 +37,14 @@ public final class PaintingTools {
                 (int) Math.round(pos.y * scale) - 5
         );
     }
+
+    public static void paintPointing(Graphics g, double scale, Point.Double pos, Vector pointing) {
+        g.setColor(Color.ORANGE);
+        Point.Double vec = pointing.direction().toXYPoint();
+        g.drawLine(
+                (int) pos.x, (int) pos.y,
+                (int) (pos.x + vec.x * 100),
+                (int) (pos.y + vec.y * 100)
+        );
+    }
 }

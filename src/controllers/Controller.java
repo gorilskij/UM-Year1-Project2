@@ -1,17 +1,13 @@
 package controllers;
 
-import body.SpaceShip;
 import general_support.Vector;
-import ship_support.Thruster;
 
 public interface Controller {
 
     /**
      * manipulate thrust system of a ship
-     * name is shit, TODO: change the name
-     * @param ship spaceship to thrust
-     * @param velocity how much velocity to gain
+     * perform rotation within the method
+     * @return acceleration magnitude to be applied in the direction the spaceship is pointing
      */
-    void control(SpaceShip ship, Vector velocity);
-
+    double control();
 }
