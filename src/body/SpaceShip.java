@@ -100,9 +100,9 @@ public class SpaceShip extends BaseBody implements Moving {
         this.universe = universe;
     }
 
-    public void paint(Graphics g, double scale) {
+    public void paint(Graphics g, Vector centerPosition, double scale) {
         g.setColor(color());
-        Point.Double pos = position.toXYPoint();
+        Point.Double pos = position.minus(centerPosition).toXYPoint();
         PaintingTools.paintHighlightCircle(g, scale, pos);
         PaintingTools.paintLabel(g, scale, pos, name());
         PaintingTools.paintPointing(g, scale, pos, pointing);
