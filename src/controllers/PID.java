@@ -24,12 +24,12 @@ public class PID implements Controller {
     }
 
     @Override
-    public void control(SpaceShip ship, Vector velocity) {
+    public double control(SpaceShip ship, Vector velocity) {
         double error = this.proportional(ship.position());
         this.updateErrors(error);
         double integralError = this.updateIntegral(error);
         this.lastError = error;
-        double controlVariable = P*error + I*integralError + D*velocity.magnitude();
+        return P*error + I*integralError + D*velocity.magnitude();
 
     }
 
