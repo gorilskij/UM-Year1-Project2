@@ -2,6 +2,7 @@ package simulation.gui.window;
 
 import body.SpaceShip;
 import body.interfaces.Body;
+import general_support.Vector;
 import simulation.Simulation;
 import simulation.universe.Universe;
 
@@ -101,6 +102,12 @@ public class WindowImpl implements Window {
         JButton decreaseScaleButton = new JButton("-");
         decreaseScaleButton.addActionListener(e -> setScale(scale / ZOOM));
 
+        JButton fastButton = new JButton("fast");
+        fastButton.addActionListener(e -> simulation.setUniverseRunnerMinFrameTime(100));
+
+        JButton slowButton = new JButton("slow");
+        slowButton.addActionListener(e -> simulation.setUniverseRunnerMinFrameTime(0));
+
         scaleLabel = new JLabel();
         setScale(scale); // refresh scaleLabel
 
@@ -111,6 +118,8 @@ public class WindowImpl implements Window {
         bottomPanel.add(playPauseButton);
         bottomPanel.add(increaseScaleButton);
         bottomPanel.add(decreaseScaleButton);
+        bottomPanel.add(fastButton);
+        bottomPanel.add(slowButton);
 
         JPanel bodySelectorPanel = new JPanel();
         bodySelectorPanel.setSize(new Dimension(0, 0));
@@ -150,18 +159,14 @@ public class WindowImpl implements Window {
         bodySelector.refresh();
     }
 
-    private void translateToCenterBody(Graphics g) {
-        if (centerBody == null) return;
-
-        Point.Double pos = centerBody.position().toXYPoint(scale);
-        g.translate((int) -pos.x, (int) -pos.y);
-    }
-
     private void paintPanel(Graphics g) {
         g.translate(space.getWidth() / 2, space.getHeight() / 2);
-        translateToCenterBody(g);
-        for (Body body : universe.allBodies())
-            body.paint(g, scale);
+        for (Body body : universe.allBodies()) {
+            if (centerBody == null)
+                body.paint(g, Vector.ZERO, scale);
+            else
+                body.paint(g, centerBody.position(), scale);
+        }
 
         timePassedLabel.setText("  time passed: " + simulation.timePassedS() + "s");
     }

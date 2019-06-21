@@ -64,7 +64,7 @@ public class Planet extends BaseBody implements Round, Moving, Attractive {
         this.radius = radius;
     }
 
-    public void paint(Graphics g, double scale) {
-        PaintingTools.paintCircularObject(g, scale, this);
+    public void paint(Graphics g, Vector centerPosition, double scale) {
+        PaintingTools.paintCircularObject(g, scale, this, centerPosition);
     }
 }

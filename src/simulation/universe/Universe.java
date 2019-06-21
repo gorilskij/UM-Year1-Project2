@@ -15,13 +15,13 @@ public interface Universe {
     /**
      *
      */
-    void addLaunch();
+    void addLaunch(String name, double mass);
 
     /**
      *
      * @param timeStep time step at which to iterate
      */
-    void iteratePhysics(int timeStep);
+    void iteratePhysics(double  timeStep);
 
     /**
      *
