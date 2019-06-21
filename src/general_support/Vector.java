@@ -117,6 +117,13 @@ public final class Vector {
             return false;
         }
     }
+    public double angleBetween(Vector other) {
+        return dotProduct(other) / (magnitude() * other.magnitude());
+    }
+
+    public void rotateVectorTo(Vector other, double angle) {
+
+    }
 
     private double dotProduct(Vector other) {
         return (
@@ -132,9 +139,5 @@ public final class Vector {
                 z*other.x - x*other.z,
                 x*other.y - y*other.x
         );
-    }
-
-    public double angleBetween(Vector other) {
-        return dotProduct(other) / (magnitude() * other.magnitude());
     }
 }
