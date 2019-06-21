@@ -1,6 +1,7 @@
 package body;
 
 import body.interfaces.Attractive;
+import body.interfaces.Body;
 import body.interfaces.Moving;
 import body.interfaces.Round;
 import general_support.PaintingTools;
@@ -66,5 +67,10 @@ public class Planet extends BaseBody implements Round, Moving, Attractive {
 
     public void paint(Graphics g, double scale) {
         PaintingTools.paintCircularObject(g, scale, this);
+    }
+
+    @Override
+    public Vector directionTo(Body body) {
+        return position.vectorTo(body.position()).direction();
     }
 }

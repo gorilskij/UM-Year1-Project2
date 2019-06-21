@@ -126,6 +126,14 @@ public final class Vector {
         );
     }
 
+    public Vector cross(Vector other) {
+        return new Vector(
+                y*other.z - other.y*z,
+                z*other.x - x*other.z,
+                x*other.y - y*other.x
+        );
+    }
+
     public double angleBetween(Vector other) {
         return dotProduct(other) / (magnitude() * other.magnitude());
     }
