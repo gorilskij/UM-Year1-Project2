@@ -3,6 +3,8 @@ package body.spaceship;
 import body.BaseBody;
 import body.interfaces.Body;
 import body.interfaces.Moving;
+import controllers.Controller;
+import controllers.LaunchController;
 import body.interfaces.Round;
 import body.spaceship.steering.Steering;
 import body.spaceship.steering.SteeringImpl;
@@ -29,12 +31,24 @@ public class SpaceShip extends BaseBody implements Moving {
     private double radius;
     private Body parent;
 
+    // can be changed for different parts of the journey
+    private Controller controller = null;
     private final Steering steering = new SteeringImpl(this);
 
     public Steering steering() {
         return steering;
     }
 
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
+
+    public double control() {
+        if (controller != null)
+            return controller.control();
+        else
+            return 0;
+    }
 
     public SpaceShip(String name, Color color, double mass, Universe universe) {
         super(name, color, mass);
@@ -86,6 +100,10 @@ public class SpaceShip extends BaseBody implements Moving {
     }
 
     public void setPointing(Vector pointing) {
+        // convert to unit vector just in case
+        this.pointing = pointing.direction();
+    }
+
         this.pointing = pointing;
     }
 
@@ -97,6 +115,10 @@ public class SpaceShip extends BaseBody implements Moving {
         this.universe = universe;
     }
 
+    public void paint(Graphics g, Vector centerPosition, double scale) {
+        g.setColor(color());
+        Point.Double pos = position.minus(centerPosition).toXYPoint();
+        PaintingTools.paintHighlightCircle(g, scale, pos);
     public Body parent() {
         return parent;
     }
@@ -110,6 +132,7 @@ public class SpaceShip extends BaseBody implements Moving {
         Point.Double pos = position.toXYPoint();
         PaintingTools.paintHighlightCircle(g, scale, pos);
         PaintingTools.paintLabel(g, scale, pos, name());
+        PaintingTools.paintPointing(g, scale, pos, pointing);
     }
 
     @Override

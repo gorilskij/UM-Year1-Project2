@@ -44,4 +44,5 @@ public interface Body {
      * @return direction to body
      */
     Vector directionTo(Body body);
+    void paint(Graphics g, Vector centerPosition, double scale);
 }

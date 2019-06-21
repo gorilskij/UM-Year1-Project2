@@ -7,9 +7,9 @@ public interface Controller {
 
     /**
      * manipulate thrust system of a ship
-     * name is shit, TODO: change the name
-     * @param ship spaceship to thrust
+     * perform rotation within the method
+     * @return acceleration magnitude to be applied in the direction the spaceship is pointing
      */
-    void control(SpaceShip ship);
+    double control();
 
 }

@@ -62,6 +62,7 @@ public final class Vector {
     }
 
     public Vector vectorTo(Vector other) {
+        assert other != null;
         return new Vector(
                 other.x - x,
                 other.y - y,

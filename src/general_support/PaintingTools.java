@@ -5,9 +5,9 @@ import body.interfaces.Round;
 import java.awt.*;
 
 public final class PaintingTools {
-    public static void paintCircularObject(Graphics g, double scale, Round object) {
+    public static void paintCircularObject(Graphics g, double scale, Round object, Vector centerPosition) {
         g.setColor(object.color());
-        Point.Double pos = object.position().toXYPoint();
+        Point.Double pos = object.position().minus(centerPosition).toXYPoint();
         int diameter = (int) Math.round(object.radius() * 2 * scale);
 
         g.fillOval(
@@ -35,6 +35,16 @@ public final class PaintingTools {
                 name,
                 (int) Math.round(pos.x * scale) - 5,
                 (int) Math.round(pos.y * scale) - 5
+        );
+    }
+
+    public static void paintPointing(Graphics g, double scale, Point.Double pos, Vector pointing) {
+        g.setColor(Color.ORANGE);
+        Point.Double vec = pointing.direction().toXYPoint();
+        g.drawLine(
+                (int) pos.x, (int) pos.y,
+                (int) (pos.x + vec.x * 100),
+                (int) (pos.y + vec.y * 100)
         );
     }
 }

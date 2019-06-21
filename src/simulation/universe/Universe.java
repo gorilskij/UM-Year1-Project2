@@ -15,7 +15,7 @@ public interface Universe {
     /**
      *
      */
-    void addLaunch();
+    void addLaunch(String name, double mass);
 
     /**
      *
