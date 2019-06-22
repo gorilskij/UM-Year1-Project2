@@ -1,6 +1,6 @@
 package controllers;
 
-import body.SpaceShip;
+import body.spaceship.SpaceShip;
 import simulation.universe.Universe;
 
 public abstract class BaseController implements Controller {

@@ -1,5 +1,6 @@
 package simulation.universe;
 
+import body.Planet;
 import body.spaceship.SpaceShip;
 import body.interfaces.*;
 import body.spaceship.steering.Action;
@@ -100,11 +101,6 @@ public final class UniverseImpl implements Universe {
     @Override
     public void addLaunch(String name, double mass) {
         SpaceShip spaceShip = new SpaceShip(name, Color.WHITE, mass, this);
-    public void addLaunch() {
-        // TODO: implement
-        SpaceShip fr = new SpaceShip("1", Color.WHITE, 962, this);
-        SpaceShip sr = new SpaceShip("2", Color.WHITE, 1871, this);
-        SpaceShip tr = new SpaceShip( "3", Color.WHITE, 1933, this);
 
         Planet earth = (Planet) getBodyByName("earth");
         Vector sunToEarth = getBodyByName("sun").position().vectorTo(earth.position()).direction();
@@ -152,21 +148,6 @@ public final class UniverseImpl implements Universe {
         for (Moving body : movingBodies) {
             Vector acceleration = Vector.ZERO;
             for (Attractive attractor : attractors) {
-                if (body == attractor) continue;
-
-                Vector vectorToAttractor = body.position().vectorTo(attractor.position());
-                double distance = vectorToAttractor.magnitude();
-                Vector directionToAttractor = vectorToAttractor.direction();
-
-                double accelerationMagnitude = Constants.G * attractor.mass() / Math.pow(distance, 2);
-                acceleration = acceleration.plus(directionToAttractor.times(accelerationMagnitude));
-            }
-
-            if (body instanceof SpaceShip) {
-                SpaceShip spaceShip = (SpaceShip) body;
-                double accelerationMagnitudeFromController = spaceShip.control();
-                Vector accelerationFromController = spaceShip.pointing().times(accelerationMagnitudeFromController);
-                acceleration = acceleration.plus(accelerationFromController);
                 if (! (body instanceof SpaceShip)) {
                     if (body == attractor) continue;
                     if (attractor.mass() == 0) continue;

@@ -104,9 +104,6 @@ public class SpaceShip extends BaseBody implements Moving {
         this.pointing = pointing.direction();
     }
 
-        this.pointing = pointing;
-    }
-
     public Universe universe() {
         return this.universe;
     }
@@ -119,6 +116,8 @@ public class SpaceShip extends BaseBody implements Moving {
         g.setColor(color());
         Point.Double pos = position.minus(centerPosition).toXYPoint();
         PaintingTools.paintHighlightCircle(g, scale, pos);
+    }
+
     public Body parent() {
         return parent;
     }
