@@ -44,10 +44,10 @@ public class LinearAlgebra {
         };
     }
 
-    public static double[][] addMatrixes(double[][] m1, double[][] m2) {
+    public static double[][] addMatrices(double[][] m1, double[][] m2) {
         assert m1.length == m2.length : "not equal column lengths";
-        assert m1[0].length == m2[0].length : "not equal row lengths";
-        double[][] res = new double[m1.length][m1.length];
+        assert m1[0].length == m2[0].length : "not equal2 row lengths";
+        double[][] res = new double[m1.length][m1[0].length];
         for (int i = 0; i < m1.length; i++) {
             for (int j = 0; j < m1[0].length; j++) {
                 res[i][j] = m1[i][j] + m2[i][j];
@@ -56,16 +56,42 @@ public class LinearAlgebra {
         return res;
     }
 
-    public static double[][] multiplyMatrixes(double[][] m1, double[][] m2) {
+    public static double[][] multiplyMatrices(double[][] m1, double[][] m2) {
         assert m1[0].length == m2.length : "can not multiply in those dimensions";
         double[][] res = new double[m1.length][m2[0].length];
-        for (int i = 0; i < m1[0].length; i++) {
-            for (int j = 0; j < m2.length; j++) {
-                for (int k = 0; k < m2[0].length; k++) {
+        for (int i = 0; i < m1.length; i++) {
+            for (int j = 0; j < m2[0].length; j++) {
+                for (int k = 0; k < m1[0].length; k++) {
                     res[i][j] += m1[i][k] * m2[k][j];
                 }
             }
         }
+        return res;
+    }
+
+    public static String toString(double[][] m) {
+        String res = "";
+        for (double[] row : m) {
+            for (double col : row) {
+                res += col + " ";
+            }
+            res += "\n";
+
+        }
+        return res;
+    }
+
+    public static double[][] matrixForRotation(Vector v1, Vector v2, double angle) {
+        double[][] res = new double[3][3];
+        Vector crossProduct = v1.cross(v2);
+        for (int i = 0; i < res.length; i++) {
+            res[i][i] = 1.0;
+        }
+        double[][] crossMatrix = new double[][] {
+                {0.0, -crossProduct.z, crossProduct.y},
+                {crossProduct.z, 0.0, - crossProduct.x},
+                {-crossProduct.y, crossProduct.x, 0.0}
+        };
         return res;
     }
 }

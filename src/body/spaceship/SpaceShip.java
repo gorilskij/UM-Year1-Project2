@@ -78,7 +78,6 @@ public class SpaceShip extends BaseBody implements Moving {
     }
 
     public Vector acceleration() {
-        assert acceleration != null;
         return acceleration;
     }
 
