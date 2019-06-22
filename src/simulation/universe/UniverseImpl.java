@@ -19,7 +19,7 @@ public final class UniverseImpl implements Universe {
     private final List<Body> allBodies = new ArrayList<>();
     private final List<Attractive> attractors = new ArrayList<>();
     private final List<Moving> movingBodies = new ArrayList<>();
-    private final List<Moving> spaceShips = new ArrayList<>();
+    private final List<SpaceShip> spaceShips = new ArrayList<>();
 
     private Integrator integrator = new LeapFrog();
 
@@ -162,7 +162,7 @@ public final class UniverseImpl implements Universe {
 
     @Override
     public void iterateShips(double timeStep) {
-        for (Moving ss : spaceShips) {
+        for (SpaceShip ss : spaceShips) {
             Vector acceleration = Vector.ZERO;
             for (Attractive attractor : attractors) {
                 if (attractor.mass() == 0) continue;
@@ -178,6 +178,13 @@ public final class UniverseImpl implements Universe {
                     acceleration = computeAcceleration(ss, acceleration, attractor);
                 }
             }
+
+            // important: spaceship only points in the right direction after the control method is called
+            double controllerAccelerationMagnitude = ss.control();
+            Vector controllerAcceleration = ss.pointing().times(controllerAccelerationMagnitude);
+
+            acceleration = acceleration.plus(controllerAcceleration);
+
             integrator.integrate(ss, acceleration, timeStep);
         }
 
