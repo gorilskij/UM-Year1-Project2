@@ -16,30 +16,30 @@ public class LinearAlgebra {
     // instantiate X rotating linear transformation
     public static double[][] instRotTrX(double angle) {
         // angle in degrees
-        angle = Math.toRadians(angle);
+        double radAngle = Math.toRadians(angle);
         return new double[][] {
                 {1, 0, 0},
-                {0, Math.cos(angle), -Math.sin(angle)},
-                {0, Math.sin(angle), Math.cos(angle)}
+                {0, Math.cos(radAngle), -Math.sin(radAngle)},
+                {0, Math.sin(radAngle), Math.cos(radAngle)}
         };
     }
 
     // instantiate Y rotating linear transformation
     public static double[][] instRotTrY(double angle) {
-        angle = Math.toRadians(angle);
+        double radAngle = Math.toRadians(angle);
         return new double[][] {
-                {Math.cos(angle), 0, Math.sin(angle)},
+                {Math.cos(radAngle), 0, Math.sin(radAngle)},
                 {0, 1, 0},
-                {-Math.sin(angle), 0, Math.cos(angle)}
+                {-Math.sin(radAngle), 0, Math.cos(radAngle)}
         };
     }
 
     // instantiate Z rotating linear transformation
     public static double[][] instRotTrZ(double angle) {
-        angle = Math.toRadians(angle);
+        double radAngle = Math.toRadians(angle);
         return new double[][] {
-                {Math.cos(angle), -Math.sin(angle), 0},
-                {Math.sin(angle), Math.cos(angle), 0},
+                {Math.cos(radAngle), -Math.sin(radAngle), 0},
+                {Math.sin(radAngle), Math.cos(radAngle), 0},
                 {0, 0, 1}
         };
     }
@@ -69,6 +69,15 @@ public class LinearAlgebra {
         return res;
     }
 
+    public static Vector multiplyMatrixByVector(double[][] m1, Vector v1) {
+        assert v1.length == m1[0].length : "can not multiply in those dimensions";
+        double[] v = v1.toArray();
+        double x = 0;
+        double y = 0;
+        double z = 0;
+        return new Vector(x, y, z);
+    }
+
     public static String toString(double[][] m) {
         String res = "";
         for (double[] row : m) {
@@ -81,17 +90,31 @@ public class LinearAlgebra {
         return res;
     }
 
+    public static double[][] multiplyMatrixByConstant(double[][] m, double c) {
+        double[][] res = m.clone();
+        for (int i = 0; i < res.length; i++) {
+            for (int j = 0; j < res[0].length; j++) {
+                res[i][j] *= c;
+            }
+        }
+        return res;
+    }
+
     public static double[][] matrixForRotation(Vector v1, Vector v2, double angle) {
         double[][] res = new double[3][3];
         Vector crossProduct = v1.cross(v2);
         for (int i = 0; i < res.length; i++) {
             res[i][i] = 1.0;
         }
+        double cos = Math.cos(angle);
         double[][] crossMatrix = new double[][] {
                 {0.0, -crossProduct.z, crossProduct.y},
                 {crossProduct.z, 0.0, - crossProduct.x},
                 {-crossProduct.y, crossProduct.x, 0.0}
         };
+        res = addMatrices(res, addMatrices(crossMatrix, multiplyMatrixByConstant(multiplyMatrices(crossMatrix, crossMatrix), 1/(1 +cos))));
         return res;
     }
+
+
 }

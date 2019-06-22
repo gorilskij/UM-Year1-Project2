@@ -6,6 +6,8 @@ import java.util.Locale;
 public final class Vector {
     public final double x, y, z;
 
+    public final double length;
+
     public static final Vector ZERO = new Vector(0, 0, 0);
 
     public Vector(double x, double y, double z) {
@@ -16,6 +18,7 @@ public final class Vector {
         this.x = x;
         this.y = y;
         this.z = z;
+        this.length = 3;
     }
 
     public double magnitude() {
@@ -119,7 +122,7 @@ public final class Vector {
         }
     }
     public double angleBetween(Vector other) {
-        return dotProduct(other) / (magnitude() * other.magnitude());
+        return Math.acos(dotProduct(other) / (magnitude() * other.magnitude()));
     }
 
     public void rotateVectorTo(Vector other, double angle) {
@@ -140,5 +143,16 @@ public final class Vector {
                 z*other.x - x*other.z,
                 x*other.y - y*other.x
         );
+    }
+
+    public double[] toArray() {
+        return new double[] {x, y, z};
+    }
+
+    public Vector(double[] arr) {
+        this.x = arr[0];
+        this.y = arr[1];
+        this.z = arr[2];
+        this.length = 3;
     }
 }
