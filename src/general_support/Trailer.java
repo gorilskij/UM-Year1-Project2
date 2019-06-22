@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Trailer {
-    private static final double MIN_DISTANCE = 1e6;
-
     private final List<Vector> trail = new ArrayList<>();
     private final Moving body;
 
@@ -19,7 +17,7 @@ public class Trailer {
     public void push() {
         Vector position = body.position();
 
-        if (!trail.isEmpty() && trail.get(trail.size() - 1).distanceTo(position) < MIN_DISTANCE)
+        if (!trail.isEmpty() && trail.get(trail.size() - 1).distanceTo(position) < body.velocity().magnitude() * 1e5)
             return;
 
         trail.add(position);
