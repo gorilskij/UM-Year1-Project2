@@ -75,6 +75,11 @@ public class LinearAlgebra {
         double x = 0;
         double y = 0;
         double z = 0;
+        for (int i = 0; i < m1[0].length; i++) {
+            x =  m1[0][i] * v[i];
+            y =  m1[1][i] * v[i];
+            z =  m1[2][i] * v[i];
+        }
         return new Vector(x, y, z);
     }
 
@@ -102,7 +107,7 @@ public class LinearAlgebra {
 
     public static double[][] matrixForRotation(Vector v1, Vector v2, double angle) {
         double[][] res = new double[3][3];
-        Vector crossProduct = v1.cross(v2);
+        Vector crossProduct = v1.crossProduct(v2);
         for (int i = 0; i < res.length; i++) {
             res[i][i] = 1.0;
         }

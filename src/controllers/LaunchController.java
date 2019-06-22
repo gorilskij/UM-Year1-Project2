@@ -1,7 +1,7 @@
 package controllers;
 
 import body.Planet;
-import body.spaceship.SpaceShip;
+import body.SpaceShip;
 import general_support.Vector;
 import simulation.universe.Universe;
 
