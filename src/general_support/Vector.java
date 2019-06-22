@@ -129,15 +129,18 @@ public final class Vector {
 
     }
 
-    private double dotProduct(Vector other) {
-        return (
-                x*other.x
-                        + y*other.y
-                        + z*other.z
-        );
+    public double dotProduct(Vector other) {
+        return x * other.x + y * other.y + z * other.z;
     }
 
-    public Vector cross(Vector other) {
+    public Vector componentInDirectionOf(Vector other) {
+        double dotProduct = dotProduct(other);
+        double square = Math.pow(other.magnitude(), 2);
+        double magnitude = dotProduct / square;
+        return other.times(magnitude);
+    }
+
+    public Vector crossProduct(Vector other) {
         return new Vector(
                 y*other.z - other.y*z,
                 z*other.x - x*other.z,

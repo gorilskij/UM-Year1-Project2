@@ -1,14 +1,10 @@
-package body.spaceship;
+package body;
 
-import body.BaseBody;
 import body.interfaces.Body;
 import body.interfaces.Moving;
-import controllers.Controller;
-import controllers.LaunchController;
 import body.interfaces.Round;
-import body.spaceship.steering.Steering;
-import body.spaceship.steering.SteeringImpl;
 import body.surface.SurfaceImpl;
+import controllers.Controller;
 import general_support.PaintingTools;
 import general_support.Vector;
 import simulation.universe.Universe;
@@ -22,9 +18,7 @@ public class SpaceShip extends BaseBody implements Moving {
 
     private Vector position = null;
     private Vector velocity = null;
-
     private Vector pointing = null;
-
     private Vector acceleration = null;
     private Vector lastAcceleration = Vector.ZERO;
     private Universe universe;
@@ -33,14 +27,17 @@ public class SpaceShip extends BaseBody implements Moving {
 
     // can be changed for different parts of the journey
     private Controller controller = null;
-    private final Steering steering = new SteeringImpl(this);
-
-    public Steering steering() {
-        return steering;
-    }
 
     public void setController(Controller controller) {
         this.controller = controller;
+    }
+
+    public Body parent() {
+        return parent;
+    }
+
+    public void setParent(Body parent) {
+        this.parent = parent;
     }
 
     public double control() {
@@ -114,20 +111,6 @@ public class SpaceShip extends BaseBody implements Moving {
     public void paint(Graphics g, Vector centerPosition, double scale) {
         g.setColor(color());
         Point.Double pos = position.minus(centerPosition).toXYPoint();
-        PaintingTools.paintHighlightCircle(g, scale, pos);
-    }
-
-    public Body parent() {
-        return parent;
-    }
-
-    public void setParent(Body parent) {
-        this.parent = parent;
-    }
-
-    public void paint(Graphics g, double scale) {
-        g.setColor(color());
-        Point.Double pos = position.toXYPoint();
         PaintingTools.paintHighlightCircle(g, scale, pos);
         PaintingTools.paintLabel(g, scale, pos, name());
         PaintingTools.paintPointing(g, scale, pos, pointing);

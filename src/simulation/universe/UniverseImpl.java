@@ -1,9 +1,8 @@
 package simulation.universe;
 
 import body.Planet;
-import body.spaceship.SpaceShip;
+import body.SpaceShip;
 import body.interfaces.*;
-import body.spaceship.steering.Action;
 import controllers.LaunchController;
 import data.Constants;
 import general_support.integrator.Integrator;
@@ -157,7 +156,6 @@ public final class UniverseImpl implements Universe {
                     acceleration = computeAcceleration(body, acceleration, attractor);
                 }
             }
-
             integrator.integrate(body, acceleration, timeStep);
         }
     }
