@@ -31,13 +31,13 @@ public interface Body {
      */
     Vector position();
 
-    void paint(Graphics g, Vector centerPosition, double scale);
     /**
      *
      * @param g graphics
+     * @param centerPosition position of centered body
      * @param scale scale
      */
-    void paint(Graphics g, double scale);
+    void paint(Graphics g, Vector centerPosition, double scale);
 
     /**
      *

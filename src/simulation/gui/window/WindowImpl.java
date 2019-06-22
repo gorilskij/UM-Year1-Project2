@@ -1,6 +1,6 @@
 package simulation.gui.window;
 
-import body.spaceship.SpaceShip;
+import body.SpaceShip;
 import body.interfaces.Body;
 import general_support.Vector;
 import simulation.Simulation;

@@ -1,8 +1,10 @@
 package body;
 
+import body.interfaces.Body;
 import body.interfaces.Moving;
+import body.interfaces.Round;
+import body.surface.SurfaceImpl;
 import controllers.Controller;
-import controllers.LaunchController;
 import general_support.PaintingTools;
 import general_support.Vector;
 import simulation.universe.Universe;
@@ -27,6 +29,16 @@ public class SpaceShip extends BaseBody implements Moving {
 
     public void setController(Controller controller) {
         this.controller = controller;
+    }
+
+    private Body parent = null;
+
+    public Body parent() {
+        return parent;
+    }
+
+    public void setParent(Body parent) {
+        this.parent = parent;
     }
 
     public double control() {
@@ -64,7 +76,6 @@ public class SpaceShip extends BaseBody implements Moving {
     }
 
     public Vector acceleration() {
-        assert acceleration != null;
         return acceleration;
     }
 

@@ -124,7 +124,7 @@ public final class Vector {
     }
 
     public Vector componentInDirectionOf(Vector other) {
-        double dotProduct = dotProductWith(other);
+        double dotProduct = dotProduct(other);
         double square = Math.pow(other.magnitude(), 2);
         double magnitude = dotProduct / square;
         return other.times(magnitude);

@@ -29,13 +29,17 @@ public class LaunchController extends BaseController {
         return spaceShip.velocity().minus(fromPlanet.velocity());
     }
 
+    private Vector upDirection() {
+        return fromPlanet.position().vectorTo(spaceShip.position()).direction();
+    }
+
     // up from earth
     private Vector verticalVelocity() {
-        return null;
+        return currentVelocity().componentInDirectionOf(upDirection());
     }
 
     private void pointUp() {
-        spaceShip.setPointing(fromPlanet.position().vectorTo(spaceShip.position()).direction());
+        spaceShip.setPointing(upDirection());
     }
 
     private void pointAtAngle(double angle) {
@@ -48,7 +52,10 @@ public class LaunchController extends BaseController {
 
     private double firstPhaseControl() {
         pointUp();
-//        if ()
+        if (verticalVelocity().magnitude() < 100) {
+            return Math.min(10, 100 - verticalVelocity().magnitude());
+        }
+
         return 0;
     }
 
@@ -58,10 +65,10 @@ public class LaunchController extends BaseController {
 //        System.out.println("alt: " + currentAltitude());
 //        System.out.println("vel: " + spaceShip.velocity());
 
-        if (currentAltitude() < altitude) {
-            pointUp();
-            return 20;
-        }
+//        if (currentAltitude() < altitude) {
+//            pointUp();
+//            return 20;
+//        }
 
 //        if (currentAltitude() < altitude / 2) {
 //
