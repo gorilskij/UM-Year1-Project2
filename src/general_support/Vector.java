@@ -118,4 +118,15 @@ public final class Vector {
             return false;
         }
     }
+
+    public double dotProductWith(Vector other) {
+        return x * other.x + y * other.y + z * other.z;
+    }
+
+    public Vector componentInDirectionOf(Vector other) {
+        double dotProduct = dotProductWith(other);
+        double square = Math.pow(other.magnitude(), 2);
+        double magnitude = dotProduct / square;
+        return other.times(magnitude);
+    }
 }

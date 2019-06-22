@@ -25,6 +25,15 @@ public class LaunchController extends BaseController {
         return spaceShip.position().distanceTo(fromPlanet.position()) - fromPlanet.radius();
     }
 
+    private Vector currentVelocity() {
+        return spaceShip.velocity().minus(fromPlanet.velocity());
+    }
+
+    // up from earth
+    private Vector verticalVelocity() {
+        return null;
+    }
+
     private void pointUp() {
         spaceShip.setPointing(fromPlanet.position().vectorTo(spaceShip.position()).direction());
     }
@@ -37,11 +46,17 @@ public class LaunchController extends BaseController {
         spaceShip.setPointing(actual);
     }
 
+    private double firstPhaseControl() {
+        pointUp();
+//        if ()
+        return 0;
+    }
+
     public double control() {
-        System.out.println("Control instant");
-        System.out.println("pos: " + spaceShip.position());
-        System.out.println("alt: " + currentAltitude());
-        System.out.println("vel: " + spaceShip.velocity());
+//        System.out.println("Control instant");
+//        System.out.println("pos: " + spaceShip.position());
+//        System.out.println("alt: " + currentAltitude());
+//        System.out.println("vel: " + spaceShip.velocity());
 
         if (currentAltitude() < altitude) {
             pointUp();
