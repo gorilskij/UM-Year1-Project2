@@ -4,7 +4,6 @@ import simulation.gui.GUI;
 import simulation.gui.GUIImpl;
 import simulation.runner.GUIRunner;
 import simulation.runner.UniverseRunner;
-import simulation.universe.UniverseImpl;
 import simulation.universe.Universe;
 
 public final class SimulationImpl implements Simulation {
