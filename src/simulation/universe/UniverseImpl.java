@@ -4,6 +4,7 @@ import body.Planet;
 import body.SpaceShip;
 import body.interfaces.*;
 import controllers.LaunchController;
+import controllers.PID;
 import data.Constants;
 import general_support.integrator.Integrator;
 import general_support.Vector;
@@ -106,12 +107,14 @@ public final class UniverseImpl implements Universe {
         spaceShip.setPosition(earth.position().plus(sunToEarth.times(earth.radius())));
         spaceShip.setPointing(sunToEarth);
 
-        spaceShip.setController(new LaunchController(
+        spaceShip.setController(new PID(
                 this,
                 spaceShip,
-                earth,
-                100_000 + earth.radius()
-        ));
+                (Moving)getBodyByName("titan"),
+                0.2,
+                0.2,
+                0.4)
+        );
 
         addBody(spaceShip);
         shipListener.shipLaunched();
