@@ -118,27 +118,16 @@ public final class UniverseImpl implements Universe {
     }
 
     private Vector computeAcceleration(Body body, Vector acceleration, Attractive attractor) {
-        acceleration = acceleration
-                .plus(
-                        body
-                                .position()
-                                .vectorTo(
-                                        attractor
-                                                .position()
-                                )
-                                .direction()
-                                .times(
-                                        Constants.G * attractor.mass() / Math.pow(
-                                                body
-                                                        .position()
-                                                        .distanceTo(
-                                                                attractor
-                                                                        .position()
-                                                        ),
-                                                2
-                                        )
-                                )
-                );
+        acceleration = acceleration.plus(body
+                .position()
+                .vectorTo(attractor.position())
+                .direction()
+                .times(
+                        Constants.G
+                                * attractor.mass()
+                                / Math.pow(body.position().distanceTo(attractor.position()), 2)
+                )
+        );
         return acceleration;
     }
 
@@ -165,15 +154,21 @@ public final class UniverseImpl implements Universe {
         for (SpaceShip ss : spaceShips) {
             Vector acceleration = Vector.ZERO;
             for (Attractive attractor : attractors) {
-                if (attractor.mass() == 0) continue;
                 if (ss.acceleration() == null) {
                     ss.setAcceleration(acceleration);
                 }
+
+                if (ss.parent() == null && ss.isOn((Body) attractor)) {
+                    Vector relativeVelocity = ss.velocity().minus(((Moving) attractor).velocity());
+                    if (relativeVelocity.magnitude() > 5)
+                        throw new IllegalStateException("spaceship crashed with a speed of " + ss.velocity().magnitude());
+                    ss.setParent((Body) attractor);
+                }
+
                 if (ss.parent() != null) {
                     ss.setRelativePosition();
-                } else if (ss.isOn((Body) attractor)) {
-                    ss.setParent((Body) attractor);
-                    ss.setRelativePosition();
+                    ss.setVelocity(Vector.ZERO);
+                    acceleration = Vector.ZERO;
                 } else {
                     acceleration = computeAcceleration(ss, acceleration, attractor);
                 }
@@ -182,6 +177,11 @@ public final class UniverseImpl implements Universe {
             // important: spaceship only points in the right direction after the control method is called
             double controllerAccelerationMagnitude = ss.control();
             Vector controllerAcceleration = ss.pointing().times(controllerAccelerationMagnitude);
+
+            System.out.println("controller acceleration magnitude: " + controllerAcceleration.magnitude());
+            if (controllerAcceleration.magnitude() > 1) {
+                ss.setParent(null);
+            }
 
             acceleration = acceleration.plus(controllerAcceleration);
 

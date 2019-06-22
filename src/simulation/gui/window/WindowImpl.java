@@ -51,7 +51,7 @@ public class WindowImpl implements Window {
 
     private double scale = 1e-9;
 
-    private Body centerBody = null;
+    private Body centerBody;
 
     public void setCenterBody(Body body) {
         if (body == null)
@@ -70,6 +70,7 @@ public class WindowImpl implements Window {
         this.simulation = simulation;
         this.universe = universe;
         bodySelector.refresh();
+        centerBody = universe.getBodyByName("sun");
 
         JFrame frame = new JFrame("going to titan");
 
@@ -161,12 +162,8 @@ public class WindowImpl implements Window {
 
     private void paintPanel(Graphics g) {
         g.translate(space.getWidth() / 2, space.getHeight() / 2);
-        for (Body body : universe.allBodies()) {
-            if (centerBody == null)
-                body.paint(g, Vector.ZERO, scale);
-            else
-                body.paint(g, centerBody.position(), scale);
-        }
+        for (Body body : universe.allBodies())
+            body.paint(g, centerBody.position(), scale);
 
         timePassedLabel.setText("  time passed: " + simulation.timePassedS() + "s");
     }

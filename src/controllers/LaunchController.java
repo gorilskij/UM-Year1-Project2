@@ -60,21 +60,11 @@ public class LaunchController extends BaseController {
     }
 
     public double control() {
-//        System.out.println("Control instant");
-//        System.out.println("pos: " + spaceShip.position());
-//        System.out.println("alt: " + currentAltitude());
-//        System.out.println("vel: " + spaceShip.velocity());
 
-//        if (currentAltitude() < altitude) {
-//            pointUp();
-//            return 20;
-//        }
-
-//        if (currentAltitude() < altitude / 2) {
-//
-//        }
+        if (currentAltitude() < altitude)
+            return firstPhaseControl();
 
         spaceShip.setController(null);
-        return 0;
+        throw new IllegalStateException("done");
     }
 }

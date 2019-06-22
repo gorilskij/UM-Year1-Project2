@@ -125,10 +125,6 @@ public final class Vector {
         return Math.acos(dotProduct(other) / (magnitude() * other.magnitude()));
     }
 
-    public void rotateVectorTo(Vector other, double angle) {
-
-    }
-
     public double dotProduct(Vector other) {
         return x * other.x + y * other.y + z * other.z;
     }
