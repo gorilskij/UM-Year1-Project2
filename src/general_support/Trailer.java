@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Trailer {
-    private static final double MIN_DISTANCE = 1e6;
+    private static final double MIN_DISTANCE = 1e9;
 
     private final List<Vector> trail = new ArrayList<>();
     private final Moving body;

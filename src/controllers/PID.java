@@ -20,14 +20,18 @@ public class PID extends BaseController {
     private double P;
     private double I;
     private double D;
+    private PID nextPID;
+    private double closest;
 
-    public PID(Universe universe, SpaceShip spaceShip, Body body, double P, double I, double D){
+    public PID(Universe universe, SpaceShip spaceShip, Body body, double P, double I, double D, double closest){
         super(universe, spaceShip);
         errors = new ArrayList<>();
         this.trackedBody = body;
         this.P = P;
         this.I = I;
         this.D = D;
+        this.nextPID = null;
+        this.closest = closest;
     }
 
     @Override
@@ -51,8 +55,12 @@ public class PID extends BaseController {
         double acceleration =  P*error + I*integralError + D*derivativeError;
         System.out.println("acceleration: " + acceleration);
 
-        if(vectorToTitan.magnitude() < 3E10 )
-            spaceShip.setController(new PID(this.universe, this.spaceShip, this.trackedBody, 1e-13, 1e-10, 1e-3));
+        if(vectorToTitan.magnitude() < closest && nextPID==null) {
+            setNextPID(this.universe,
+                    this.spaceShip,
+                    this.trackedBody,
+                    1E-11, 1E-17, 1E-15, 0);
+        }
         return acceleration;
     }
 
@@ -87,5 +95,13 @@ public class PID extends BaseController {
             return Numerical.TwoPointDerivativeBackWard(errors, h);
         else
             return Numerical.ThreePointDerivativeBackWard(errors, h);
+    }
+
+    private void setNextPID(Universe universe, SpaceShip spaceShip, Body body, double P, double I, double D, double closest){
+        this.nextPID = new PID(universe,
+                spaceShip,
+                trackedBody,
+                P, I, D, closest);
+        this.spaceShip.setController(this.nextPID);
     }
 }
