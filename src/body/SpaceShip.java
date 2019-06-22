@@ -7,13 +7,14 @@ import body.surface.SurfaceImpl;
 import controllers.Controller;
 import general_support.PaintingTools;
 import general_support.Vector;
+import simulation.Simulation;
 import simulation.universe.Universe;
 
 import java.awt.*;
 
 public class SpaceShip extends BaseBody implements Moving {
     public SpaceShip copy() {
-        return new SpaceShip(name(), color(), mass(), universe());
+        return new SpaceShip(name(), color(), mass(), simulation);
     }
 
     private Vector position = null;
@@ -21,7 +22,8 @@ public class SpaceShip extends BaseBody implements Moving {
     private Vector pointing = null;
     private Vector acceleration = null;
     private Vector lastAcceleration = Vector.ZERO;
-    private Universe universe;
+    private final Simulation simulation;
+    private final Universe universe;
     private double radius;
     private Body parent;
     private Vector directionOnParent;
@@ -47,14 +49,15 @@ public class SpaceShip extends BaseBody implements Moving {
 
     public double control() {
         if (controller != null)
-            return controller.control();
+            return controller.control(simulation.timeStep());
         else
             return 0;
     }
 
-    public SpaceShip(String name, Color color, double mass, Universe universe) {
+    public SpaceShip(String name, Color color, double mass, Simulation simulation) {
         super(name, color, mass);
-        this.universe = universe;
+        this.simulation = simulation;
+        universe = simulation.universe();
     }
 
     public void setRadius(double radius) {
@@ -106,10 +109,6 @@ public class SpaceShip extends BaseBody implements Moving {
 
     public Universe universe() {
         return this.universe;
-    }
-
-    public void setUniverse(Universe universe) {
-        this.universe = universe;
     }
 
     public void paint(Graphics g, Vector centerPosition, double scale) {

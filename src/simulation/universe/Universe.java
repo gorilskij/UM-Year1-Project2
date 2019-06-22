@@ -1,6 +1,7 @@
 package simulation.universe;
 
 import body.interfaces.Body;
+import simulation.Simulation;
 
 import java.util.List;
 
@@ -38,4 +39,6 @@ public interface Universe {
     List<Body> allBodies();
 
     Body getBodyByName(String name);
+
+    Simulation simulation();
 }

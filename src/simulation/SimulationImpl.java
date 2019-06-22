@@ -10,7 +10,7 @@ import simulation.universe.UniverseImpl;
 
 public final class SimulationImpl implements Simulation {
     private final Timer timer;
-    private int timeStep;
+    private double timeStep;
 
     public long timePassedS() {
         return timer.timePassedS();
@@ -22,14 +22,28 @@ public final class SimulationImpl implements Simulation {
     private final GUIRunner guiRunner;
     private final Universe universe;
 
+    public Universe universe() {
+        return universe;
+    }
+
+    public double timeStep() {
+        return timeStep;
+    }
+
+    public void setTimeStep(double timeStep) {
+        this.timeStep = timeStep;
+        universeRunner.setTimeStep(timeStep);
+    }
+
     public SimulationImpl(int initialTimeStep, int guiFPS) {
-        timer = new Timer();
         timeStep = initialTimeStep;
+
+        timer = new Timer();
 
         universe = UniverseImpl.newSolarSystem(this);
         gui = new GUIImpl(this, universe);
 
-        universeRunner = new UniverseRunner(timer, universe, timeStep);
+        universeRunner = new UniverseRunner(timer, universe, initialTimeStep);
         guiRunner = new GUIRunner(guiFPS, gui, universe);
 
         pause();

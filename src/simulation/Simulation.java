@@ -2,6 +2,7 @@ package simulation;
 
 import simulation.interfaces.PlayPause;
 import simulation.interfaces.ShipLaunched;
+import simulation.universe.Universe;
 
 public interface Simulation extends PlayPause, ShipLaunched {
     /**
@@ -16,4 +17,8 @@ public interface Simulation extends PlayPause, ShipLaunched {
     void addLaunch(String name, double mass);
 
     void setUniverseRunnerMinFrameTime(long minFrameTimeNs);
+
+    double timeStep();
+
+    Universe universe();
 }

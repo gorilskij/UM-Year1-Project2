@@ -9,6 +9,7 @@ import general_support.integrator.Integrator;
 import general_support.Vector;
 import data.BodyFactory;
 import general_support.integrator.LeapFrog;
+import simulation.Simulation;
 import simulation.interfaces.ShipLaunched;
 
 import java.awt.*;
@@ -27,6 +28,12 @@ public final class UniverseImpl implements Universe {
         return allBodies;
     }
 
+    private final Simulation simulation;
+
+    public Simulation simulation() {
+        return simulation;
+    }
+
     public Body getBodyByName(String name) {
         for (Body body : allBodies)
             if (body.name().equals(name))
@@ -35,10 +42,8 @@ public final class UniverseImpl implements Universe {
         throw new IllegalStateException("body with name \"" + name + "\" not in universe");
     }
 
-    private final ShipLaunched shipListener;
-
-    private UniverseImpl(ShipLaunched shipListener) {
-        this.shipListener = shipListener;
+    private UniverseImpl(Simulation simulation) {
+        this.simulation = simulation;
     }
 
     public void addShip(SpaceShip ss) {
@@ -55,8 +60,8 @@ public final class UniverseImpl implements Universe {
         ss.setVelocity(((Moving) earth).velocity());
     }
 
-    public static Universe newSolarSystem(ShipLaunched shipListener) {
-        Universe universe = new UniverseImpl(shipListener);
+    public static Universe newSolarSystem(Simulation simulation) {
+        Universe universe = new UniverseImpl(simulation);
 
         for (Body body : BodyFactory.createSolarSystem())
             universe.addBody(body);
@@ -92,14 +97,13 @@ public final class UniverseImpl implements Universe {
 
         if (body instanceof SpaceShip) {
             spaceShips.add((SpaceShip) body);
-            ((SpaceShip) body).setUniverse(this);
             addShip((SpaceShip) body);
         }
     }
 
     @Override
     public void addLaunch(String name, double mass) {
-        SpaceShip spaceShip = new SpaceShip(name, Color.WHITE, mass, this);
+        SpaceShip spaceShip = new SpaceShip(name, Color.WHITE, mass, simulation);
 
         Planet earth = (Planet) getBodyByName("earth");
         Vector sunToEarth = getBodyByName("sun").position().vectorTo(earth.position()).direction();
@@ -114,7 +118,7 @@ public final class UniverseImpl implements Universe {
         ));
 
         addBody(spaceShip);
-        shipListener.shipLaunched();
+        simulation.shipLaunched();
     }
 
     private Vector computeAcceleration(Body body, Vector acceleration, Attractive attractor) {
