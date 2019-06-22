@@ -38,8 +38,7 @@ public class PID extends BaseController {
 
         Vector vectorToTitan =  spaceShip.position().vectorTo(trackedBody.position());
          Vector directionTotTitan = vectorToTitan.direction();
-         System.out.println("spaceship position: " + spaceShip.position());
-         System.out.println("setPoint distance :" + vectorToTitan);
+         System.out.println("setPoint distance :" + vectorToTitan.magnitude());
          System.out.println("setPoint direction: " + directionTotTitan);
         if (!spaceShip.pointing().equals(directionTotTitan))
             spaceShip.setPointing(directionTotTitan);
@@ -52,6 +51,8 @@ public class PID extends BaseController {
         double acceleration =  P*error + I*integralError + D*derivativeError;
         System.out.println("acceleration: " + acceleration);
 
+        if(vectorToTitan.magnitude() < 3E10 )
+            spaceShip.setController(new PID(this.universe, this.spaceShip, this.trackedBody, 1e-13, 1e-10, 1e-3));
         return acceleration;
     }
 
