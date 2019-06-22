@@ -119,7 +119,7 @@ public final class Vector {
         }
     }
 
-    public double dotProductWith(Vector other) {
+    public double dotProduct(Vector other) {
         return x * other.x + y * other.y + z * other.z;
     }
 
@@ -128,5 +128,17 @@ public final class Vector {
         double square = Math.pow(other.magnitude(), 2);
         double magnitude = dotProduct / square;
         return other.times(magnitude);
+    }
+
+    public Vector crossProduct(Vector other) {
+        return new Vector(
+                y*other.z - other.y*z,
+                z*other.x - x*other.z,
+                x*other.y - y*other.x
+        );
+    }
+
+    public double angleBetween(Vector other) {
+        return dotProduct(other) / (magnitude() * other.magnitude());
     }
 }

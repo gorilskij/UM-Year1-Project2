@@ -19,7 +19,7 @@ public abstract class BaseBody implements Body {
 
     public double mass() { return mass; }
 
-    BaseBody(String name, Color color, double mass) {
+    public BaseBody(String name, Color color, double mass) {
         this.name = name;
         this.color = color;
         this.mass = mass;

@@ -1,6 +1,7 @@
 package body;
 
 import body.interfaces.Attractive;
+import body.interfaces.Body;
 import body.interfaces.Moving;
 import body.interfaces.Round;
 import general_support.PaintingTools;
@@ -11,7 +12,7 @@ import java.awt.*;
 public class Planet extends BaseBody implements Round, Moving, Attractive {
     private Vector position;
     private Vector velocity;
-    private Vector acceleration = null;
+    private Vector acceleration;
     private Vector lastAcceleration = Vector.ZERO;
     private final double radius;
 
@@ -66,5 +67,10 @@ public class Planet extends BaseBody implements Round, Moving, Attractive {
 
     public void paint(Graphics g, Vector centerPosition, double scale) {
         PaintingTools.paintCircularObject(g, scale, this, centerPosition);
+    }
+
+    @Override
+    public Vector directionTo(Body body) {
+        return position.vectorTo(body.position()).direction();
     }
 }

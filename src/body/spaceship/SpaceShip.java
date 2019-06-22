@@ -16,9 +16,7 @@ public class SpaceShip extends BaseBody implements Moving {
 
     private Vector position = null;
     private Vector velocity = null;
-
     private Vector pointing = null;
-
     private Vector acceleration = null;
     private Vector lastAcceleration = Vector.ZERO;
     private Universe universe;
@@ -106,5 +104,39 @@ public class SpaceShip extends BaseBody implements Moving {
         PaintingTools.paintHighlightCircle(g, scale, pos);
         PaintingTools.paintLabel(g, scale, pos, name());
         PaintingTools.paintPointing(g, scale, pos, pointing);
+    }
+
+    @Override
+    public Vector directionTo(Body body) {
+        return position.vectorTo(body.position()).direction();
+    }
+
+    public boolean isOn(Body body) {
+        return ((position.distanceTo(body.position()) - ((Round) body).radius()) < SurfaceImpl.EPSILON);
+    }
+
+    /**
+     *
+     * @return vector from planet center to the spaceship
+     */
+    private Vector relativePosition() {
+        assert parent != null : "null parent";
+        Vector parentPosition = parent.position();
+        Vector parentToShip = position.minus(parentPosition);
+        Vector directionToShip = parentToShip.direction();
+        return directionToShip.times(((Round) parent).radius());
+    }
+
+    public void setRelativePosition() {
+        this
+                .setPosition(
+                        (this)
+                                .parent()
+                                .position()
+                                .plus(
+                                        (this)
+                                                .relativePosition()
+                                )
+                );
     }
 }

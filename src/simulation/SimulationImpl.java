@@ -1,6 +1,5 @@
 package simulation;
 
-import body.SpaceShip;
 import simulation.gui.GUI;
 import simulation.gui.GUIImpl;
 import simulation.runner.GUIRunner;

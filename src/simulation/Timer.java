@@ -1,13 +1,13 @@
 package simulation;
 
 public class Timer {
-    private long timePassedS = 0;
+    private double timePassedS = 0;
 
-    public void iterate(int timeStep) {
+    public void iterate(double timeStep) {
         timePassedS += timeStep;
     }
 
     long timePassedS() {
-        return timePassedS;
+        return (long) timePassedS;
     }
 }

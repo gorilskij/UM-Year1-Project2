@@ -21,7 +21,13 @@ public interface Universe {
      *
      * @param timeStep time step at which to iterate
      */
-    void iteratePhysics(double  timeStep);
+    void iterateCelestials(double timeStep);
+
+    /**
+     *
+     * @param timeStep time step at which to iterate
+     */
+    void iterateShips(double timeStep);
 
     /**
      *
