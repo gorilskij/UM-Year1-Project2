@@ -6,6 +6,7 @@ import body.interfaces.Round;
 import body.surface.SurfaceImpl;
 import controllers.Controller;
 import general_support.PaintingTools;
+import general_support.Trailer;
 import general_support.Vector;
 import simulation.Simulation;
 import simulation.universe.Universe;
@@ -27,6 +28,7 @@ public class SpaceShip extends BaseBody implements Moving {
     private double radius;
     private Body parent;
     private Vector directionOnParent;
+    public final Trailer trailer = new Trailer(this);
 
     // can be changed for different parts of the journey
     private Controller controller = null;
@@ -117,6 +119,7 @@ public class SpaceShip extends BaseBody implements Moving {
         PaintingTools.paintHighlightCircle(g, scale, pos);
         PaintingTools.paintLabel(g, scale, pos, name());
         PaintingTools.paintPointing(g, pos, pointing);
+        trailer.paint(g, centerPosition, scale);
     }
 
     @Override

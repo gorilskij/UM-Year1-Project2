@@ -190,8 +190,9 @@ public final class UniverseImpl implements Universe {
             acceleration = acceleration.plus(controllerAcceleration);
 
             integrator.integrate(ss, acceleration, timeStep);
-        }
 
+            ss.trailer.push();
+        }
     }
 
     @Override
