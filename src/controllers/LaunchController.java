@@ -64,7 +64,10 @@ public class LaunchController extends BaseController {
         if (currentAltitude() < altitude)
             return firstPhaseControl();
 
-        spaceShip.setController(null);
-        throw new IllegalStateException("done");
+        spaceShip.setController(new PID(this.universe,
+                this.spaceShip,
+                universe.getBodyByName("titan").position(),
+                1E-10, 0, 1E-15));
+        return 0;
     }
 }

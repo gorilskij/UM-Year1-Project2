@@ -5,6 +5,8 @@ import simulation.gui.GUIImpl;
 import simulation.runner.GUIRunner;
 import simulation.runner.UniverseRunner;
 import simulation.universe.Universe;
+import simulation.universe.UniverseImpl;
+
 
 public final class SimulationImpl implements Simulation {
     private final Timer timer;
