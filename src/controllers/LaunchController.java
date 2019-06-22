@@ -43,28 +43,16 @@ public class LaunchController extends BaseController {
         System.out.println("alt: " + currentAltitude());
         System.out.println("vel: " + spaceShip.velocity());
 
-        if (currentAltitude() < altitude / 100) {
+        if (currentAltitude() < altitude) {
             pointUp();
             return 20;
-        }
-
-        if (currentAltitude() < altitude / 50)  {
-            pointAtAngle(10);
-            return 10;
-        }
-
-        if (currentAltitude() < altitude) {
-            return 0;
-        }
-
-        if (currentAltitude() >= altitude) {
-            pointAtAngle(90);
-            return 5;
         }
 
 //        if (currentAltitude() < altitude / 2) {
 //
 //        }
-        throw new IllegalStateException("done at altitude: " + currentAltitude());
+
+        spaceShip.setController(null);
+        return 0;
     }
 }

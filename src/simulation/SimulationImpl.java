@@ -22,7 +22,7 @@ public final class SimulationImpl implements Simulation {
     private final GUIRunner guiRunner;
     private final Universe universe;
 
-    public SimulationImpl(int initialTimeStep) {
+    public SimulationImpl(int initialTimeStep, int guiFPS) {
         timer = new Timer();
         timeStep = initialTimeStep;
 
@@ -30,7 +30,7 @@ public final class SimulationImpl implements Simulation {
         gui = new GUIImpl(this, universe);
 
         universeRunner = new UniverseRunner(timer, universe, timeStep);
-        guiRunner = new GUIRunner(gui, universe);
+        guiRunner = new GUIRunner(guiFPS, gui, universe);
 
         pause();
     }
