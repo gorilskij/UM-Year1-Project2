@@ -169,11 +169,11 @@ public final class UniverseImpl implements Universe {
                 if (ss.acceleration() == null) {
                     ss.setAcceleration(acceleration);
                 }
-                if (((SpaceShip) ss).parent() != null) {
-                    ((SpaceShip) ss).setRelativePosition();
-                } else if (((SpaceShip) ss).isOn((Body) attractor)) {
-                    ((SpaceShip) ss).setParent((Body) attractor);
-                    ((SpaceShip) ss).setRelativePosition();
+                if (ss.parent() != null) {
+                    ss.setRelativePosition();
+                } else if (ss.isOn((Body) attractor)) {
+                    ss.setParent((Body) attractor);
+                    ss.setRelativePosition();
                 } else {
                     acceleration = computeAcceleration(ss, acceleration, attractor);
                 }
