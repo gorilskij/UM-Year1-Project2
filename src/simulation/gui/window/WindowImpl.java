@@ -15,7 +15,7 @@ import java.util.List;
 
 public class WindowImpl implements Window {
     private boolean playing = false;
-    private static final double ZOOM = 1.2;
+    private static final double ZOOM_FACTOR = 1.5;
 
     private final Simulation simulation;
     private final Universe universe;
@@ -97,16 +97,16 @@ public class WindowImpl implements Window {
         });
 
         JButton increaseScaleButton = new JButton("+");
-        increaseScaleButton.addActionListener(e -> setScale(scale * ZOOM));
+        increaseScaleButton.addActionListener(e -> setScale(scale * ZOOM_FACTOR));
 
         JButton decreaseScaleButton = new JButton("-");
-        decreaseScaleButton.addActionListener(e -> setScale(scale / ZOOM));
+        decreaseScaleButton.addActionListener(e -> setScale(scale / ZOOM_FACTOR));
 
         JButton fastButton = new JButton("fast");
-        fastButton.addActionListener(e -> simulation.setUniverseRunnerMinFrameTime(100));
+        fastButton.addActionListener(e -> simulation.setUniverseRunnerMinFrameTime(0));
 
         JButton slowButton = new JButton("slow");
-        slowButton.addActionListener(e -> simulation.setUniverseRunnerMinFrameTime(0));
+        slowButton.addActionListener(e -> simulation.setUniverseRunnerMinFrameTime(1_000_000));
 
         scaleLabel = new JLabel();
         setScale(scale); // refresh scaleLabel

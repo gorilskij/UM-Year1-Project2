@@ -29,9 +29,8 @@ public abstract class BaseRunner implements Runner {
                     long endTimeNs = System.nanoTime();
                     long timeTakenNs = endTimeNs - startTimeNs;
 
-                    // if execution was more than 10 ns faster than it should be
-                    if (localMinFrameTime - timeTakenNs > 10)
-                        Thread.sleep(localMinFrameTime - timeTakenNs);
+                    if (localMinFrameTime > timeTakenNs)
+                        Thread.sleep((localMinFrameTime - timeTakenNs) / 1_000_000);
                 }
             } catch (InterruptedException ignored) {
             }

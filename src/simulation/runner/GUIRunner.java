@@ -7,9 +7,8 @@ public class GUIRunner extends BaseRunner {
     private final GUI gui;
     private final Universe universe;
 
-    public GUIRunner(GUI gui, Universe universe) {
-        // every 1/30th of a second
-        super(0); // 0 is a placeholder
+    public GUIRunner(int fps, GUI gui, Universe universe) {
+        super((long) (1e9 / fps));
 
         this.gui = gui;
         this.universe = universe;
