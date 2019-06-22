@@ -12,7 +12,7 @@ import java.util.List;
 
 public class PID extends BaseController {
 
-    private Moving setPoint;
+    private Vector setPoint;
     private List<Double> errors;
     private double integral;
     private double lastError; // Could also retrieve this from errors. Technically a waste of memory but I like it.
@@ -20,7 +20,7 @@ public class PID extends BaseController {
     private double I;
     private double D;
 
-    public PID(Universe universe, SpaceShip spaceShip,Moving setPoint, double P, double I, double D){
+    public PID(Universe universe, SpaceShip spaceShip, Vector setPoint, double P, double I, double D){
         super(universe, spaceShip);
         errors = new ArrayList<>();
         this.setPoint = setPoint;
@@ -35,23 +35,22 @@ public class PID extends BaseController {
         if (error == 0)
             return 0;
 
-        Vector vectorToTitan =  spaceShip.position().vectorTo(setPoint.position());
+        Vector vectorToTitan =  spaceShip.position().vectorTo(setPoint);
          Vector directionTotTitan = vectorToTitan.direction();
          System.out.println("spaceship position: " + spaceShip.position());
-         System.out.println("titan distance :" + vectorToTitan);
-         System.out.println("titan direction: " + directionTotTitan);
+         System.out.println("setPoint distance :" + vectorToTitan);
+         System.out.println("setPoint direction: " + directionTotTitan);
         if (!spaceShip.pointing().equals(directionTotTitan))
             spaceShip.setPointing(directionTotTitan);
 
         this.updateErrors(error);
         double integralError = this.updateIntegral(error);
         this.lastError = error;
-        double derivativeError = (-1) *setPoint.velocity().vectorTo(spaceShip.velocity()).magnitude();
+        double derivativeError = this.derivative();
         System.out.println("Derivative: " + derivativeError);
         double acceleration =  P*error + I*integralError + D*derivativeError;
         System.out.println("acceleration: " + acceleration);
-        if (acceleration > 7)
-            return 7;
+
         return acceleration;
 
     }
@@ -66,7 +65,7 @@ public class PID extends BaseController {
     }
 
     private double proportional(Vector position){
-        return position.distanceTo(this.setPoint.position());
+        return position.distanceTo(this.setPoint);
     }
 
     private double updateIntegral(double error){
@@ -78,6 +77,17 @@ public class PID extends BaseController {
             this.integral = Numerical.updateTrapezoidIntegral(error, this.lastError, this.integral);
 
         return this.integral;
+    }
+
+    private double derivative(){
+        double d = 0;
+        if(errors.size() == 1)
+            d = 0;
+        else if(errors.size() == 2)
+            d = Numerical.TwoPointDerivativeBackWard(errors, 100);
+        else
+            d = Numerical.ThreePointDerivativeBackWard(errors, 100);
+        return d;
     }
 
 

@@ -110,10 +110,10 @@ public final class UniverseImpl implements Universe {
         spaceShip.setController(new PID(
                 this,
                 spaceShip,
-                (Moving)getBodyByName("titan"),
-                0.2,
-                0.2,
-                0.4)
+                getBodyByName("venus").position(),
+                1E-12,
+                0,
+                1E-4)
         );
 
         addBody(spaceShip);
@@ -172,12 +172,13 @@ public final class UniverseImpl implements Universe {
                 if (ss.acceleration() == null) {
                     ss.setAcceleration(acceleration);
                 }
-                if (((SpaceShip) ss).parent() != null) {
-                    ((SpaceShip) ss).setRelativePosition();
-                } else if (((SpaceShip) ss).isOn((Body) attractor)) {
-                    ((SpaceShip) ss).setParent((Body) attractor);
-                    ((SpaceShip) ss).setRelativePosition();
-                } else {
+//                if (((SpaceShip) ss).parent() != null) {
+//                    ((SpaceShip) ss).setRelativePosition();
+//                } else if (((SpaceShip) ss).isOn((Body) attractor)) {
+//                    ((SpaceShip) ss).setParent((Body) attractor);
+//                    ((SpaceShip) ss).setRelativePosition();
+//                }
+                else {
                     acceleration = computeAcceleration(ss, acceleration, attractor);
                 }
             }
