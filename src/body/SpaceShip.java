@@ -23,6 +23,7 @@ public class SpaceShip extends BaseBody implements Moving {
     private Vector lastAcceleration = Vector.ZERO;
     private Universe universe;
     private double radius;
+    private Body parent;
 
     // can be changed for different parts of the journey
     private Controller controller = null;
@@ -30,8 +31,6 @@ public class SpaceShip extends BaseBody implements Moving {
     public void setController(Controller controller) {
         this.controller = controller;
     }
-
-    private Body parent = null;
 
     public Body parent() {
         return parent;
