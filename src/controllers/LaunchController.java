@@ -67,7 +67,7 @@ public class LaunchController extends BaseController {
         spaceShip.setController(new PID(universe,
                 spaceShip,
                 universe.getBodyByName("titan"),
-                1E-10, 0, 1E-15
+                1E-11, 1E-17, 1E-4
         ));
         return 0;
     }
