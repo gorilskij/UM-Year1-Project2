@@ -1,4 +1,3 @@
-import general_support.Vector;
 import simulation.SimulationImpl;
 
 public class Main {
