@@ -196,7 +196,6 @@ public final class UniverseImpl implements Universe {
             double controllerAccelerationMagnitude = ss.control();
             Vector controllerAcceleration = ss.pointing().times(controllerAccelerationMagnitude);
 
-            System.out.println("controller acceleration magnitude: " + controllerAcceleration.magnitude());
             if (controllerAcceleration.magnitude() > 1) {
                 ss.setParent(null);
             }
@@ -219,14 +218,5 @@ public final class UniverseImpl implements Universe {
 
         for (LaunchPackage p : launched)
             queuedLaunches.remove(p);
-    }
-
-    @Override
-    public void getCurrentData() {
-        for (Moving body : movingBodies) {
-            System.out.println("body.name: " + body.name());
-            System.out.println("body.velocity: " + body.velocity());
-            System.out.println("body.position: " + body.position());
-        }
     }
 }

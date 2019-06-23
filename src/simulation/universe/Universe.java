@@ -31,12 +31,6 @@ public interface Universe {
      */
     void iterateShips(double timeStep);
 
-    /**
-     *
-     * print all the current data about universe
-     */
-    void getCurrentData();
-
     List<Body> allBodies();
 
     List<SpaceShip> spaceShips();

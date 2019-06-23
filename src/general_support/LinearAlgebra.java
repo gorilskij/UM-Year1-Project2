@@ -157,7 +157,7 @@ public class LinearAlgebra {
 
     public static Vector rotateTo(Vector vectorToRotate, Vector other, double angleDeg) {
         Vector crossProduct = vectorToRotate.crossProduct(other);
-        return multiplyMatrixByVector(matrixEuler(angleDeg, crossProduct), vectorToRotate);
+        return multiplyMatrixByVector(matrixForRotation(angleDeg, crossProduct), vectorToRotate);
     }
 
 }

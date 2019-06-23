@@ -70,8 +70,4 @@ public final class SimulationImpl implements Simulation {
     public void setUniverseRunnerMinFrameTime(long minFrameTimeNs) {
         universeRunner.setMinFrameTime(minFrameTimeNs);
     }
-
-    public void getCurrenData() {
-        universe.getCurrentData();
-    }
 }

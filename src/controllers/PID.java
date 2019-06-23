@@ -1,8 +1,10 @@
 package controllers;
 
+import body.Planet;
 import body.SpaceShip;
 import body.interfaces.Body;
 import body.interfaces.Moving;
+import general_support.LinearAlgebra;
 import general_support.Vector;
 import general_support.Numerical;
 import simulation.universe.Universe;
@@ -22,6 +24,7 @@ public class PID extends BaseController {
     private double D;
     private PID nextPID;
     private double closest;
+    private static final double OVERSHOT = 10;
 
     private static final double MAX_ACCELERATION = 0.01;
 
@@ -43,18 +46,16 @@ public class PID extends BaseController {
             return 0;
 
         Vector vectorToTitan =  spaceShip.position().vectorTo(trackedBody.position());
-         Vector directionTotTitan = vectorToTitan.direction();
-         System.out.println("setPoint distance :" + vectorToTitan.magnitude());
-         System.out.println("setPoint direction: " + directionTotTitan);
-         spaceShip.setDesiredPointing(directionTotTitan);
+        Vector futureVectorToTitan = spaceShip.nextPosition().vectorTo(((Planet) trackedBody).nextPosition());
+        Vector directionTotTitan = vectorToTitan.direction();
+        Vector futureDirectionToTitan = futureVectorToTitan.direction();
+        spaceShip.setDesiredPointing(LinearAlgebra.rotateTo(directionTotTitan, futureDirectionToTitan, directionTotTitan.angleBetween(futureDirectionToTitan) + OVERSHOT));
 
         this.updateErrors(error);
         double integralError = this.updateIntegral(error);
         this.lastError = error;
         double derivativeError = derivative(timeStep);
-        System.out.println("Derivative: " + derivativeError);
         double acceleration =  P*error + I*integralError + D*derivativeError;
-        System.out.println("acceleration: " + acceleration);
 
         if(vectorToTitan.magnitude() < closest && nextPID==null) {
             setNextPID(this.universe,

@@ -119,6 +119,9 @@ public final class Vector {
         }
     }
     public double angleBetween(Vector other) {
+        if (dotProduct(other) / (magnitude() * other.magnitude()) > 1.0) return 1.0;
+        else if (dotProduct(other) / (magnitude() * other.magnitude()) < -1.0) return -1.0;
+        assert Math.abs(dotProduct(other) / (magnitude() * other.magnitude())) <= 1.0;
         return Math.acos(dotProduct(other) / (magnitude() * other.magnitude()));
     }
 

@@ -5,6 +5,7 @@ import body.interfaces.Body;
 import body.interfaces.Moving;
 import body.interfaces.Round;
 import general_support.PaintingTools;
+import general_support.Trailer;
 import general_support.Vector;
 
 import java.awt.*;
@@ -15,6 +16,7 @@ public class Planet extends BaseBody implements Round, Moving, Attractive {
     private Vector acceleration;
     private Vector lastAcceleration = Vector.ZERO;
     private final double radius;
+    public final Trailer trailer = new Trailer(this);
 
     public double radius() {
         return radius;
@@ -67,10 +69,24 @@ public class Planet extends BaseBody implements Round, Moving, Attractive {
 
     public void paint(Graphics g, Vector centerPosition, double scale) {
         PaintingTools.paintCircularObject(g, scale, this, centerPosition);
+        trailer.paint(g, centerPosition, scale);
+
     }
 
     @Override
     public Vector directionTo(Body body) {
         return position.vectorTo(body.position()).direction();
+    }
+
+    public Vector nextPosition() {
+        return position
+                .plus(velocity
+                        .times(TimeStep)
+                        .plus(acceleration
+                                .times(Math.pow(
+                                        TimeStep,
+                                        2) / 2)
+                        )
+                );
     }
 }
