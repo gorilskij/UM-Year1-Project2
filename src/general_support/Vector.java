@@ -119,7 +119,9 @@ public final class Vector {
         }
     }
     public double angleBetween(Vector other) {
-        return Math.acos(dotProduct(other) / (magnitude() * other.magnitude()));
+        double res = Math.acos(dotProduct(other) / (magnitude() * other.magnitude()));
+        assert !Double.isNaN(res) : "angle NaN between " + this + " and " + other;
+        return res;
     }
 
     public double dotProduct(Vector other) {
@@ -146,6 +148,11 @@ public final class Vector {
         return cross;
     }
 
+    public Vector rotateAroundYAxis(double angleDeg) {
+        double[][] rotationMatrix = LinearAlgebra.instRotTrY(angleDeg);
+        return LinearAlgebra.multiplyMatrixByVector(rotationMatrix, this);
+    }
+
     public double[] toArray() {
         return new double[] {x, y, z};
     }
@@ -154,5 +161,9 @@ public final class Vector {
         this.x = arr[0];
         this.y = arr[1];
         this.z = arr[2];
+    }
+
+    public boolean anyNaN() {
+        return Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(z);
     }
 }

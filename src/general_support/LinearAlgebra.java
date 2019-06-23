@@ -107,6 +107,11 @@ public class LinearAlgebra {
     }
 
     public static double[][] matrixForRotation(double angleDeg, Vector crossProduct) {
+        assert !Double.isNaN(angleDeg) : "angleDeg NaN";
+        assert !Double.isNaN(crossProduct.x) : "crossProduct.x NaN";
+        assert !Double.isNaN(crossProduct.y) : "crossProduct.y NaN";
+        assert !Double.isNaN(crossProduct.z) : "crossProduct.z NaN";
+
         double angle = Math.toRadians(angleDeg);
         double[][] res = new double[3][3];
         for (int i = 0; i < res.length; i++) {
@@ -129,6 +134,13 @@ public class LinearAlgebra {
                                 crossMatrix),
                         1 - cos)
         );
+
+        for (int i = 0; i < res.length; i++) {
+            assert res[i] != null : "null line " + i;
+            for (int j = 0; j < res[i].length; j++)
+                assert !Double.isNaN(res[i][j]) : "NaN element " + i + ", " + j;
+        }
+
         return res;
     }
 
@@ -150,14 +162,16 @@ public class LinearAlgebra {
         res[2][2] = (Math.pow(a, 2) + Math.pow(d, 2) - Math.pow(b, 2) - Math.pow(c, 2));
 
         assert Math.abs(Math.pow(a, 2) + Math.pow(b, 2) + Math.pow(c, 2) + Math.pow(d, 2) - 1) < 1e-5
-                : "wrong Euler-Rodrigues coefficients";
+                : "wrong Euler-Rodrigues coefficients: " + (Math.pow(a, 2) + Math.pow(b, 2) + Math.pow(c, 2) + Math.pow(d, 2) - 1);
 
         return res;
     }
 
     public static Vector rotateTo(Vector vectorToRotate, Vector other, double angleDeg) {
+        assert !Double.isNaN(angleDeg);
+
         Vector crossProduct = vectorToRotate.crossProduct(other);
-        return multiplyMatrixByVector(matrixEuler(angleDeg, crossProduct), vectorToRotate);
+        return multiplyMatrixByVector(matrixForRotation(angleDeg, crossProduct), vectorToRotate);
     }
 
 }

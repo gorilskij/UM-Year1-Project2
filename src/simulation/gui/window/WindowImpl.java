@@ -119,9 +119,12 @@ public class WindowImpl implements Window {
         });
 
 
-        JSlider rotationSlider = new JSlider(JSlider.HORIZONTAL, 0, 90, 0);
-        rotationSlider.addChangeListener(e -> rotation = rotationSlider.getValue());
-
+        JSlider rotationSlider = new JSlider(JSlider.HORIZONTAL, 0, 360, 0);
+        JLabel rotationLabel = new JLabel("  0°");
+        rotationSlider.addChangeListener(e -> {
+            rotation = rotationSlider.getValue();
+            rotationLabel.setText(String.format("%3d°", rotation));
+        });
 
         scaleLabel = new JLabel();
         setScale(scale); // refresh scaleLabel
@@ -145,6 +148,9 @@ public class WindowImpl implements Window {
 
         bottomPanel.add(scaleLabel);
         bottomPanel.add(timePassedLabel);
+
+        bottomPanel.add(rotationLabel);
+        bottomPanel.add(rotationSlider);
 
         contentPane.add(bottomPanel);
 

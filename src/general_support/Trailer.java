@@ -25,11 +25,12 @@ public class Trailer {
         trail.add(position);
     }
 
-    public void paint(Graphics g, Vector centerPosition, double scale) {
+    public void paint(Graphics g, Vector centerPosition, int rotationDeg, double scale) {
         g.setColor(new Color(0, 255, 0));
         // note: don't replace with foreach, throws exception, intellij lies
+        // (ConcurrentModificationException)
         for (int i = 0; i < trail.size(); i++) {
-            Point.Double pos = trail.get(i).minus(centerPosition).toXYPoint();
+            Point.Double pos = PaintingTools.convert(trail.get(i), centerPosition, rotationDeg).toXYPoint();
             g.fillOval(
                     (int) (pos.x * scale - 1),
                     (int) (pos.y * scale - 1),

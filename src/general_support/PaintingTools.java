@@ -7,9 +7,7 @@ import java.awt.*;
 public final class PaintingTools {
     public static Vector convert(Vector vector, Vector centerPosition, int rotationDeg) {
         Vector positioned = vector.minus(centerPosition);
-        // hacky
-        Vector rotated90 = new Vector(-positioned.z, positioned.y, positioned.x);
-        return LinearAlgebra.rotateTo(positioned, rotated90, rotationDeg);
+        return positioned.rotateAroundYAxis(rotationDeg);
     }
 
     public static void paintCircularObject(

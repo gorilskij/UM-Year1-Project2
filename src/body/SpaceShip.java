@@ -35,7 +35,12 @@ public class SpaceShip extends BaseBody implements Moving {
     private static final double POINTING_SPEED = 0.1; // degrees rotated at each time step
 
     public void adjustPointing() {
-        double angle = pointing.angleBetween(desiredPointing);
+        assert !Double.isNaN(pointing.angleBetween(desiredPointing)) : "rad angle NaN " + pointing + " - " + desiredPointing;
+
+        double angle = Math.toDegrees(pointing.angleBetween(desiredPointing));
+
+        assert !Double.isNaN(angle) : "angle NaN";
+
         pointing = LinearAlgebra.rotateTo(pointing, desiredPointing, Math.min(POINTING_SPEED, angle)).direction();
     }
 
@@ -136,7 +141,7 @@ public class SpaceShip extends BaseBody implements Moving {
         PaintingTools.paintPointing(g, Color.RED, 100, pos, pointing);
         PaintingTools.paintPointing(g, Color.GREEN, 80, pos, desiredPointing);
 
-        trailer.paint(g, centerPosition, scale);
+        trailer.paint(g, centerPosition, rotationDeg, scale);
     }
 
     @Override
