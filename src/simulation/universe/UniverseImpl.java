@@ -22,6 +22,8 @@ public final class UniverseImpl implements Universe {
     private final List<Moving> movingBodies = new ArrayList<>();
     private final List<SpaceShip> spaceShips = new ArrayList<>();
 
+    private final List<LaunchPackage> queuedLaunches = new ArrayList<>();
+
     private Integrator integrator = new LeapFrog();
 
     public List<Body> allBodies() {
@@ -105,10 +107,7 @@ public final class UniverseImpl implements Universe {
         }
     }
 
-    @Override
-    public void addLaunch(String name, double mass) {
-        SpaceShip spaceShip = new SpaceShip(name, Color.WHITE, mass, simulation);
-
+    private void launchShip(SpaceShip spaceShip) {
         Planet earth = (Planet) getBodyByName("earth");
         Vector sunToEarth = getBodyByName("sun").position().vectorTo(earth.position()).direction();
         spaceShip.setPosition(earth.position().plus(sunToEarth.times(earth.radius())));
@@ -125,14 +124,22 @@ public final class UniverseImpl implements Universe {
         simulation.shipLaunched();
     }
 
+    @Override
+    public void addLaunch(String name, double mass, long time) { // time in seconds
+        assert time >= simulation.timePassedS() : "tried to launch spaceShip in the past";
+
+        queuedLaunches.add(new LaunchPackage(
+                new SpaceShip(name, Color.WHITE, mass, simulation), time
+        ));
+    }
+
     private Vector computeAcceleration(Body body, Vector acceleration, Attractive attractor) {
         acceleration = acceleration.plus(body
                 .position()
                 .vectorTo(attractor.position())
                 .direction()
                 .times(
-                        Constants.G
-                                * attractor.mass()
+                        Constants.G * attractor.mass()
                                 / Math.pow(body.position().distanceTo(attractor.position()), 2)
                 )
         );
@@ -197,6 +204,18 @@ public final class UniverseImpl implements Universe {
 
             ss.trailer.push();
         }
+
+        // launch queued ships
+        List<LaunchPackage> launched = new ArrayList<>();
+        for (LaunchPackage p : queuedLaunches) {
+            if (p.time() <= simulation.timePassedS()) {
+                launchShip(p.ship());
+                launched.add(p);
+            }
+        }
+
+        for (LaunchPackage p : launched)
+            queuedLaunches.remove(p);
     }
 
     @Override

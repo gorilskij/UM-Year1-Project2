@@ -63,8 +63,8 @@ public final class SimulationImpl implements Simulation {
         gui.shipLaunched();
     }
 
-    public void addLaunch(String name, double mass) {
-        universe.addLaunch(name, mass);
+    public void addLaunch(String name, double mass, long time) {
+        universe.addLaunch(name, mass, time);
     }
 
     public void setUniverseRunnerMinFrameTime(long minFrameTimeNs) {
