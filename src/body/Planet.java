@@ -13,7 +13,7 @@ public class Planet extends BaseBody implements Round, Moving, Attractive, Trail
     private Vector acceleration;
     private Vector lastAcceleration = Vector.ZERO;
     private final double radius;
-    private final Trailer trailer = new Trailer(this);
+    private final Trailer trailer = new Trailer(this, 1000, Math.PI * 1e5);
 
     public Trailer trailer() {
         return trailer;
@@ -71,7 +71,6 @@ public class Planet extends BaseBody implements Round, Moving, Attractive, Trail
     public void paint(Graphics g, Vector centerPosition, int rotationDeg, double scale) {
         PaintingTools.paintCircularObject(g, scale, this, centerPosition, rotationDeg);
         trailer.paint(g, centerPosition, rotationDeg, scale);
-
     }
 
     @Override

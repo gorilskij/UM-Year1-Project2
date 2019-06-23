@@ -193,8 +193,10 @@ public class WindowImpl implements Window {
 
     private void paintPanel(Graphics g) {
         g.translate(space.getWidth() / 2, space.getHeight() / 2);
-        for (Body body : universe.allBodies())
-            body.paint(g, centerBody.position(), rotation, scale);
+
+        List<Body> allBodies = universe.allBodies();
+        for (int i = 0; i < allBodies.size(); i++)
+            allBodies.get(i).paint(g, centerBody.position(), rotation, scale);
 
         timePassedLabel.setText("  time passed: " + simulation.timePassedS() + "s");
     }
