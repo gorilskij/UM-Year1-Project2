@@ -107,7 +107,7 @@ public class WindowImpl implements Window {
         fastButton.addActionListener(e -> simulation.setUniverseRunnerMinFrameTime(0));
 
         JButton slowButton = new JButton("slow");
-        slowButton.addActionListener(e -> simulation.setUniverseRunnerMinFrameTime(1_000_000));
+        slowButton.addActionListener(e -> simulation.setUniverseRunnerMinFrameTime(10_000_000));
 
 
         JButton clearTrailsButton = new JButton("clear trails");

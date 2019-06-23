@@ -116,8 +116,7 @@ public final class UniverseImpl implements Universe {
         spaceShip.setController(new LaunchController(
                 this,
                 spaceShip,
-                earth,
-                100_000 + earth.radius()
+                earth
         ));
 
         addBody(spaceShip);
