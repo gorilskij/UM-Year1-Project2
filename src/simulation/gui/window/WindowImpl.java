@@ -19,6 +19,8 @@ public class WindowImpl implements Window {
     private final Simulation simulation;
     private final Universe universe;
 
+    private int rotation = 0;
+
     private final JPanel space;
     private final JButton playPauseButton = new JButton();
     private final BodySelector bodySelector = new BodySelector(this) {
@@ -117,6 +119,10 @@ public class WindowImpl implements Window {
         });
 
 
+        JSlider rotationSlider = new JSlider(JSlider.HORIZONTAL, 0, 90, 0);
+        rotationSlider.addChangeListener(e -> rotation = rotationSlider.getValue());
+
+
         scaleLabel = new JLabel();
         setScale(scale); // refresh scaleLabel
 
@@ -172,7 +178,7 @@ public class WindowImpl implements Window {
     private void paintPanel(Graphics g) {
         g.translate(space.getWidth() / 2, space.getHeight() / 2);
         for (Body body : universe.allBodies())
-            body.paint(g, centerBody.position(), scale);
+            body.paint(g, centerBody.position(), rotation, scale);
 
         timePassedLabel.setText("  time passed: " + simulation.timePassedS() + "s");
     }

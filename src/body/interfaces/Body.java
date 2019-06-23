@@ -37,7 +37,7 @@ public interface Body {
      * @param centerPosition position of centered body
      * @param scale scale
      */
-    void paint(Graphics g, Vector centerPosition, double scale);
+    void paint(Graphics g, Vector centerPosition, int rotationDeg, double scale);
 
     /**
      *

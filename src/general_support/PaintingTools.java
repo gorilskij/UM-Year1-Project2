@@ -5,9 +5,23 @@ import body.interfaces.Round;
 import java.awt.*;
 
 public final class PaintingTools {
-    public static void paintCircularObject(Graphics g, double scale, Round object, Vector centerPosition) {
+    public static Vector convert(Vector vector, Vector centerPosition, int rotationDeg) {
+        Vector positioned = vector.minus(centerPosition);
+        // hacky
+        Vector rotated90 = new Vector(-positioned.z, positioned.y, positioned.x);
+        return LinearAlgebra.rotateTo(positioned, rotated90, rotationDeg);
+    }
+
+    public static void paintCircularObject(
+            Graphics g,
+            double scale,
+            Round object,
+            Vector centerPosition,
+            int rotationDeg
+    ) {
         g.setColor(object.color());
-        Point.Double pos = object.position().minus(centerPosition).toXYPoint();
+        Point.Double pos = convert(object.position(), centerPosition, rotationDeg).toXYPoint();
+
         int diameter = (int) Math.round(object.radius() * 2 * scale);
 
         g.fillOval(

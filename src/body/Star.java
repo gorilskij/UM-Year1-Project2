@@ -28,8 +28,8 @@ public class Star extends BaseBody implements Round, Attractive {
         this.radius = radius;
     }
 
-    public void paint(Graphics g, Vector centerPosition, double scale) {
-        PaintingTools.paintCircularObject(g, scale, this, centerPosition);
+    public void paint(Graphics g, Vector centerPosition, int rotationDeg, double scale) {
+        PaintingTools.paintCircularObject(g, scale, this, centerPosition, rotationDeg);
     }
 
     @Override
