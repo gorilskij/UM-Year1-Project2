@@ -1,6 +1,8 @@
 package simulation.universe;
 
+import body.SpaceShip;
 import body.interfaces.Body;
+import simulation.Simulation;
 
 import java.util.List;
 
@@ -15,7 +17,7 @@ public interface Universe {
     /**
      *
      */
-    void addLaunch(String name, double mass);
+    void addLaunch(String name, double mass, long time);
 
     /**
      *
@@ -37,5 +39,9 @@ public interface Universe {
 
     List<Body> allBodies();
 
+    List<SpaceShip> spaceShips();
+
     Body getBodyByName(String name);
+
+    Simulation simulation();
 }

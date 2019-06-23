@@ -5,11 +5,11 @@ import simulation.universe.Universe;
 
 public class UniverseRunner extends BaseRunner {
     private final Universe universe;
-    private int timeStep;
+    private double timeStep;
 
     private final Timer timer;
 
-    public void setTimeStep(int timeStep) {
+    public void setTimeStep(double timeStep) {
         this.timeStep = timeStep;
     }
 

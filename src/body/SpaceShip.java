@@ -6,14 +6,16 @@ import body.interfaces.Round;
 import body.surface.SurfaceImpl;
 import controllers.Controller;
 import general_support.PaintingTools;
+import general_support.Trailer;
 import general_support.Vector;
+import simulation.Simulation;
 import simulation.universe.Universe;
 
 import java.awt.*;
 
 public class SpaceShip extends BaseBody implements Moving {
     public SpaceShip copy() {
-        return new SpaceShip(name(), color(), mass(), universe());
+        return new SpaceShip(name(), color(), mass(), simulation);
     }
 
     private Vector position = null;
@@ -21,9 +23,12 @@ public class SpaceShip extends BaseBody implements Moving {
     private Vector pointing = null;
     private Vector acceleration = null;
     private Vector lastAcceleration = Vector.ZERO;
-    private Universe universe;
+    private final Simulation simulation;
+    private final Universe universe;
     private double radius;
     private Body parent;
+    private Vector directionOnParent;
+    public final Trailer trailer = new Trailer(this);
 
     // can be changed for different parts of the journey
     private Controller controller = null;
@@ -38,18 +43,23 @@ public class SpaceShip extends BaseBody implements Moving {
 
     public void setParent(Body parent) {
         this.parent = parent;
+        if (parent == null)
+            directionOnParent = null;
+        else
+            directionOnParent = parent.directionTo(this);
     }
 
     public double control() {
         if (controller != null)
-            return controller.control();
+            return controller.control(simulation.timeStep());
         else
             return 0;
     }
 
-    public SpaceShip(String name, Color color, double mass, Universe universe) {
+    public SpaceShip(String name, Color color, double mass, Simulation simulation) {
         super(name, color, mass);
-        this.universe = universe;
+        this.simulation = simulation;
+        universe = simulation.universe();
     }
 
     public void setRadius(double radius) {
@@ -78,12 +88,11 @@ public class SpaceShip extends BaseBody implements Moving {
         return acceleration;
     }
 
-    public Vector lastAcceleration(){
+    public Vector lastAcceleration() {
         return this.lastAcceleration;
     }
 
-    public void setAcceleration(Vector acceleration)
-    {
+    public void setAcceleration(Vector acceleration) {
         this.acceleration = acceleration;
     }
 
@@ -104,16 +113,13 @@ public class SpaceShip extends BaseBody implements Moving {
         return this.universe;
     }
 
-    public void setUniverse(Universe universe) {
-        this.universe = universe;
-    }
-
     public void paint(Graphics g, Vector centerPosition, double scale) {
         g.setColor(color());
         Point.Double pos = position.minus(centerPosition).toXYPoint();
         PaintingTools.paintHighlightCircle(g, scale, pos);
         PaintingTools.paintLabel(g, scale, pos, name());
-        PaintingTools.paintPointing(g, scale, pos, pointing);
+        PaintingTools.paintPointing(g, pos, pointing);
+        trailer.paint(g, centerPosition, scale);
     }
 
     @Override
@@ -126,27 +132,18 @@ public class SpaceShip extends BaseBody implements Moving {
     }
 
     /**
-     *
      * @return vector from planet center to the spaceship
      */
     private Vector relativePosition() {
-        assert parent != null : "null parent";
-        Vector parentPosition = parent.position();
-        Vector parentToShip = position.minus(parentPosition);
-        Vector directionToShip = parentToShip.direction();
-        return directionToShip.times(((Round) parent).radius());
+        assert parent != null && directionOnParent != null : "null parent";
+
+        return directionOnParent.times(((Round) parent).radius());
     }
 
     public void setRelativePosition() {
-        this
-                .setPosition(
-                        (this)
-                                .parent()
-                                .position()
-                                .plus(
-                                        (this)
-                                                .relativePosition()
-                                )
-                );
+        setPosition(parent()
+                .position()
+                .plus(relativePosition())
+        );
     }
 }

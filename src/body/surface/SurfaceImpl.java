@@ -1,10 +1,8 @@
 package body.surface;
 
-import body.Planet;
 import body.interfaces.Body;
 import body.interfaces.Moving;
 import body.interfaces.Round;
-import general_support.Vector;
 
 public class SurfaceImpl implements Surface {
 
