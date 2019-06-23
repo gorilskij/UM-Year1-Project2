@@ -38,13 +38,13 @@ public final class PaintingTools {
         );
     }
 
-    public static void paintPointing(Graphics g, Color color, Point.Double pos, Vector pointing) {
+    public static void paintPointing(Graphics g, Color color, int length, Point.Double pos, Vector pointing) {
         g.setColor(color);
         Point.Double vec = pointing.direction().toXYPoint();
         g.drawLine(
                 (int) pos.x, (int) pos.y,
-                (int) (pos.x + vec.x * 100),
-                (int) (pos.y + vec.y * 100)
+                (int) (pos.x + vec.x * length),
+                (int) (pos.y + vec.y * length)
         );
     }
 }

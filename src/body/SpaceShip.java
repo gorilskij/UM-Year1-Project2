@@ -131,8 +131,8 @@ public class SpaceShip extends BaseBody implements Moving {
         PaintingTools.paintHighlightCircle(g, scale, pos);
         PaintingTools.paintLabel(g, scale, pos, name());
 
-        PaintingTools.paintPointing(g, Color.RED, pos, pointing);
-        PaintingTools.paintPointing(g, Color.GREEN, pos, desiredPointing);
+        PaintingTools.paintPointing(g, Color.RED, 100, pos, pointing);
+        PaintingTools.paintPointing(g, Color.GREEN, 80, pos, desiredPointing);
 
         trailer.paint(g, centerPosition, scale);
     }
