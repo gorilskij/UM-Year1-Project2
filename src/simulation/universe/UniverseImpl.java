@@ -111,7 +111,7 @@ public final class UniverseImpl implements Universe {
         Planet earth = (Planet) getBodyByName("earth");
         Vector sunToEarth = getBodyByName("sun").position().vectorTo(earth.position()).direction();
         spaceShip.setPosition(earth.position().plus(sunToEarth.times(earth.radius())));
-        spaceShip.setPointing(sunToEarth);
+        spaceShip.setDesiredPointing(sunToEarth);
 
         spaceShip.setController(new LaunchController(
                 this,
@@ -167,6 +167,10 @@ public final class UniverseImpl implements Universe {
     public void iterateShips(double timeStep) {
         for (SpaceShip ss : spaceShips) {
             Vector acceleration = Vector.ZERO;
+
+            // turn n degrees towards desired pointing
+            ss.adjustPointing();
+
             for (Attractive attractor : attractors) {
                 if (ss.acceleration() == null) {
                     ss.setAcceleration(acceleration);

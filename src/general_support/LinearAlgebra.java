@@ -148,7 +148,10 @@ public class LinearAlgebra {
         res[2][0] = 2 * (d * b - a * c);
         res[2][1] = 2 * (d * c + a * b);
         res[2][2] = (Math.pow(a, 2) + Math.pow(d, 2) - Math.pow(b, 2) - Math.pow(c, 2));
-        assert Math.pow(a, 2) + Math.pow(b, 2) + Math.pow(c, 2) + Math.pow(d, 2) == 1 : "wrong Euler-Rodrigues coefficients";
+
+        assert Math.abs(Math.pow(a, 2) + Math.pow(b, 2) + Math.pow(c, 2) + Math.pow(d, 2) - 1) < 1e-5
+                : "wrong Euler-Rodrigues coefficients";
+
         return res;
     }
 

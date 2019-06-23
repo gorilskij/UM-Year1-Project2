@@ -25,7 +25,7 @@ public class LaunchController extends BaseController {
     }
 
     private void pointUp() {
-        spaceShip.setPointing(upDirection());
+        spaceShip.setDesiredPointing(upDirection());
     }
 
     public double control(double ignored) {

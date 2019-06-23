@@ -45,7 +45,7 @@ public class PID extends BaseController {
          System.out.println("setPoint distance :" + vectorToTitan.magnitude());
          System.out.println("setPoint direction: " + directionTotTitan);
         if (!spaceShip.pointing().equals(directionTotTitan))
-            spaceShip.setPointing(directionTotTitan);
+            spaceShip.setDesiredPointing(directionTotTitan);
 
         this.updateErrors(error);
         double integralError = this.updateIntegral(error);

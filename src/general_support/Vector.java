@@ -134,13 +134,15 @@ public final class Vector {
     }
 
     public Vector crossProduct(Vector other) {
-        Vector cross =  new Vector(
-                y*other.z - other.y*z,
-                z*other.x - x*other.z,
-                x*other.y - y*other.x
+        Vector cross = new Vector(
+                y * other.z - other.y * z,
+                z * other.x - x * other.z,
+                x * other.y - y * other.x
         ).direction();
-        assert cross.angleBetween(this) == Math.toRadians(90) : "wrong angle of a cross product";
-        assert cross.angleBetween(other) == Math.toRadians(90) : "wrong angle of a cross product";
+        assert Math.abs(cross.angleBetween(this) - Math.toRadians(90)) < 1e-5
+                && Math.abs(cross.angleBetween(other) - Math.toRadians(90)) < 1e-5
+                : "wrong angle of a cross product" + Math.toDegrees(cross.angleBetween(this));
+
         return cross;
     }
 

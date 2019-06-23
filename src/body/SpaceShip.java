@@ -5,6 +5,7 @@ import body.interfaces.Moving;
 import body.interfaces.Round;
 import body.surface.SurfaceImpl;
 import controllers.Controller;
+import general_support.LinearAlgebra;
 import general_support.PaintingTools;
 import general_support.Trailer;
 import general_support.Vector;
@@ -21,6 +22,7 @@ public class SpaceShip extends BaseBody implements Moving {
     private Vector position = null;
     private Vector velocity = null;
     private Vector pointing = null;
+    private Vector desiredPointing = null;
     private Vector acceleration = null;
     private Vector lastAcceleration = Vector.ZERO;
     private final Simulation simulation;
@@ -29,6 +31,15 @@ public class SpaceShip extends BaseBody implements Moving {
     private Body parent;
     private Vector directionOnParent;
     public final Trailer trailer = new Trailer(this);
+
+    private static final double POINTING_SPEED = 100000000; // degrees rotated at each time step
+
+    public void adjustPointing() {
+        double angle = pointing.angleBetween(desiredPointing);
+        pointing = LinearAlgebra.rotateTo(pointing, desiredPointing, Math.min(POINTING_SPEED, angle));
+        if (pointing.distanceTo(desiredPointing) > 1)
+            throw new IllegalStateException("BAD, real: " + pointing + " desired: " + desiredPointing);
+    }
 
     // can be changed for different parts of the journey
     private Controller controller = null;
@@ -104,9 +115,12 @@ public class SpaceShip extends BaseBody implements Moving {
         return pointing;
     }
 
-    public void setPointing(Vector pointing) {
+    public void setDesiredPointing(Vector desiredPointing) {
         // convert to unit vector just in case
-        this.pointing = pointing.direction();
+        this.desiredPointing = desiredPointing.direction();
+
+        if (pointing == null)
+            pointing = desiredPointing.direction();
     }
 
     public Universe universe() {
