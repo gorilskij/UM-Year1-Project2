@@ -23,6 +23,8 @@ public class PID extends BaseController {
     private PID nextPID;
     private double closest;
 
+    private static final double MAX_ACCELERATION = 0.01;
+
     public PID(Universe universe, SpaceShip spaceShip, Body body, double P, double I, double D, double closest){
         super(universe, spaceShip);
         errors = new ArrayList<>();
@@ -44,8 +46,7 @@ public class PID extends BaseController {
          Vector directionTotTitan = vectorToTitan.direction();
          System.out.println("setPoint distance :" + vectorToTitan.magnitude());
          System.out.println("setPoint direction: " + directionTotTitan);
-        if (!spaceShip.pointing().equals(directionTotTitan))
-            spaceShip.setDesiredPointing(directionTotTitan);
+         spaceShip.setDesiredPointing(directionTotTitan);
 
         this.updateErrors(error);
         double integralError = this.updateIntegral(error);
@@ -61,7 +62,8 @@ public class PID extends BaseController {
                     this.trackedBody,
                     1E-11, 1E-17, 1E-15, 0);
         }
-        return acceleration;
+
+        return Math.min(MAX_ACCELERATION, acceleration);
     }
 
     private void updateErrors(double error) {

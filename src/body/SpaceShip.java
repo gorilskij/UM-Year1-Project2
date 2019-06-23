@@ -32,13 +32,11 @@ public class SpaceShip extends BaseBody implements Moving {
     private Vector directionOnParent;
     public final Trailer trailer = new Trailer(this);
 
-    private static final double POINTING_SPEED = 100000000; // degrees rotated at each time step
+    private static final double POINTING_SPEED = 0.1; // degrees rotated at each time step
 
     public void adjustPointing() {
         double angle = pointing.angleBetween(desiredPointing);
-        pointing = LinearAlgebra.rotateTo(pointing, desiredPointing, Math.min(POINTING_SPEED, angle));
-        if (pointing.distanceTo(desiredPointing) > 1)
-            throw new IllegalStateException("BAD, real: " + pointing + " desired: " + desiredPointing);
+        pointing = LinearAlgebra.rotateTo(pointing, desiredPointing, Math.min(POINTING_SPEED, angle)).direction();
     }
 
     // can be changed for different parts of the journey
@@ -132,7 +130,10 @@ public class SpaceShip extends BaseBody implements Moving {
         Point.Double pos = position.minus(centerPosition).toXYPoint();
         PaintingTools.paintHighlightCircle(g, scale, pos);
         PaintingTools.paintLabel(g, scale, pos, name());
-        PaintingTools.paintPointing(g, pos, pointing);
+
+        PaintingTools.paintPointing(g, Color.RED, pos, pointing);
+        PaintingTools.paintPointing(g, Color.GREEN, pos, desiredPointing);
+
         trailer.paint(g, centerPosition, scale);
     }
 
