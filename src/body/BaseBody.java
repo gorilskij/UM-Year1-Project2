@@ -1,7 +1,6 @@
 package body;
 
 import body.interfaces.Body;
-import general_support.Vector;
 
 import java.awt.*;
 
