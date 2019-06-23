@@ -2,7 +2,6 @@ package simulation.gui.window;
 
 import body.SpaceShip;
 import body.interfaces.Body;
-import general_support.Vector;
 import simulation.Simulation;
 import simulation.universe.Universe;
 
@@ -103,11 +102,20 @@ public class WindowImpl implements Window {
         JButton decreaseScaleButton = new JButton("-");
         decreaseScaleButton.addActionListener(e -> setScale(scale / ZOOM_FACTOR));
 
+
         JButton fastButton = new JButton("fast");
         fastButton.addActionListener(e -> simulation.setUniverseRunnerMinFrameTime(0));
 
         JButton slowButton = new JButton("slow");
         slowButton.addActionListener(e -> simulation.setUniverseRunnerMinFrameTime(1_000_000));
+
+
+        JButton clearTrailsButton = new JButton("clear trails");
+        clearTrailsButton.addActionListener(e -> {
+            for (SpaceShip spaceShip : universe.spaceShips())
+                spaceShip.trailer.clear();
+        });
+
 
         scaleLabel = new JLabel();
         setScale(scale); // refresh scaleLabel
@@ -121,6 +129,7 @@ public class WindowImpl implements Window {
         bottomPanel.add(decreaseScaleButton);
         bottomPanel.add(fastButton);
         bottomPanel.add(slowButton);
+        bottomPanel.add(clearTrailsButton);
 
         JPanel bodySelectorPanel = new JPanel();
         bodySelectorPanel.setSize(new Dimension(0, 0));

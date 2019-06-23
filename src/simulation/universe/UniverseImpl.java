@@ -28,6 +28,10 @@ public final class UniverseImpl implements Universe {
         return allBodies;
     }
 
+    public List<SpaceShip> spaceShips() {
+        return spaceShips;
+    }
+
     private final Simulation simulation;
 
     public Simulation simulation() {

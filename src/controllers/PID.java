@@ -64,10 +64,10 @@ public class PID extends BaseController {
         return acceleration;
     }
 
-    private void updateErrors(double error){
+    private void updateErrors(double error) {
         if (errors.size() < 3)
             errors.add(error);
-        else{
+        else {
             errors.add(error);
             errors.remove(0);
         }

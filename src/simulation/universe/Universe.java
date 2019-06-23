@@ -1,5 +1,6 @@
 package simulation.universe;
 
+import body.SpaceShip;
 import body.interfaces.Body;
 import simulation.Simulation;
 
@@ -37,6 +38,8 @@ public interface Universe {
     void getCurrentData();
 
     List<Body> allBodies();
+
+    List<SpaceShip> spaceShips();
 
     Body getBodyByName(String name);
 

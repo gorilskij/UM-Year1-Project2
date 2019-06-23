@@ -37,4 +37,8 @@ public class Trailer {
             );
         }
     }
+
+    public void clear() {
+        trail.clear();
+    }
 }
