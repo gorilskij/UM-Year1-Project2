@@ -21,6 +21,7 @@ public final class UniverseImpl implements Universe {
     private final List<Attractive> attractors = new ArrayList<>();
     private final List<Moving> movingBodies = new ArrayList<>();
     private final List<SpaceShip> spaceShips = new ArrayList<>();
+    private final List<Trailing> trailingBodies = new ArrayList<>();
 
     private final List<LaunchPackage> queuedLaunches = new ArrayList<>();
 
@@ -30,8 +31,8 @@ public final class UniverseImpl implements Universe {
         return allBodies;
     }
 
-    public List<SpaceShip> spaceShips() {
-        return spaceShips;
+    public List<Trailing> trailingBodies() {
+        return trailingBodies;
     }
 
     private final Simulation simulation;
@@ -105,6 +106,9 @@ public final class UniverseImpl implements Universe {
             spaceShips.add((SpaceShip) body);
             addShip((SpaceShip) body);
         }
+
+        if (body instanceof Trailing)
+            trailingBodies.add((Trailing) body);
     }
 
     private void launchShip(SpaceShip spaceShip) {
@@ -159,6 +163,7 @@ public final class UniverseImpl implements Universe {
                     acceleration = computeAcceleration(body, acceleration, attractor);
                 }
             }
+
             integrator.integrate(body, acceleration, timeStep);
         }
     }
@@ -203,8 +208,6 @@ public final class UniverseImpl implements Universe {
             acceleration = acceleration.plus(controllerAcceleration);
 
             integrator.integrate(ss, acceleration, timeStep);
-
-            ss.trailer.push();
         }
 
         // launch queued ships
@@ -218,5 +221,10 @@ public final class UniverseImpl implements Universe {
 
         for (LaunchPackage p : launched)
             queuedLaunches.remove(p);
+    }
+
+    public void iterateTrailers() {
+        for (Trailing trailing : trailingBodies)
+            trailing.trailer().push();
     }
 }

@@ -3,6 +3,7 @@ package body;
 import body.interfaces.Body;
 import body.interfaces.Moving;
 import body.interfaces.Round;
+import body.interfaces.Trailing;
 import body.surface.SurfaceImpl;
 import controllers.Controller;
 import general_support.LinearAlgebra;
@@ -14,7 +15,7 @@ import simulation.universe.Universe;
 
 import java.awt.*;
 
-public class SpaceShip extends BaseBody implements Moving {
+public class SpaceShip extends BaseBody implements Moving, Trailing {
     public SpaceShip copy() {
         return new SpaceShip(name(), color(), mass(), simulation);
     }
@@ -30,7 +31,11 @@ public class SpaceShip extends BaseBody implements Moving {
     private double radius;
     private Body parent;
     private Vector directionOnParent;
-    public final Trailer trailer = new Trailer(this);
+    private final Trailer trailer = new Trailer(this);
+
+    public Trailer trailer() {
+        return trailer;
+    }
 
     // for next position/velocity/acceleration
 
@@ -134,8 +139,11 @@ public class SpaceShip extends BaseBody implements Moving {
         PaintingTools.paintHighlightCircle(g, scale, pos);
         PaintingTools.paintLabel(g, scale, pos, name());
 
-        PaintingTools.paintPointing(g, Color.RED, 100, pos, pointing);
-        PaintingTools.paintPointing(g, Color.GREEN, 80, pos, desiredPointing);
+        Vector rotatedPointing = pointing.rotateAroundYAxis(rotationDeg);
+        Vector rotatedDesiredPointing = desiredPointing.rotateAroundYAxis(rotationDeg);
+
+        PaintingTools.paintPointing(g, Color.RED, 100, pos, rotatedPointing);
+        PaintingTools.paintPointing(g, Color.GREEN, 80, pos, rotatedDesiredPointing);
 
         trailer.paint(g, centerPosition, rotationDeg, scale);
     }

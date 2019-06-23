@@ -25,6 +25,7 @@ public class UniverseRunner extends BaseRunner {
     public void doFrame() {
         universe.iterateCelestials(timeStep);
         universe.iterateShips(timeStep);
+        universe.iterateTrailers();
         timer.iterate(timeStep);
     }
 }

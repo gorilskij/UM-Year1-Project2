@@ -1,5 +1,6 @@
 package body.interfaces;
 
+import general_support.Trailer;
 import general_support.Vector;
 
 import java.awt.*;

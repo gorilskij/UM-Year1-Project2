@@ -1,22 +1,23 @@
 package body;
 
-import body.interfaces.Attractive;
-import body.interfaces.Body;
-import body.interfaces.Moving;
-import body.interfaces.Round;
+import body.interfaces.*;
 import general_support.PaintingTools;
 import general_support.Trailer;
 import general_support.Vector;
 
 import java.awt.*;
 
-public class Planet extends BaseBody implements Round, Moving, Attractive {
+public class Planet extends BaseBody implements Round, Moving, Attractive, Trailing {
     private Vector position;
     private Vector velocity;
     private Vector acceleration;
     private Vector lastAcceleration = Vector.ZERO;
     private final double radius;
-    public final Trailer trailer = new Trailer(this);
+    private final Trailer trailer = new Trailer(this);
+
+    public Trailer trailer() {
+        return trailer;
+    }
 
     public double radius() {
         return radius;

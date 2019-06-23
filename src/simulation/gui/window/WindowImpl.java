@@ -2,6 +2,7 @@ package simulation.gui.window;
 
 import body.SpaceShip;
 import body.interfaces.Body;
+import body.interfaces.Trailing;
 import simulation.Simulation;
 import simulation.universe.Universe;
 
@@ -109,13 +110,19 @@ public class WindowImpl implements Window {
         fastButton.addActionListener(e -> simulation.setUniverseRunnerMinFrameTime(0));
 
         JButton slowButton = new JButton("slow");
-        slowButton.addActionListener(e -> simulation.setUniverseRunnerMinFrameTime(10_000_000));
+        slowButton.addActionListener(e -> simulation.setUniverseRunnerMinFrameTime(100_000));
+
+        JButton slow2Button = new JButton("slow 2");
+        slow2Button.addActionListener(e -> simulation.setUniverseRunnerMinFrameTime(5_000_000));
+
+        JButton slow3Button = new JButton("slow 3");
+        slow3Button.addActionListener(e -> simulation.setUniverseRunnerMinFrameTime(10_000_000));
 
 
         JButton clearTrailsButton = new JButton("clear trails");
         clearTrailsButton.addActionListener(e -> {
-            for (SpaceShip spaceShip : universe.spaceShips())
-                spaceShip.trailer.clear();
+            for (Trailing trailing : universe.trailingBodies())
+                trailing.trailer().clear();
         });
 
 
@@ -124,6 +131,7 @@ public class WindowImpl implements Window {
         rotationSlider.addChangeListener(e -> {
             rotation = rotationSlider.getValue();
             rotationLabel.setText(String.format("%3d°", rotation));
+            paint();
         });
 
         scaleLabel = new JLabel();
@@ -138,6 +146,8 @@ public class WindowImpl implements Window {
         bottomPanel.add(decreaseScaleButton);
         bottomPanel.add(fastButton);
         bottomPanel.add(slowButton);
+        bottomPanel.add(slow2Button);
+        bottomPanel.add(slow3Button);
         bottomPanel.add(clearTrailsButton);
 
         JPanel bodySelectorPanel = new JPanel();

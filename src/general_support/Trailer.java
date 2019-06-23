@@ -1,5 +1,6 @@
 package general_support;
 
+import body.SpaceShip;
 import body.interfaces.Moving;
 
 import java.awt.*;
@@ -12,8 +13,15 @@ public class Trailer {
     private final List<Vector> trail = new ArrayList<>();
     private final Moving body;
 
+    private final Color color;
+
     public Trailer(Moving body) {
         this.body = body;
+
+        if (body instanceof SpaceShip)
+            color = Color.GREEN;
+        else
+            color = body.color();
     }
 
     public void push() {
@@ -26,7 +34,7 @@ public class Trailer {
     }
 
     public void paint(Graphics g, Vector centerPosition, int rotationDeg, double scale) {
-        g.setColor(new Color(0, 255, 0));
+        g.setColor(color);
         // note: don't replace with foreach, throws exception, intellij lies
         // (ConcurrentModificationException)
         for (int i = 0; i < trail.size(); i++) {
