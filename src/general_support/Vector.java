@@ -6,8 +6,6 @@ import java.util.Locale;
 public final class Vector {
     public final double x, y, z;
 
-    public final double length;
-
     public static final Vector ZERO = new Vector(0, 0, 0);
 
     public Vector(double x, double y, double z) {
@@ -18,7 +16,6 @@ public final class Vector {
         this.x = x;
         this.y = y;
         this.z = z;
-        this.length = 3;
     }
 
     public double magnitude() {
@@ -141,11 +138,14 @@ public final class Vector {
     }
 
     public Vector crossProduct(Vector other) {
-        return new Vector(
+        Vector cross =  new Vector(
                 y*other.z - other.y*z,
                 z*other.x - x*other.z,
                 x*other.y - y*other.x
-        );
+        ).direction();
+        assert cross.angleBetween(this) == Math.toRadians(90) : "wrong angle of a cross product";
+        assert cross.angleBetween(other) == Math.toRadians(90) : "wrong angle of a cross product";
+        return cross;
     }
 
     public double[] toArray() {
@@ -156,6 +156,5 @@ public final class Vector {
         this.x = arr[0];
         this.y = arr[1];
         this.z = arr[2];
-        this.length = 3;
     }
 }

@@ -1,4 +1,5 @@
 package general_support;
+import java.lang.Math.*;
 
 public class LinearAlgebra {
 
@@ -70,15 +71,15 @@ public class LinearAlgebra {
     }
 
     public static Vector multiplyMatrixByVector(double[][] m1, Vector v1) {
-        assert v1.length == m1[0].length : "can not multiply in those dimensions";
         double[] v = v1.toArray();
+        assert v.length == m1[0].length : "can not multiply in those dimensions";
         double x = 0;
         double y = 0;
         double z = 0;
         for (int i = 0; i < m1[0].length; i++) {
-            x =  m1[0][i] * v[i];
-            y =  m1[1][i] * v[i];
-            z =  m1[2][i] * v[i];
+            x +=  m1[0][i] * v[i];
+            y +=  m1[1][i] * v[i];
+            z +=  m1[2][i] * v[i];
         }
         return new Vector(x, y, z);
     }
@@ -105,21 +106,55 @@ public class LinearAlgebra {
         return res;
     }
 
-    public static double[][] matrixForRotation(Vector v1, Vector v2, double angle) {
+    public static double[][] matrixForRotation(double angleDeg, Vector crossProduct) {
+        double angle = Math.toRadians(angleDeg);
         double[][] res = new double[3][3];
-        Vector crossProduct = v1.crossProduct(v2);
         for (int i = 0; i < res.length; i++) {
             res[i][i] = 1.0;
         }
         double cos = Math.cos(angle);
+        double sin = Math.sin(angle);
         double[][] crossMatrix = new double[][] {
                 {0.0, -crossProduct.z, crossProduct.y},
                 {crossProduct.z, 0.0, - crossProduct.x},
                 {-crossProduct.y, crossProduct.x, 0.0}
         };
-        res = addMatrices(res, addMatrices(crossMatrix, multiplyMatrixByConstant(multiplyMatrices(crossMatrix, crossMatrix), 1/(1 +cos))));
+        res = addMatrices(
+                addMatrices(
+                        res,
+                        multiplyMatrixByConstant(crossMatrix, sin)),
+                multiplyMatrixByConstant(
+                        multiplyMatrices(
+                                crossMatrix,
+                                crossMatrix),
+                        1 - cos)
+        );
         return res;
     }
 
+    public static double[][] matrixEuler(double angleDeg, Vector crossProduct) {
+        double angle = Math.toRadians(angleDeg);
+        double[][] res = new double[3][3];
+        double a = Math.cos(angle/2);
+        double b = Math.sin(angle/2) * crossProduct.x;
+        double c = Math.sin(angle/2) * crossProduct.y;
+        double d = Math.sin(angle/2) * crossProduct.z;
+        res[0][0] = (Math.pow(a, 2) + Math.pow(b, 2) - Math.pow(c, 2) - Math.pow(d, 2));
+        res[0][1] = 2 * (b * c - a * d);
+        res[0][2] = 2 * (b * d + a * c);
+        res[1][0] = 2 * (b * c + a * d);
+        res[1][1] = (Math.pow(a, 2) + Math.pow(c, 2) - Math.pow(b, 2) - Math.pow(d, 2));
+        res[1][2] = 2 * (d * c - a * b);
+        res[2][0] = 2 * (d * b - a * c);
+        res[2][1] = 2 * (d * c + a * b);
+        res[2][2] = (Math.pow(a, 2) + Math.pow(d, 2) - Math.pow(b, 2) - Math.pow(c, 2));
+        assert Math.pow(a, 2) + Math.pow(b, 2) + Math.pow(c, 2) + Math.pow(d, 2) == 1 : "wrong Euler-Rodrigues coefficients";
+        return res;
+    }
+
+    public static Vector rotateTo(Vector vectorToRotate, Vector other, double angleDeg) {
+        Vector crossProduct = vectorToRotate.crossProduct(other);
+        return multiplyMatrixByVector(matrixEuler(angleDeg, crossProduct), vectorToRotate);
+    }
 
 }
