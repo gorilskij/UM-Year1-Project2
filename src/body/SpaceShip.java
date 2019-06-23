@@ -32,18 +32,14 @@ public class SpaceShip extends BaseBody implements Moving {
     private Vector directionOnParent;
     public final Trailer trailer = new Trailer(this);
 
-    private static final double POINTING_SPEED = 0.1; // degrees rotated at each time step
+    // for next position/velocity/acceleration
+
+    private static final double POINTING_SPEED = 2; // degrees rotated at each time step
 
     public void adjustPointing() {
-        assert !Double.isNaN(pointing.angleBetween(desiredPointing)) : "rad angle NaN " + pointing + " - " + desiredPointing;
-
-        double angle = Math.toDegrees(pointing.angleBetween(desiredPointing));
-
-        assert !Double.isNaN(angle) : "angle NaN";
-
+        double angle = pointing.angleBetween(desiredPointing);
         pointing = LinearAlgebra.rotateTo(pointing, desiredPointing, Math.min(POINTING_SPEED, angle)).direction();
     }
-
     // can be changed for different parts of the journey
     private Controller controller = null;
 
@@ -167,5 +163,21 @@ public class SpaceShip extends BaseBody implements Moving {
                 .position()
                 .plus(relativePosition())
         );
+    }
+
+    public Vector desiredPointing() {
+        return desiredPointing;
+    }
+
+    public Vector nextPosition() {
+        return position
+                .plus(velocity
+                        .times(TimeStep)
+                        .plus(acceleration
+                                .times(Math.pow(
+                                        TimeStep,
+                                        2) / 2)
+                        )
+                );
     }
 }

@@ -119,9 +119,10 @@ public final class Vector {
         }
     }
     public double angleBetween(Vector other) {
-        double res = Math.acos(dotProduct(other) / (magnitude() * other.magnitude()));
-        assert !Double.isNaN(res) : "angle NaN between " + this + " and " + other;
-        return res;
+        if (dotProduct(other) / (magnitude() * other.magnitude()) > 1.0) return 1.0;
+        else if (dotProduct(other) / (magnitude() * other.magnitude()) < -1.0) return -1.0;
+        assert Math.abs(dotProduct(other) / (magnitude() * other.magnitude())) <= 1.0;
+        return Math.acos(dotProduct(other) / (magnitude() * other.magnitude()));
     }
 
     public double dotProduct(Vector other) {
@@ -161,9 +162,5 @@ public final class Vector {
         this.x = arr[0];
         this.y = arr[1];
         this.z = arr[2];
-    }
-
-    public boolean anyNaN() {
-        return Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(z);
     }
 }
