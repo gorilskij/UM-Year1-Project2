@@ -149,9 +149,18 @@ public final class Vector {
         return cross;
     }
 
-    public Vector rotateAroundYAxis(double angleDeg) {
+    public Vector rotateAboutX(double angleDeg) {
+        double[][] rotationMatrix = LinearAlgebra.instRotTrX(angleDeg);
+        return LinearAlgebra.multiplyMatrixByVector(rotationMatrix, this);
+    }
+
+    public Vector rotateAboutY(double angleDeg) {
         double[][] rotationMatrix = LinearAlgebra.instRotTrY(angleDeg);
         return LinearAlgebra.multiplyMatrixByVector(rotationMatrix, this);
+    }
+
+    public Vector rotateTo(Vector other, double degrees) {
+        return LinearAlgebra.rotateTo(this, other, degrees);
     }
 
     public double[] toArray() {

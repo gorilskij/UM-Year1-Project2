@@ -2,6 +2,7 @@ package body;
 
 import body.interfaces.*;
 import general_support.PaintingTools;
+import general_support.Rotation;
 import general_support.Trailer;
 import general_support.Vector;
 
@@ -68,9 +69,9 @@ public class Planet extends BaseBody implements Round, Moving, Attractive, Trail
         this.radius = radius;
     }
 
-    public void paint(Graphics g, Vector centerPosition, int rotationDeg, double scale) {
-        PaintingTools.paintCircularObject(g, scale, this, centerPosition, rotationDeg);
-        trailer.paint(g, centerPosition, rotationDeg, scale);
+    public void paint(Graphics g, Vector centerPosition, Rotation rotation, double scale) {
+        PaintingTools.paintCircularObject(g, scale, this, centerPosition, rotation);
+        trailer.paint(g, centerPosition, rotation, scale);
     }
 
     @Override
