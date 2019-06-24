@@ -36,7 +36,7 @@ public class SpaceShip extends BaseBody implements Moving, Trailing {
 
     // for next position/velocity/acceleration
 
-    private static final double POINTING_SPEED = 2; // degrees rotated at each time step
+    private static final double POINTING_SPEED = 0.1; // degrees rotated at each time step
 
     public void adjustPointing() {
         double angle = pointing.angleBetween(desiredPointing);
@@ -184,5 +184,10 @@ public class SpaceShip extends BaseBody implements Moving, Trailing {
                                         2) / 2)
                         )
                 );
+    }
+
+    public void slowDown() {
+        setVelocity(velocity.times(1/2));
+        setAcceleration(acceleration.times(1/2));
     }
 }

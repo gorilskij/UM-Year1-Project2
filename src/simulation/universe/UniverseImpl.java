@@ -126,18 +126,18 @@ public final class UniverseImpl implements Universe {
         PID pid1 = new PID(this,
                 spaceShip,
                 this.getBodyByName("titan"),
-                1E-11, 5E-17, 1E-4, 7E10
+                3E-11, 0, 2.4025E-4, 1E10
         );
 
         PID pid2 = new PID(this,
                 spaceShip,
                 this.getBodyByName("titan"),
                 pid1.getErrors(),
-                4E-14, 0, 0.0005, 0);
+                1E-15, 0, 3E-6, 0);
 
 
         launchController.setNextController(pid1);
-        pid1.setNextController(null);
+        pid1.setNextController(pid2);
 
         spaceShip.setController(launchController);
 

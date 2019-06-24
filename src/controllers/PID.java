@@ -51,6 +51,10 @@ public class PID extends BaseController {
     @Override
     public double control(double timeStep) {
         double error = this.proportional(spaceShip.position());
+        if (error < 1e7) {
+            spaceShip.slowDown();
+        }
+
         if (error == 0)
             return 0;
 
