@@ -13,7 +13,7 @@ class KeyRunner extends BaseRunner {
     private final JComponent component;
 
     KeyRunner(Lambda lambda, JComponent component) {
-        super(50_000_000); // TODO: maybe not 0
+        super(50_000_000);
         this.lambda = lambda;
         this.component = component;
         pause();
