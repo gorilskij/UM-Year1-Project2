@@ -9,11 +9,12 @@ import general_support.Vector;
 import general_support.Numerical;
 import simulation.universe.Universe;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class PID extends BaseController {
+public class PIDController extends BaseController {
 
     private Body trackedBody;
     private List<Double> errors;
@@ -27,7 +28,7 @@ public class PID extends BaseController {
 
     private static final double MAX_ACCELERATION = 0.01;
 
-    public PID(Universe universe, SpaceShip spaceShip, Body body, double P, double I, double D, double closest) {
+    public PIDController(Universe universe, SpaceShip spaceShip, Body body, double P, double I, double D, double closest) {
         super(universe, spaceShip);
         this.errors = new ArrayList<>();
         this.trackedBody = body;
@@ -37,7 +38,7 @@ public class PID extends BaseController {
         this.closest = closest;
     }
 
-    public PID(Universe universe, SpaceShip spaceShip, Body body, List<Double> errors, double P, double I, double D, double closest) {
+    public PIDController(Universe universe, SpaceShip spaceShip, Body body, List<Double> errors, double P, double I, double D, double closest) {
         super(universe, spaceShip);
         this.errors = errors;
         this.trackedBody = body;
@@ -67,8 +68,7 @@ public class PID extends BaseController {
         double acceleration = P * error + I * integralError + D * derivativeError;
 
         if (vectorToTitan.magnitude() < closest && super.nextController != null) {
-            this.spaceShip.setController(this.nextController);
-            this.nextController = null;
+            spaceShip.setController(this.nextController);
         }
 
         return Math.min(MAX_ACCELERATION, acceleration);

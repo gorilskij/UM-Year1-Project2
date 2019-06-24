@@ -13,7 +13,15 @@ public class Trailer {
     private final int limit;
     private final double minDistance;
 
-    private final Color color;
+    private Color color;
+
+    public Color color() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
 
     // default unlimited, min distance 1e9m
     public Trailer(Moving body, double minDistance) {

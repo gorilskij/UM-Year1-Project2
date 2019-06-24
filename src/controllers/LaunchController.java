@@ -10,10 +10,7 @@ public class LaunchController extends BaseController {
 
     public LaunchController(Universe universe, SpaceShip spaceShip, Planet fromPlanet) {
         super(universe, spaceShip);
-
         this.fromPlanet = fromPlanet;
-
-        pointUp();
     }
 
     // altitude above surface

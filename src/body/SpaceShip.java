@@ -40,7 +40,8 @@ public class SpaceShip extends BaseBody implements Moving, Trailing {
 
     public void adjustPointing() {
         double angle = pointing.angleBetween(desiredPointing);
-        pointing = LinearAlgebra.rotateTo(pointing, desiredPointing, Math.min(POINTING_SPEED, angle)).direction();
+        if (angle != 0)
+            pointing = LinearAlgebra.rotateTo(pointing, desiredPointing, Math.min(POINTING_SPEED, angle)).direction();
     }
     // can be changed for different parts of the journey
     private Controller controller = null;
@@ -179,10 +180,7 @@ public class SpaceShip extends BaseBody implements Moving, Trailing {
                 .plus(velocity
                         .times(TimeStep)
                         .plus(acceleration
-                                .times(Math.pow(
-                                        TimeStep,
-                                        2) / 2)
-                        )
+                                .times(Math.pow(TimeStep, 2) / 2))
                 );
     }
 }

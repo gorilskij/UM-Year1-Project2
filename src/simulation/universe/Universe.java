@@ -3,6 +3,7 @@ package simulation.universe;
 import body.SpaceShip;
 import body.interfaces.Body;
 import body.interfaces.Trailing;
+import controllers.Controller;
 import simulation.Simulation;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public interface Universe {
     /**
      *
      */
-    void addLaunch(String name, double mass, long time);
+    void addLaunch(SpaceShip spaceShip, long time, Controller ...controllers);
 
     /**
      *

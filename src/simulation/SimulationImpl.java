@@ -1,5 +1,7 @@
 package simulation;
 
+import body.SpaceShip;
+import controllers.Controller;
 import simulation.gui.GUI;
 import simulation.gui.GUIImpl;
 import simulation.runner.GUIRunner;
@@ -63,8 +65,8 @@ public final class SimulationImpl implements Simulation {
         gui.shipLaunched();
     }
 
-    public void addLaunch(String name, double mass, long time) {
-        universe.addLaunch(name, mass, time);
+    public void addLaunch(SpaceShip spaceShip, long time, Controller ...controllers) {
+        universe.addLaunch(spaceShip, time, controllers);
     }
 
     public void setUniverseRunnerMinFrameTime(long minFrameTimeNs) {

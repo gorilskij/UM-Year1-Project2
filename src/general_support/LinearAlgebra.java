@@ -1,5 +1,4 @@
 package general_support;
-import java.lang.Math.*;
 
 public class LinearAlgebra {
 

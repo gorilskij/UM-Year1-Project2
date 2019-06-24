@@ -1,5 +1,7 @@
 package simulation;
 
+import body.SpaceShip;
+import controllers.Controller;
 import simulation.interfaces.PlayPause;
 import simulation.interfaces.ShipLaunched;
 import simulation.universe.Universe;
@@ -14,7 +16,7 @@ public interface Simulation extends PlayPause, ShipLaunched {
     /**
      * add launch
      */
-    void addLaunch(String name, double mass, long time);
+    void addLaunch(SpaceShip spaceShip, long time, Controller ...controllers);
 
     void setUniverseRunnerMinFrameTime(long minFrameTimeNs);
 

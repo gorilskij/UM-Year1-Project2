@@ -142,6 +142,7 @@ public final class Vector {
                 z * other.x - x * other.z,
                 x * other.y - y * other.x
         ).direction();
+
         assert Math.abs(cross.angleBetween(this) - Math.toRadians(90)) < 1e-5
                 && Math.abs(cross.angleBetween(other) - Math.toRadians(90)) < 1e-5
                 : "wrong angle of a cross product" + Math.toDegrees(cross.angleBetween(this));
@@ -171,5 +172,9 @@ public final class Vector {
         this.x = arr[0];
         this.y = arr[1];
         this.z = arr[2];
+    }
+
+    public boolean equals(Vector other) {
+        return x == other.x && y == other.y && z == other.z;
     }
 }
