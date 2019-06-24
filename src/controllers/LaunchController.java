@@ -28,6 +28,10 @@ public class LaunchController extends BaseController {
         spaceShip.setDesiredPointing(upDirection());
     }
 
+    public void setNextController(Controller c){
+        super.nextController = c;
+    }
+
     public double control(double ignored) {
         if (currentAltitude() < fromPlanet.radius() + 10_000) {
             pointUp();
@@ -35,11 +39,7 @@ public class LaunchController extends BaseController {
         }
 
         // when done (close enough to titan)
-        spaceShip.setController(new PID(universe,
-                spaceShip,
-                universe.getBodyByName("titan"),
-                1E-11, 1E-17, 1E-4, 1E3
-        ));
+        spaceShip.setController(nextController);
         return 0;
     }
 }

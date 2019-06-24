@@ -9,4 +9,9 @@ public interface Controller {
      */
     double control(double timeStep);
 
+    /**
+     * specify which controller to use after current one
+     */
+    void setNextController(Controller c);
+
 }

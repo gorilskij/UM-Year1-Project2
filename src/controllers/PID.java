@@ -22,7 +22,6 @@ public class PID extends BaseController {
     private double P;
     private double I;
     private double D;
-    private PID nextPID;
     private double closest;
     private static final double OVERSHOT = 10;
 
@@ -30,14 +29,24 @@ public class PID extends BaseController {
 
     public PID(Universe universe, SpaceShip spaceShip, Body body, double P, double I, double D, double closest){
         super(universe, spaceShip);
-        errors = new ArrayList<>();
+        this.errors = new ArrayList<>();
         this.trackedBody = body;
         this.P = P;
         this.I = I;
         this.D = D;
-        this.nextPID = null;
         this.closest = closest;
     }
+
+    public PID(Universe universe, SpaceShip spaceShip, Body body, List<Double> errors, double P, double I, double D, double closest){
+        super(universe, spaceShip);
+        this.errors = errors;
+        this.trackedBody = body;
+        this.P = P;
+        this.I = I;
+        this.D = D;
+        this.closest = closest;
+    }
+
 
     @Override
     public double control(double timeStep) {
@@ -57,14 +66,16 @@ public class PID extends BaseController {
         double derivativeError = derivative(timeStep);
         double acceleration =  P*error + I*integralError + D*derivativeError;
 
-        if(vectorToTitan.magnitude() < closest && nextPID==null) {
-            setNextPID(this.universe,
-                    this.spaceShip,
-                    this.trackedBody,
-                    1E-11, 1E-17, 1E-15, 0);
+        if(vectorToTitan.magnitude() < closest && super.nextController != null ) {
+            this.spaceShip.setController(this.nextController);
+            this.nextController = null;
         }
 
         return Math.min(MAX_ACCELERATION, acceleration);
+    }
+
+    public void setNextController(Controller c){
+        super.nextController = c;
     }
 
     private void updateErrors(double error) {
@@ -100,11 +111,9 @@ public class PID extends BaseController {
             return Numerical.ThreePointDerivativeBackWard(errors, h);
     }
 
-    private void setNextPID(Universe universe, SpaceShip spaceShip, Body body, double P, double I, double D, double closest){
-        this.nextPID = new PID(universe,
-                spaceShip,
-                trackedBody,
-                P, I, D, closest);
-        this.spaceShip.setController(this.nextPID);
+    public List<Double> getErrors() {
+        return errors;
     }
+
+
 }
