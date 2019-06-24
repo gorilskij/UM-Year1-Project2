@@ -20,8 +20,8 @@ import java.util.List;
 
 public class WindowImpl implements Window {
     private boolean playing = false;
-    private static final double ZOOM_FACTOR = 1.5;
-    private static final double KEY_ROT_DEG = 2; // degrees of rotation from 1 key press
+    private static final double ZOOM_FACTOR = 1.2;
+    private static final double KEY_ROT_DEG = 5; // degrees of rotation from 1 key press
 
     private final Simulation simulation;
     private final Universe universe;
@@ -95,7 +95,8 @@ public class WindowImpl implements Window {
         space.setBackground(Color.BLACK);
         space.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                space.requestFocus();
+                if (!space.hasFocus())
+                  space.requestFocus();
             }
         });
         space.addKeyListener(new KeyListener() {
@@ -107,6 +108,7 @@ public class WindowImpl implements Window {
 
             public void keyPressed(KeyEvent e) {
                 switch (e.getKeyCode()) {
+                    // rotation
                     case 37: // left arrow
                         rotation = rotation.plusHorizontal(-KEY_ROT_DEG);
                         break;
@@ -118,6 +120,14 @@ public class WindowImpl implements Window {
                         break;
                     case 40: // down arrow
                         rotation = rotation.plusVertical(-KEY_ROT_DEG);
+                        break;
+
+                    // zoom
+                    case 87: // comma
+                        scale *= ZOOM_FACTOR;
+                        break;
+                    case 69: // dot
+                        scale /= ZOOM_FACTOR;
                         break;
                 }
                 paint();
@@ -161,23 +171,6 @@ public class WindowImpl implements Window {
                 trailing.trailer().clear();
         });
 
-
-        JSlider horizontalRotationSlider = new JSlider(JSlider.HORIZONTAL, 0, 360, 0);
-        JLabel horizontalRotationLabel = new JLabel("  0°");
-        horizontalRotationSlider.addChangeListener(e -> {
-            rotation = rotation.withHorizontal(horizontalRotationSlider.getValue());
-            horizontalRotationLabel.setText(String.format("%3d°", (int) rotation.horizontal));
-            paint();
-        });
-
-        JSlider verticalRotationSlider = new JSlider(JSlider.HORIZONTAL, 0, 360, 0);
-        JLabel verticalRotationLabel = new JLabel("  0°");
-        verticalRotationSlider.addChangeListener(e -> {
-            rotation = rotation.withVertical(verticalRotationSlider.getValue());
-            verticalRotationLabel.setText(String.format("%3d°", (int) rotation.vertical));
-            paint();
-        });
-
         scaleLabel = new JLabel();
         setScale(scale); // refresh scaleLabel
 
@@ -202,12 +195,6 @@ public class WindowImpl implements Window {
 
         bottomPanel.add(scaleLabel);
         bottomPanel.add(timePassedLabel);
-
-        bottomPanel.add(horizontalRotationLabel);
-        bottomPanel.add(horizontalRotationSlider);
-
-        bodySelectorPanel.add(verticalRotationLabel);
-        bottomPanel.add(verticalRotationSlider);
 
         contentPane.add(bottomPanel);
 
