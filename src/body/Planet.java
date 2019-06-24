@@ -14,7 +14,7 @@ public class Planet extends BaseBody implements Round, Moving, Attractive, Trail
     private Vector acceleration;
     private Vector lastAcceleration = Vector.ZERO;
     private final double radius;
-    private final Trailer trailer = new Trailer(this, 1000, Math.PI * 1e5);
+    private final Trailer trailer = new Trailer(this, 1000, 1e5);
 
     public Trailer trailer() {
         return trailer;
