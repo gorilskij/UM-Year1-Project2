@@ -16,4 +16,12 @@ public class Rotation {
     public Rotation withVertical(double vertical) {
         return new Rotation(horizontal, vertical);
     }
+
+    public Rotation plusHorizontal(double deltaH) {
+        return new Rotation(horizontal + deltaH, vertical);
+    }
+
+    public Rotation plusVertical(double deltaV) {
+        return new Rotation(horizontal, vertical + deltaV);
+    }
 }

@@ -9,6 +9,10 @@ import simulation.universe.Universe;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -17,6 +21,7 @@ import java.util.List;
 public class WindowImpl implements Window {
     private boolean playing = false;
     private static final double ZOOM_FACTOR = 1.5;
+    private static final double KEY_ROT_DEG = 2; // degrees of rotation from 1 key press
 
     private final Simulation simulation;
     private final Universe universe;
@@ -88,6 +93,36 @@ public class WindowImpl implements Window {
             }
         };
         space.setBackground(Color.BLACK);
+        space.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                space.requestFocus();
+            }
+        });
+        space.addKeyListener(new KeyListener() {
+            public void keyTyped(KeyEvent e) {
+            }
+
+            public void keyReleased(KeyEvent e) {
+            }
+
+            public void keyPressed(KeyEvent e) {
+                switch (e.getKeyCode()) {
+                    case 37: // left arrow
+                        rotation = rotation.plusHorizontal(-KEY_ROT_DEG);
+                        break;
+                    case 39: // right arrow
+                        rotation = rotation.plusHorizontal(KEY_ROT_DEG);
+                        break;
+                    case 38: // up arrow
+                        rotation = rotation.plusVertical(KEY_ROT_DEG);
+                        break;
+                    case 40: // down arrow
+                        rotation = rotation.plusVertical(-KEY_ROT_DEG);
+                        break;
+                }
+                paint();
+            }
+        });
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout());
