@@ -4,6 +4,7 @@ import body.interfaces.Attractive;
 import body.interfaces.Body;
 import body.interfaces.Round;
 import general_support.PaintingTools;
+import general_support.Rotation;
 import general_support.Vector;
 
 import java.awt.*;
@@ -28,8 +29,8 @@ public class Star extends BaseBody implements Round, Attractive {
         this.radius = radius;
     }
 
-    public void paint(Graphics g, Vector centerPosition, int rotationDeg, double scale) {
-        PaintingTools.paintCircularObject(g, scale, this, centerPosition, rotationDeg);
+    public void paint(Graphics g, Vector centerPosition, Rotation rotation, double scale) {
+        PaintingTools.paintCircularObject(g, scale, this, centerPosition, rotation);
     }
 
     @Override

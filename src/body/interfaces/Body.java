@@ -1,5 +1,6 @@
 package body.interfaces;
 
+import general_support.Rotation;
 import general_support.Trailer;
 import general_support.Vector;
 
@@ -38,7 +39,7 @@ public interface Body {
      * @param centerPosition position of centered body
      * @param scale scale
      */
-    void paint(Graphics g, Vector centerPosition, int rotationDeg, double scale);
+    void paint(Graphics g, Vector centerPosition, Rotation rotation, double scale);
 
     /**
      *

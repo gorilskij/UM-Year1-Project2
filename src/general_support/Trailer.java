@@ -45,7 +45,7 @@ public class Trailer {
         }
     }
 
-    public void paint(Graphics g, Vector centerPosition, int rotationDeg, double scale) {
+    public void paint(Graphics g, Vector centerPosition, Rotation rotation, double scale) {
         g.setColor(color);
 
         // note: don't replace with foreach, throws exception, intellij lies
@@ -53,7 +53,7 @@ public class Trailer {
         for (int i = 0; i < trail.size(); i++) {
             Vector vector = trail.get(i);
 
-            Point.Double pos = PaintingTools.convert(vector, centerPosition, rotationDeg).toXYPoint();
+            Point.Double pos = PaintingTools.convert(vector, centerPosition, rotation).toXYPoint();
             g.fillOval(
                     (int) (pos.x * scale - 1),
                     (int) (pos.y * scale - 1),

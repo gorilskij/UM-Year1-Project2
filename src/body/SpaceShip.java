@@ -6,10 +6,7 @@ import body.interfaces.Round;
 import body.interfaces.Trailing;
 import body.surface.SurfaceImpl;
 import controllers.Controller;
-import general_support.LinearAlgebra;
-import general_support.PaintingTools;
-import general_support.Trailer;
-import general_support.Vector;
+import general_support.*;
 import simulation.Simulation;
 import simulation.universe.Universe;
 
@@ -131,21 +128,21 @@ public class SpaceShip extends BaseBody implements Moving, Trailing {
         return this.universe;
     }
 
-    public void paint(Graphics g, Vector centerPosition, int rotationDeg, double scale) {
+    public void paint(Graphics g, Vector centerPosition, Rotation rotation, double scale) {
         g.setColor(color());
 
-        Point.Double pos = PaintingTools.convert(position, centerPosition, rotationDeg).toXYPoint();
+        Point.Double pos = PaintingTools.convert(position, centerPosition, rotation).toXYPoint();
 
         PaintingTools.paintHighlightCircle(g, scale, pos);
         PaintingTools.paintLabel(g, scale, pos, name());
 
-        Vector rotatedPointing = pointing.rotateAroundYAxis(rotationDeg);
-        Vector rotatedDesiredPointing = desiredPointing.rotateAroundYAxis(rotationDeg);
+        Vector rotatedPointing = PaintingTools.convert(pointing, Vector.ZERO, rotation);
+        Vector rotatedDesiredPointing = PaintingTools.convert(desiredPointing, Vector.ZERO, rotation);
 
         PaintingTools.paintPointing(g, Color.RED, 100, pos, rotatedPointing);
         PaintingTools.paintPointing(g, Color.GREEN, 80, pos, rotatedDesiredPointing);
 
-        trailer.paint(g, centerPosition, rotationDeg, scale);
+        trailer.paint(g, centerPosition, rotation, scale);
     }
 
     @Override

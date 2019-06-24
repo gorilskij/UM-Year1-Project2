@@ -3,6 +3,7 @@ package simulation.gui.window;
 import body.SpaceShip;
 import body.interfaces.Body;
 import body.interfaces.Trailing;
+import general_support.Rotation;
 import simulation.Simulation;
 import simulation.universe.Universe;
 
@@ -20,7 +21,7 @@ public class WindowImpl implements Window {
     private final Simulation simulation;
     private final Universe universe;
 
-    private int rotation = 0;
+    private Rotation rotation = new Rotation(0, 0);
 
     private final JPanel space;
     private final JButton playPauseButton = new JButton();
@@ -126,11 +127,19 @@ public class WindowImpl implements Window {
         });
 
 
-        JSlider rotationSlider = new JSlider(JSlider.HORIZONTAL, 0, 360, 0);
-        JLabel rotationLabel = new JLabel("  0°");
-        rotationSlider.addChangeListener(e -> {
-            rotation = rotationSlider.getValue();
-            rotationLabel.setText(String.format("%3d°", rotation));
+        JSlider horizontalRotationSlider = new JSlider(JSlider.HORIZONTAL, 0, 360, 0);
+        JLabel horizontalRotationLabel = new JLabel("  0°");
+        horizontalRotationSlider.addChangeListener(e -> {
+            rotation = rotation.withHorizontal(horizontalRotationSlider.getValue());
+            horizontalRotationLabel.setText(String.format("%3d°", (int) rotation.horizontal));
+            paint();
+        });
+
+        JSlider verticalRotationSlider = new JSlider(JSlider.HORIZONTAL, 0, 360, 0);
+        JLabel verticalRotationLabel = new JLabel("  0°");
+        verticalRotationSlider.addChangeListener(e -> {
+            rotation = rotation.withVertical(verticalRotationSlider.getValue());
+            verticalRotationLabel.setText(String.format("%3d°", (int) rotation.vertical));
             paint();
         });
 
@@ -159,8 +168,11 @@ public class WindowImpl implements Window {
         bottomPanel.add(scaleLabel);
         bottomPanel.add(timePassedLabel);
 
-        bottomPanel.add(rotationLabel);
-        bottomPanel.add(rotationSlider);
+        bottomPanel.add(horizontalRotationLabel);
+        bottomPanel.add(horizontalRotationSlider);
+
+        bodySelectorPanel.add(verticalRotationLabel);
+        bottomPanel.add(verticalRotationSlider);
 
         contentPane.add(bottomPanel);
 

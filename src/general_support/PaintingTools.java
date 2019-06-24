@@ -5,9 +5,16 @@ import body.interfaces.Round;
 import java.awt.*;
 
 public final class PaintingTools {
-    public static Vector convert(Vector vector, Vector centerPosition, int rotationDeg) {
+    public static Vector convert(Vector vector, Vector centerPosition, Rotation rotation) {
         Vector positioned = vector.minus(centerPosition);
-        return positioned.rotateAroundYAxis(rotationDeg);
+
+        // don't rotate is vector is at/near origin
+        if (positioned.magnitude() < 1e5)
+            return positioned;
+
+        Vector rotatedH = positioned.rotateAboutY(rotation.horizontal);
+//        return rotatedH.rotateTo(new Vector(0, 0, 1).rotateAboutY(rotation.horizontal), rotation.vertical);
+        return rotatedH.rotateAboutX(rotation.vertical);
     }
 
     public static void paintCircularObject(
@@ -15,10 +22,10 @@ public final class PaintingTools {
             double scale,
             Round object,
             Vector centerPosition,
-            int rotationDeg
+            Rotation rotation
     ) {
         g.setColor(object.color());
-        Point.Double pos = convert(object.position(), centerPosition, rotationDeg).toXYPoint();
+        Point.Double pos = convert(object.position(), centerPosition, rotation).toXYPoint();
 
         int diameter = (int) Math.round(object.radius() * 2 * scale);
 
