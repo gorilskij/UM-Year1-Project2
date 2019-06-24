@@ -28,7 +28,7 @@ public class SpaceShip extends BaseBody implements Moving, Trailing {
     private double radius;
     private Body parent;
     private Vector directionOnParent;
-    private final Trailer trailer = new Trailer(this);
+    private final Trailer trailer = new Trailer(this, 1e5);
 
     public Trailer trailer() {
         return trailer;
