@@ -27,7 +27,7 @@ public class PID extends BaseController {
 
     private static final double MAX_ACCELERATION = 0.01;
 
-    public PID(Universe universe, SpaceShip spaceShip, Body body, double P, double I, double D, double closest){
+    public PID(Universe universe, SpaceShip spaceShip, Body body, double P, double I, double D, double closest) {
         super(universe, spaceShip);
         this.errors = new ArrayList<>();
         this.trackedBody = body;
@@ -37,7 +37,7 @@ public class PID extends BaseController {
         this.closest = closest;
     }
 
-    public PID(Universe universe, SpaceShip spaceShip, Body body, List<Double> errors, double P, double I, double D, double closest){
+    public PID(Universe universe, SpaceShip spaceShip, Body body, List<Double> errors, double P, double I, double D, double closest) {
         super(universe, spaceShip);
         this.errors = errors;
         this.trackedBody = body;
@@ -54,7 +54,7 @@ public class PID extends BaseController {
         if (error == 0)
             return 0;
 
-        Vector vectorToTitan =  spaceShip.position().vectorTo(trackedBody.position());
+        Vector vectorToTitan = spaceShip.position().vectorTo(trackedBody.position());
         Vector futureVectorToTitan = spaceShip.nextPosition().vectorTo(((Planet) trackedBody).nextPosition());
         Vector directionTotTitan = vectorToTitan.direction();
         Vector futureDirectionToTitan = futureVectorToTitan.direction();
@@ -64,9 +64,9 @@ public class PID extends BaseController {
         double integralError = this.updateIntegral(error);
         this.lastError = error;
         double derivativeError = derivative(timeStep);
-        double acceleration =  P*error + I*integralError + D*derivativeError;
+        double acceleration = P * error + I * integralError + D * derivativeError;
 
-        if(vectorToTitan.magnitude() < closest && super.nextController != null ) {
+        if (vectorToTitan.magnitude() < closest && super.nextController != null) {
             this.spaceShip.setController(this.nextController);
             this.nextController = null;
         }
@@ -74,7 +74,7 @@ public class PID extends BaseController {
         return Math.min(MAX_ACCELERATION, acceleration);
     }
 
-    public void setNextController(Controller c){
+    public void setNextController(Controller c) {
         super.nextController = c;
     }
 
@@ -87,25 +87,25 @@ public class PID extends BaseController {
         }
     }
 
-    private double proportional(Vector position){
+    private double proportional(Vector position) {
         return position.distanceTo(trackedBody.position());
     }
 
-    private double updateIntegral(double error){
-        if(errors.size() == 1)
+    private double updateIntegral(double error) {
+        if (errors.size() == 1)
             this.integral = 0;
-        else if(errors.size() == 2)
-            this.integral = error/2 + this.lastError/2;
+        else if (errors.size() == 2)
+            this.integral = error / 2 + this.lastError / 2;
         else
             this.integral = Numerical.updateTrapezoidIntegral(error, this.lastError, this.integral);
 
         return this.integral;
     }
 
-    private double derivative(double h){
-        if(errors.size() == 1)
+    private double derivative(double h) {
+        if (errors.size() == 1)
             return 0;
-        else if(errors.size() == 2)
+        else if (errors.size() == 2)
             return Numerical.TwoPointDerivativeBackWard(errors, h);
         else
             return Numerical.ThreePointDerivativeBackWard(errors, h);
@@ -114,6 +114,4 @@ public class PID extends BaseController {
     public List<Double> getErrors() {
         return errors;
     }
-
-
 }
