@@ -46,9 +46,18 @@ public class PIDController extends BaseController {
 
         Vector vectorToTitan = spaceShip.position().vectorTo(trackedBody.position());
         Vector futureVectorToTitan = spaceShip.nextPosition().vectorTo(((Planet) trackedBody).nextPosition());
-        Vector directionTotTitan = vectorToTitan.direction();
+        Vector directionToTitan = vectorToTitan.direction();
         Vector futureDirectionToTitan = futureVectorToTitan.direction();
-        spaceShip.setDesiredPointing(LinearAlgebra.rotateTo(directionTotTitan, futureDirectionToTitan, directionTotTitan.angleBetween(futureDirectionToTitan) + OVERSHOT));
+
+        if (directionToTitan.magnitude() == 0 || futureDirectionToTitan.magnitude() == 0)
+            return 0;
+
+        spaceShip.setDesiredPointing(directionToTitan
+                .rotateTo(
+                        futureDirectionToTitan,
+                        directionToTitan.angleBetween(futureDirectionToTitan) + OVERSHOT
+                )
+        );
 
         this.updateErrors(error);
         double integralError = this.updateIntegral(error);

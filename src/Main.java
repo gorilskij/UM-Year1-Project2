@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
 
 class ShipInfo {
     long time;
@@ -22,7 +21,7 @@ class ShipInfo {
     double[] PID2;
 
     ShipInfo(long time, double[] PID1, double closest1, double[] PID2) {
-        this.time = time;
+        this.time = Math.max(time, 0);
         this.PID1 = PID1;
         this.closest1 = closest1;
         this.PID2 = PID2;
@@ -104,10 +103,11 @@ class ShipInfo {
 }
 
 public class Main {
-    private static ShipInfo iterate(ShipInfo[] generation) {
-        Simulation simulation = new SimulationImpl(100, 60);
-        Universe universe = simulation.universe();
 
+    private static final int TIME_STEP = 100;
+    private static final int GUI_FPS = 60;
+
+    private static ShipInfo iterate(Simulation simulation, ShipInfo[] generation) {
         Map<String, Double> minDistanceMap = new HashMap<>();
 
         for (int i = 0; i < generation.length; i++) {
@@ -117,25 +117,24 @@ public class Main {
         }
 
         try {
-            simulation.play();
             System.out.println("---START---");
             long start = System.nanoTime();
-            Thread.sleep(60 * 1000);
+            simulation.play();
+            Thread.sleep(1 * 1000);
             System.out.println("ran for: " + (System.nanoTime() - start) / 1e9 + "s");
-        } catch (Exception e) {
+            throw new InterruptedException();
+        } catch (InterruptedException e) {
             int bestI = -1;
             double best = Double.POSITIVE_INFINITY;
             for (int i = 0; i < generation.length; i++) {
-                if (minDistanceMap.get(i) < best) {
-                    best = minDistanceMap.get(i);
+                if (minDistanceMap.get("ship " + i) < best) {
+                    best = minDistanceMap.get("ship " + i);
                     bestI = i;
                 }
             }
             System.out.println("best: " + best);
             return generation[bestI];
         }
-
-        throw new IllegalStateException("unreachable");
     }
 
     public static void main(String[] args) {
@@ -146,9 +145,12 @@ public class Main {
                         new double[] {0, 0, 0}
                 )};
 
+        Simulation simulation = new SimulationImpl(TIME_STEP, GUI_FPS);
+
         for (int i = 0; i < 10; i++) {
-            ShipInfo best = iterate(generation);
+            ShipInfo best = iterate(simulation, generation);
             generation = best.spreadRand(10, 1000, 1e-5, 1e-5);
+            simulation = new SimulationImpl(TIME_STEP, GUI_FPS, simulation);
         }
     }
 

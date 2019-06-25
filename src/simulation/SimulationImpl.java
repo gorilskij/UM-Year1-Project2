@@ -24,9 +24,9 @@ public final class SimulationImpl implements Simulation {
 
     private final UniverseRunner universeRunner;
 
-    private final GUI gui;
+    private GUI gui;
     private final GUIRunner guiRunner;
-    private final Universe universe;
+    private Universe universe;
 
     public Universe universe() {
         return universe;
@@ -42,12 +42,25 @@ public final class SimulationImpl implements Simulation {
     }
 
     public SimulationImpl(int initialTimeStep, int guiFPS) {
+        this(initialTimeStep, guiFPS, null);
+    }
+
+    public SimulationImpl(int initialTimeStep, int guiFPS, Simulation simulation) {
+        if (simulation != null)
+            simulation.pause();
+
         timeStep = initialTimeStep;
 
         timer = new Timer();
 
         universe = UniverseImpl.newSolarSystem(this);
-        gui = new GUIImpl(this, universe);
+
+        if (simulation == null)
+            gui = new GUIImpl(this, universe);
+        else {
+            gui = ((SimulationImpl) simulation).gui;
+            gui.setSimulation(this);
+        }
 
         universeRunner = new UniverseRunner(timer, universe, initialTimeStep);
         guiRunner = new GUIRunner(guiFPS, gui, universe);

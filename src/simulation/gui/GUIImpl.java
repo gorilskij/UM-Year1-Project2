@@ -24,6 +24,10 @@ public final class GUIImpl implements GUI {
         window.pause();
     }
 
+    public void setSimulation(Simulation simulation) {
+        window.setSimulation(simulation);
+    }
+
     public void shipLaunched() {
         window.shipLaunched();
     }

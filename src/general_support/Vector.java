@@ -121,7 +121,22 @@ public final class Vector {
     public double angleBetween(Vector other) {
         if (dotProduct(other) / (magnitude() * other.magnitude()) > 1.0) return 1.0;
         else if (dotProduct(other) / (magnitude() * other.magnitude()) < -1.0) return -1.0;
-        assert Math.abs(dotProduct(other) / (magnitude() * other.magnitude())) <= 1.0;
+
+        assert !Double.isNaN(dotProduct(other));
+        assert !Double.isNaN(magnitude());
+        assert !Double.isNaN(other.magnitude());
+
+        if (Double.isNaN(Math.abs(dotProduct(other) / (magnitude() * other.magnitude())))) {
+            System.out.println("dp: " + dotProduct(other));
+            System.out.println("self: " + this);
+            System.out.println("mag: " + magnitude());
+            System.out.println("other: " + other);
+            System.out.println("otherMag: " + other.magnitude());
+        }
+
+        assert Math.abs(dotProduct(other) / (magnitude() * other.magnitude())) <= 1
+                : Math.abs(dotProduct(other) / (magnitude() * other.magnitude())) + " not <= 1";
+
         return Math.acos(dotProduct(other) / (magnitude() * other.magnitude()));
     }
 

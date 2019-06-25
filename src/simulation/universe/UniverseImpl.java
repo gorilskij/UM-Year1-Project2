@@ -131,7 +131,9 @@ public final class UniverseImpl implements Universe {
 
     @Override
     public void addLaunch(SpaceShip spaceShip, long time, Controller ...controllers) { // time in seconds
-        assert time >= simulation.timePassedS() : "tried to launch spaceShip in the past";
+        assert time >= simulation.timePassedS()
+                : "tried to launch spaceShip in the past"
+                + " (" + time + " >= " + simulation.timePassedS() + ")";
 
         queuedLaunches.add(new LaunchPackage(spaceShip, List.of(controllers), time));
     }
