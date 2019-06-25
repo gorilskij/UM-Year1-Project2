@@ -52,7 +52,11 @@ class ShipInfo {
         int[] coeff = {-1, -1, -1};
 
         for (int i = 0; i < PIDs.length; i++) {
-            PIDs[i] = new double[]{PID[0] + coeff[0] * PIDDelta, PID[1] + coeff[1] * PIDDelta, PID[2] + coeff[2] * PIDDelta};
+            PIDs[i] = new double[] {
+                    PID[0] + coeff[0] * PIDDelta,
+                    PID[1] + coeff[1] * PIDDelta,
+                    PID[2] + coeff[2] * PIDDelta
+            };
 
             for (int c = 0; c < coeff.length; c++) {
                 coeff[c]++;
@@ -120,7 +124,7 @@ public class Main {
             System.out.println("---START---");
             long start = System.nanoTime();
             simulation.play();
-            Thread.sleep(1 * 1000);
+            Thread.sleep(10 * 1000);
             System.out.println("ran for: " + (System.nanoTime() - start) / 1e9 + "s");
             throw new InterruptedException();
         } catch (InterruptedException e) {
