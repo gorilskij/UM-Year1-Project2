@@ -20,10 +20,10 @@ class ShipInfo {
 
     double[] PID2;
 
-    ShipInfo(long time, double[] PID1, double closest1, double[] PID2) {
+    ShipInfo(long time, double[] PID1, double[] PID2) {
         this.time = Math.max(time, 0);
         this.PID1 = PID1;
-        this.closest1 = closest1;
+        closest1 = 1e10;
         this.PID2 = PID2;
     }
 
@@ -73,25 +73,23 @@ class ShipInfo {
         return PIDs;
     }
 
-    ShipInfo[] spread(long timeDelta, double PIDDelta, double closestDelta) {
+    ShipInfo[] spread(long timeDelta, double PIDDelta) {
         long[] times = {time - timeDelta, time, time + timeDelta};
         double[][] PID1s = spreadPID(PID1, PIDDelta);
-        double[] closests = {closest1 - closestDelta, closest1, closest1 + closestDelta};
         double[][] PID2s = spreadPID(PID2, PIDDelta);
 
-        ShipInfo[] infos = new ShipInfo[times.length * PID1s.length * PID2s.length * closests.length];
+        ShipInfo[] infos = new ShipInfo[times.length * PID1s.length * PID2s.length];
         int index = 0;
         for (long time : times)
             for (double[] newPID1 : PID1s)
-                for (double closest : closests)
-                    for (double[] newPID2 : PID2s)
-                        infos[index++] = new ShipInfo(time, newPID1, closest, newPID2);
+                for (double[] newPID2 : PID2s)
+                    infos[index++] = new ShipInfo(time, newPID1, newPID2);
 
         return infos;
     }
 
-    ShipInfo[] spreadRand(int selectN, long timeDelta, double PIDDelta, double closestDelta) {
-        ShipInfo[] spread = spread(timeDelta, PIDDelta, closestDelta);
+    ShipInfo[] spreadRand(int selectN, long timeDelta, double PIDDelta) {
+        ShipInfo[] spread = spread(timeDelta, PIDDelta);
         List<ShipInfo> selected = new ArrayList<>();
         for (int i = 0; i < selectN; i++) {
             ShipInfo info = spread[(int) (Math.random() * spread.length)];
@@ -145,7 +143,6 @@ public class Main {
         ShipInfo[] generation = {new ShipInfo(
                         0,
                         new double[] {0, 0, 0},
-                        0,
                         new double[] {0, 0, 0}
                 )};
 
@@ -153,7 +150,7 @@ public class Main {
 
         for (int i = 0; i < 10; i++) {
             ShipInfo best = iterate(simulation, generation);
-            generation = best.spreadRand(10, 1000, 1e-5, 1e-5);
+            generation = best.spreadRand(10, 1000, 1e-10);
             simulation = new SimulationImpl(TIME_STEP, GUI_FPS, simulation);
         }
     }
