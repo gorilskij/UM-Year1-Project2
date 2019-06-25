@@ -8,7 +8,7 @@ public class SurfaceImpl implements Surface {
 
     private final double radius;
     private final Body parent;
-    public static final double EPSILON = 1;
+    public static final double EPSILON = -500000;
 
     public SurfaceImpl(Round round) {
         this.parent = round;

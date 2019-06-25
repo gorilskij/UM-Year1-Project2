@@ -54,18 +54,19 @@ public final class UniverseImpl implements Universe {
         this.simulation = simulation;
     }
 
-    public void addShip(SpaceShip ss) {
-        Round earth = (Round) getBodyByName("earth");
+    public void addShip(SpaceShip ss, String bodyName) {
+        Round body = (Round) getBodyByName(bodyName);
         ss.setPosition(getBodyByName("sun")
                 .position()
-                .vectorTo(earth
+                .vectorTo(body
                         .position())
                 .direction()
-                .times(earth
+                .times(body
                         .radius())
-                .plus(earth.position()));
+                .plus(body.position()));
 
-        ss.setVelocity(((Moving) earth).velocity());
+        ss.setVelocity(((Moving) body).velocity());
+        addBody(ss);
     }
 
     public static Universe newSolarSystem(Simulation simulation) {
@@ -105,55 +106,78 @@ public final class UniverseImpl implements Universe {
 
         if (body instanceof SpaceShip) {
             spaceShips.add((SpaceShip) body);
-            addShip((SpaceShip) body);
         }
 
         if (body instanceof Trailing)
             trailingBodies.add((Trailing) body);
     }
 
-    private void launchShip(SpaceShip spaceShip) {
-        Planet earth = (Planet) getBodyByName("earth");
-        Vector sunToEarth = getBodyByName("sun").position().vectorTo(earth.position()).direction();
-        spaceShip.setPosition(earth.position().plus(sunToEarth.times(earth.radius())));
-        spaceShip.setDesiredPointing(sunToEarth);
+    private void launchShip(LaunchPackage p) {
+        SpaceShip ship = p.ship();
+        Planet start = (Planet) getBodyByName(p.launchBody());
+        Vector sunToStart = getBodyByName("sun").position().vectorTo(start.position()).direction();
+        ship.setPosition(start.position().plus(sunToStart.times(start.radius())));
+        ship.setDesiredPointing(sunToStart);
 
         LaunchController launchController = new LaunchController(
                 this,
-                spaceShip,
-                earth);
+                ship,
+                start);
 
-        PID pid1 = new PID(this,
-                spaceShip,
-                this.getBodyByName("titan"),
-                1.8E-11, 2.5E-16, 2E-4, 2E11
-        );
-
-        PID pid2 = new PID(this,
-                spaceShip,
-                this.getBodyByName("titan"),
-                pid1.getErrors(),
-                8E-11, 0, 5E-5, 0);
+        launchController.setNextController(p.getControllers().get(0));
+        ship.setController(launchController);
 
 
-        launchController.setNextController(pid1);
-        pid1.setNextController(pid2);
-
-        spaceShip.setController(launchController);
-
-
-
-        addBody(spaceShip);
+        addShip(ship, p.launchBody());
         simulation.shipLaunched();
     }
 
     @Override
-    public void addLaunch(String name, double mass, long time) { // time in seconds
+    public void addLaunch(String name, String launchBody, double mass, long time) { // time in seconds
         assert time >= simulation.timePassedS() : "tried to launch spaceShip in the past";
 
-        queuedLaunches.add(new LaunchPackage(
-                new SpaceShip(name, Color.WHITE, mass, simulation), time
-        ));
+        SpaceShip ship = new SpaceShip(name, Color.WHITE, mass, simulation);
+        LaunchPackage launch = new LaunchPackage(ship, launchBody, time);
+
+
+        if(launchBody.equals("earth")) {
+            PID pid1 = new PID(this,
+                    ship,
+                    this.getBodyByName("titan"),
+                    1E-11, 5E-17, 1E-4, 7E10
+            );
+
+            launch.addController(pid1);
+
+            launch.addController(new PID(this,
+                    ship,
+                    this.getBodyByName("titan"),
+                    pid1.getErrors(),
+                    4E-14, 0, 0.0005, 0));
+
+
+
+        }
+        else if(launchBody.equals("titan")){
+            PID pid1 = new PID(this,
+                    ship,
+                    this.getBodyByName("earth"),
+                    1E-11, 5E-17, 1E-4, 7E10
+            );
+
+            launch.addController(pid1);
+
+            launch.addController(new PID(this,
+                    ship,
+                    this.getBodyByName("earth"),
+                    pid1.getErrors(),
+                    4E-14, 0, 0.0005, 0));
+
+
+            pid1.setNextController(null);
+        }
+        queuedLaunches.add(launch);
+
     }
 
     private Vector computeAcceleration(Body body, Vector acceleration, Attractive attractor) {
@@ -202,6 +226,7 @@ public final class UniverseImpl implements Universe {
                 }
 
                 if (ss.parent() == null && ss.isOn((Body) attractor)) {
+                    System.out.println(ss.parent());
                     Vector relativeVelocity = ss.velocity().minus(((Moving) attractor).velocity());
                     if (relativeVelocity.magnitude() > 5)
                         throw new IllegalStateException("spaceship " + ss.name() + " crashed on " + ((Moving) attractor).name() + " with a speed of " + relativeVelocity.magnitude());
@@ -234,7 +259,7 @@ public final class UniverseImpl implements Universe {
         List<LaunchPackage> launched = new ArrayList<>();
         for (LaunchPackage p : queuedLaunches) {
             if (p.time() <= simulation.timePassedS()) {
-                launchShip(p.ship());
+                launchShip(p);
                 launched.add(p);
             }
         }

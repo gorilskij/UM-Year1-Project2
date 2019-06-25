@@ -14,7 +14,7 @@ public interface Simulation extends PlayPause, ShipLaunched {
     /**
      * add launch
      */
-    void addLaunch(String name, double mass, long time);
+    void addLaunch(String name, String launchBody, double mass, long time);
 
     void setUniverseRunnerMinFrameTime(long minFrameTimeNs);
 
