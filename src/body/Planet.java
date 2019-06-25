@@ -1,6 +1,7 @@
 package body;
 
 import body.interfaces.*;
+import data.Constants;
 import general_support.PaintingTools;
 import general_support.Rotation;
 import general_support.Trailer;
@@ -79,15 +80,37 @@ public class Planet extends BaseBody implements Round, Moving, Attractive, Trail
         return position.vectorTo(body.position()).direction();
     }
 
-    public Vector nextPosition() {
+    public Vector nextPosition(double n) {
         return position
                 .plus(velocity
-                        .times(TimeStep)
+                        .times(TIME_STEP * n)
                         .plus(acceleration
                                 .times(Math.pow(
-                                        TimeStep,
+                                        TIME_STEP * n,
                                         2) / 2)
                         )
                 );
+    }
+
+    public Vector integrationResult(double numberOfTimeSteps, Body attractor) {
+        Vector position = this.position();
+        Vector velocity = this.velocity();
+        Vector lastAcceleration = this.acceleration();
+        for (double i = 0; i < numberOfTimeSteps; i += 1E-3) {
+            position = position.plus(velocity
+                    .times(TIME_STEP)
+                    .plus(acceleration.times(Math.pow(TIME_STEP, 2) / 2))
+            );
+            velocity = velocity.plus(acceleration.averageWith(lastAcceleration).times(TIME_STEP));
+            lastAcceleration = lastAcceleration.plus(position
+                    .vectorTo(attractor.position())
+                    .direction()
+                    .times(
+                            Constants.G * attractor.mass()
+                                    / Math.pow(position.distanceTo(attractor.position()), 2)
+                    )
+            );
+        }
+        return position;
     }
 }

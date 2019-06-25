@@ -8,7 +8,7 @@ public abstract class BaseBody implements Body {
     private final String name;
     private final Color color;
     private final double mass;
-    protected static final double TimeStep = 100;
+    protected static final double TIME_STEP = 100;
 
     public String name() {
         return name;

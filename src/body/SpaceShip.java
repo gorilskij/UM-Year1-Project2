@@ -29,7 +29,7 @@ public class SpaceShip extends BaseBody implements Moving, Trailing {
     private Body parent;
     private Vector directionOnParent;
     private final Trailer trailer = new Trailer(this, 1e6);
-    private final static double MAX_VELOCITY = 5E4;
+    private final static double MAX_VELOCITY = 8E4;//4.358E4;
 
     public Trailer trailer() {
         return trailer;
@@ -182,10 +182,10 @@ public class SpaceShip extends BaseBody implements Moving, Trailing {
     public Vector nextPosition() {
         return position
                 .plus(velocity
-                        .times(TimeStep)
+                        .times(TIME_STEP)
                         .plus(acceleration
                                 .times(Math.pow(
-                                        TimeStep,
+                                        TIME_STEP,
                                         2) / 2)
                         )
                 );

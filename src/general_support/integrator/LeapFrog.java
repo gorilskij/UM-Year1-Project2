@@ -1,7 +1,10 @@
 package general_support.integrator;
 
+import body.interfaces.Body;
 import body.interfaces.Moving;
+import data.Constants;
 import general_support.Vector;
+import simulation.universe.Universe;
 
 public class LeapFrog implements Integrator {
 
@@ -16,4 +19,6 @@ public class LeapFrog implements Integrator {
         body.setVelocity(body.velocity().plus(acceleration.averageWith(body.lastAcceleration()).times(timeStep)));
         body.setLastAcceleration(acceleration);
     }
+
+
 }
