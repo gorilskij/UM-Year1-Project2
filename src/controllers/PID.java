@@ -23,9 +23,9 @@ public class PID extends BaseController {
     private double I;
     private double D;
     private double closest;
-    private static final double OVERSHOT = 10;
+    private static final double OVERSHOT = 5;
 
-    private static final double MAX_ACCELERATION = 0.01;
+    private static final double MAX_ACCELERATION = 6.35E-5;
 
     public PID(Universe universe, SpaceShip spaceShip, Body body, double P, double I, double D, double closest) {
         super(universe, spaceShip);
@@ -51,14 +51,11 @@ public class PID extends BaseController {
     @Override
     public double control(double timeStep) {
         double error = this.proportional(spaceShip.position());
-        if (error < 1e7) {
-            spaceShip.slowDown();
-        }
 
         if (error == 0)
             return 0;
 
-        Vector vectorToTitan = spaceShip.position().vectorTo(trackedBody.position());
+        Vector vectorToTitan = spaceShip.nextPosition().vectorTo(trackedBody.position());
         Vector futureVectorToTitan = spaceShip.nextPosition().vectorTo(((Planet) trackedBody).nextPosition());
         Vector directionTotTitan = vectorToTitan.direction();
         Vector futureDirectionToTitan = futureVectorToTitan.direction();

@@ -28,7 +28,8 @@ public class SpaceShip extends BaseBody implements Moving, Trailing {
     private double radius;
     private Body parent;
     private Vector directionOnParent;
-    private final Trailer trailer = new Trailer(this, 1e5);
+    private final Trailer trailer = new Trailer(this, 1e6);
+    private final static double MAX_VELOCITY = 5E4;
 
     public Trailer trailer() {
         return trailer;
@@ -36,7 +37,7 @@ public class SpaceShip extends BaseBody implements Moving, Trailing {
 
     // for next position/velocity/acceleration
 
-    private static final double POINTING_SPEED = 0.1; // degrees rotated at each time step
+    private static final double POINTING_SPEED = 2; // degrees rotated at each time step
 
     public void adjustPointing() {
         double angle = pointing.angleBetween(desiredPointing);
@@ -93,7 +94,11 @@ public class SpaceShip extends BaseBody implements Moving, Trailing {
     }
 
     public void setVelocity(Vector velocity) {
-        this.velocity = velocity;
+        if (velocity.magnitude() <= MAX_VELOCITY) {
+            this.velocity = velocity;
+        } else {
+            this.velocity = velocity.direction().times(MAX_VELOCITY);
+        }
     }
 
     public Vector acceleration() {
