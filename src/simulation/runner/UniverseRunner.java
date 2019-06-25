@@ -1,5 +1,6 @@
 package simulation.runner;
 
+import body.Exceptions.SpaceShipException;
 import simulation.Timer;
 import simulation.universe.Universe;
 

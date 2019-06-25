@@ -1,5 +1,6 @@
 package simulation.universe;
 
+import body.Exceptions.SpaceShipException;
 import body.Planet;
 import body.SpaceShip;
 import body.interfaces.*;
@@ -27,6 +28,10 @@ public final class UniverseImpl implements Universe {
 
     public List<Body> allBodies() {
         return allBodies;
+    }
+
+    public List<SpaceShip> spaceShips() {
+        return spaceShips;
     }
 
     public List<Trailing> trailingBodies() {
@@ -178,9 +183,13 @@ public final class UniverseImpl implements Universe {
 
                 if (ss.parent() == null && ss.isOn((Body) attractor)) {
                     Vector relativeVelocity = ss.velocity().minus(((Moving) attractor).velocity());
+
                     if (relativeVelocity.magnitude() > 5)
-                        throw new IllegalStateException("spaceship " + ss.name() + " crashed on " + ((Moving) attractor).name() + " with a speed of " + ss.velocity().magnitude());
-                    ss.setParent((Body) attractor);
+                        throw new SpaceShipException.Crashed(ss, (Body) attractor);
+                    else
+                        throw new SpaceShipException.Landed(ss, (Body) attractor);
+
+//                    ss.setParent((Body) attractor);
                 }
 
                 if (ss.parent() != null) {
@@ -203,6 +212,8 @@ public final class UniverseImpl implements Universe {
             acceleration = acceleration.plus(controllerAcceleration);
 
             integrator.integrate(ss, acceleration, timeStep);
+
+            ss.stampDist();
         }
 
         // launch queued ships

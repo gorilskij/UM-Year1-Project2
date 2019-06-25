@@ -11,6 +11,7 @@ import simulation.Simulation;
 import simulation.universe.Universe;
 
 import java.awt.*;
+import java.util.Map;
 
 public class SpaceShip extends BaseBody implements Moving, Trailing {
     public SpaceShip copy() {
@@ -182,5 +183,17 @@ public class SpaceShip extends BaseBody implements Moving, Trailing {
                         .plus(acceleration
                                 .times(Math.pow(TimeStep, 2) / 2))
                 );
+    }
+
+    private Map<String, Double> map;
+
+    public void setMap(Map<String, Double> map) {
+        this.map = map;
+    }
+
+    public void stampDist() {
+        double dist = position.distanceTo(universe.getBodyByName("titan").position());
+        if (map.get(name()) > dist)
+            map.put(name(), dist);
     }
 }

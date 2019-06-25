@@ -1,5 +1,7 @@
 package simulation.runner;
 
+import body.Exceptions.SpaceShipException;
+
 public abstract class BaseRunner implements Runner {
     private volatile long minFrameTimeNs;
     private Thread runnerThread = null;
@@ -22,18 +24,23 @@ public abstract class BaseRunner implements Runner {
 
         final long localMinFrameTime = minFrameTimeNs();
 
-        runnerThread = new Thread(() -> {
-            try {
-                while (!runnerThread.isInterrupted()) {
-                    long startTimeNs = System.nanoTime();
-                    doFrame();
-                    long endTimeNs = System.nanoTime();
-                    long timeTakenNs = endTimeNs - startTimeNs;
+        runnerThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while (!runnerThread.isInterrupted()) {
+                        long startTimeNs = System.nanoTime();
+                        BaseRunner.this.doFrame();
+                        long endTimeNs = System.nanoTime();
+                        long timeTakenNs = endTimeNs - startTimeNs;
 
-                    if (localMinFrameTime > timeTakenNs)
-                        Thread.sleep((localMinFrameTime - timeTakenNs) / 1_000_000);
+                        if (localMinFrameTime > timeTakenNs)
+                            Thread.sleep((localMinFrameTime - timeTakenNs) / 1_000_000);
+                    }
+                } catch (InterruptedException ignored) {
+                } catch (SpaceShipException e) {
+
                 }
-            } catch (InterruptedException ignored) {
             }
         });
         runnerThread.start();

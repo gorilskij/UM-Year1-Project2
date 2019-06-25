@@ -9,6 +9,10 @@ import simulation.runner.UniverseRunner;
 import simulation.universe.Universe;
 import simulation.universe.UniverseImpl;
 
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+
 
 public final class SimulationImpl implements Simulation {
     private final Timer timer;

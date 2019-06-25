@@ -8,7 +8,6 @@ import simulation.universe.Universe;
 
 public interface Simulation extends PlayPause, ShipLaunched {
     /**
-     *
      * @return current time
      */
     long timePassedS();
@@ -16,7 +15,7 @@ public interface Simulation extends PlayPause, ShipLaunched {
     /**
      * add launch
      */
-    void addLaunch(SpaceShip spaceShip, long time, Controller ...controllers);
+    void addLaunch(SpaceShip spaceShip, long time, Controller... controllers);
 
     void setUniverseRunnerMinFrameTime(long minFrameTimeNs);
 

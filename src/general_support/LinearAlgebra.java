@@ -172,5 +172,4 @@ public class LinearAlgebra {
         Vector crossProduct = vectorToRotate.crossProduct(other);
         return multiplyMatrixByVector(matrixForRotation(angleDeg, crossProduct), vectorToRotate);
     }
-
 }

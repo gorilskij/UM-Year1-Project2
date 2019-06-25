@@ -38,17 +38,6 @@ public class PIDController extends BaseController {
         this.closest = closest;
     }
 
-    public PIDController(Universe universe, SpaceShip spaceShip, Body body, List<Double> errors, double P, double I, double D, double closest) {
-        super(universe, spaceShip);
-        this.errors = errors;
-        this.trackedBody = body;
-        this.P = P;
-        this.I = I;
-        this.D = D;
-        this.closest = closest;
-    }
-
-
     @Override
     public double control(double timeStep) {
         double error = this.proportional(spaceShip.position());
@@ -68,7 +57,10 @@ public class PIDController extends BaseController {
         double acceleration = P * error + I * integralError + D * derivativeError;
 
         if (vectorToTitan.magnitude() < closest && super.nextController != null) {
-            spaceShip.setController(this.nextController);
+            if (nextController instanceof PIDController)
+                ((PIDController) nextController).errors = errors;
+
+            spaceShip.setController(nextController);
         }
 
         return Math.min(MAX_ACCELERATION, acceleration);

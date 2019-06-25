@@ -1,5 +1,6 @@
 package simulation.universe;
 
+import body.Exceptions.SpaceShipException;
 import body.SpaceShip;
 import body.interfaces.Body;
 import body.interfaces.Trailing;
@@ -36,6 +37,8 @@ public interface Universe {
     void iterateShips(double timeStep);
 
     List<Body> allBodies();
+
+    List<SpaceShip> spaceShips();
 
     List<Trailing> trailingBodies();
 
