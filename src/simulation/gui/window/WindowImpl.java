@@ -3,6 +3,7 @@ package simulation.gui.window;
 import body.SpaceShip;
 import body.interfaces.Body;
 import body.interfaces.Trailing;
+import general_support.KeyListenerManager;
 import general_support.Rotation;
 import simulation.Simulation;
 import simulation.universe.Universe;
@@ -20,7 +21,7 @@ import java.util.List;
 
 public class WindowImpl implements Window {
     private boolean playing = false;
-    private static final double ZOOM_FACTOR = 1.2;
+    private static final double ZOOM_FACTOR = 1.1;
     private static final double KEY_ROT_DEG = 5; // degrees of rotation from 1 key press
 
     private final Simulation simulation;
@@ -99,40 +100,48 @@ public class WindowImpl implements Window {
                   space.requestFocus();
             }
         });
-        space.addKeyListener(new KeyListener() {
-            public void keyTyped(KeyEvent e) {
-            }
+//        space.addKeyListener(new KeyListener() {
+//            public void keyTyped(KeyEvent e) {
+//            }
+//
+//            public void keyReleased(KeyEvent e) {
+//            }
+//
+//            public void keyPressed(KeyEvent e) {
+//                switch (e.getKeyCode()) {
+//                    // rotation
+//                    case 37: // left arrow
+//                        rotation = rotation.plusHorizontal(-KEY_ROT_DEG);
+//                        break;
+//                    case 39: // right arrow
+//                        rotation = rotation.plusHorizontal(KEY_ROT_DEG);
+//                        break;
+//                    case 38: // up arrow
+//                        rotation = rotation.plusVertical(KEY_ROT_DEG);
+//                        break;
+//                    case 40: // down arrow
+//                        rotation = rotation.plusVertical(-KEY_ROT_DEG);
+//                        break;
+//
+//                    // zoom
+//                    case 87: // comma
+//                        scale *= ZOOM_FACTOR;
+//                        break;
+//                    case 69: // dot
+//                        scale /= ZOOM_FACTOR;
+//                        break;
+//                }
+//                paint();
+//            }
+//        });
 
-            public void keyReleased(KeyEvent e) {
-            }
-
-            public void keyPressed(KeyEvent e) {
-                switch (e.getKeyCode()) {
-                    // rotation
-                    case 37: // left arrow
-                        rotation = rotation.plusHorizontal(-KEY_ROT_DEG);
-                        break;
-                    case 39: // right arrow
-                        rotation = rotation.plusHorizontal(KEY_ROT_DEG);
-                        break;
-                    case 38: // up arrow
-                        rotation = rotation.plusVertical(KEY_ROT_DEG);
-                        break;
-                    case 40: // down arrow
-                        rotation = rotation.plusVertical(-KEY_ROT_DEG);
-                        break;
-
-                    // zoom
-                    case 87: // comma
-                        scale *= ZOOM_FACTOR;
-                        break;
-                    case 69: // dot
-                        scale /= ZOOM_FACTOR;
-                        break;
-                }
-                paint();
-            }
-        });
+        KeyListenerManager manager = new KeyListenerManager(space);
+        manager.addBinding(37, () -> rotation = rotation.plusHorizontal(-KEY_ROT_DEG));
+        manager.addBinding(39, () -> rotation = rotation.plusHorizontal(KEY_ROT_DEG));
+        manager.addBinding(38, () -> rotation = rotation.plusVertical(KEY_ROT_DEG));
+        manager.addBinding(40, () -> rotation = rotation.plusVertical(-KEY_ROT_DEG));
+        manager.addBinding(49, () -> scale *= ZOOM_FACTOR);
+        manager.addBinding(50, () -> scale /= ZOOM_FACTOR);
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout());

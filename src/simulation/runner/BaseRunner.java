@@ -4,7 +4,7 @@ public abstract class BaseRunner implements Runner {
     private volatile long minFrameTimeNs;
     private Thread runnerThread = null;
 
-    BaseRunner(long minFrameTimeNs) {
+    public BaseRunner(long minFrameTimeNs) {
         this.minFrameTimeNs = minFrameTimeNs;
     }
 
@@ -18,9 +18,10 @@ public abstract class BaseRunner implements Runner {
     }
 
     public void play() {
+        if (runnerThread != null) return;
+
         final long localMinFrameTime = minFrameTimeNs();
 
-        if (runnerThread != null) return;
         runnerThread = new Thread(() -> {
             try {
                 while (!runnerThread.isInterrupted()) {
