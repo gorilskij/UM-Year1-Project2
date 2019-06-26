@@ -57,9 +57,8 @@ public final class PaintingTools {
         );
     }
 
-    public static void paintPointing(Graphics g, Color color, int length, Point.Double pos, Vector pointing) {
+    public static void paintPointing(Graphics g, Color color, int length, Point.Double pos, Point.Double vec) {
         g.setColor(color);
-        Point.Double vec = pointing.direction().toXYPoint();
         g.drawLine(
                 (int) pos.x, (int) pos.y,
                 (int) (pos.x + vec.x * length),

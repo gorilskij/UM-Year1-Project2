@@ -26,11 +26,11 @@ public class PID extends BaseController {
     private boolean future;
     private static final double OVERSHOT = 5;
 
-    private static final double MAX_ACCELERATION = 5E-5;
+    private final double MAX_ACCELERATION;
     private static double FUTURE_STEP_PREDICTION = 1000;
     private static final double FUTURE_STEP_SIZE = 1E-3;
 
-    public PID(Universe universe, SpaceShip spaceShip, Body body, double P, double I, double D, double closest, boolean future) {
+    public PID(Universe universe, SpaceShip spaceShip, Body body, double P, double I, double D, double closest, boolean future, double maxAcceleration) {
         super(universe, spaceShip);
         this.errors = new ArrayList<>();
         this.trackedBody = body;
@@ -39,9 +39,10 @@ public class PID extends BaseController {
         this.D = D;
         this.closest = closest;
         this.future = future;
+        this.MAX_ACCELERATION = maxAcceleration;
     }
 
-    public PID(Universe universe, SpaceShip spaceShip, Body body, List<Double> errors, double P, double I, double D, double closest, boolean future) {
+    public PID(Universe universe, SpaceShip spaceShip, Body body, List<Double> errors, double P, double I, double D, double closest, boolean future, double maxAcceleration) {
         super(universe, spaceShip);
         this.errors = errors;
         this.trackedBody = body;
@@ -50,6 +51,7 @@ public class PID extends BaseController {
         this.D = D;
         this.closest = closest;
         this.future = future;
+        this.MAX_ACCELERATION = maxAcceleration;
     }
 
 

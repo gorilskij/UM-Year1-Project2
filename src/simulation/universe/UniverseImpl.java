@@ -3,9 +3,11 @@ package simulation.universe;
 import body.Planet;
 import body.SpaceShip;
 import body.interfaces.*;
+import controllers.LandingController;
 import controllers.LaunchController;
 import controllers.PID;
 import data.Constants;
+import general_support.integrator.Euler;
 import general_support.integrator.Integrator;
 import general_support.Vector;
 import data.BodyFactory;
@@ -126,20 +128,32 @@ public final class UniverseImpl implements Universe {
         PID pid1 = new PID(this,
                 spaceShip,
                 this.getBodyByName("saturn"),
-                3E-10, 2.5E-11, 1E-4, 5E10, true
+                3E-12, 2.5E-11, 1E-3, 5E11,
+                true,
+                5E-5
         );
 
         PID pid2 = new PID(this,
                 spaceShip,
                 this.getBodyByName("titan"),
-                pid1.getErrors(),
-                5E-11, 2.5E-20, 7E-6, 0, false);
+                3E-1, 2.5E-1, 1, 5E10,
+                true,
+                5E-5
+        );
+
+        LandingController landing = new LandingController(
+                this,
+                spaceShip,
+                (Moving) getBodyByName("saturn"),
+                (Moving) getBodyByName("titan")
+        );
 
 
         launchController.setNextController(pid1);
         pid1.setNextController(pid2);
+        pid2.setNextController(landing);
 
-        spaceShip.setController(launchController);
+        spaceShip.setController(pid1);
 
 
 
@@ -226,6 +240,22 @@ public final class UniverseImpl implements Universe {
             }
 
             acceleration = acceleration.plus(controllerAcceleration);
+
+            try {
+                Moving titan = (Moving) getBodyByName("titan");
+                if (ss.position().distanceTo(titan.position()) < 1e10) {
+                    double decelerationMagnitude = Math.min(Math.abs(
+                            ss.velocity().magnitude() - titan.velocity().magnitude()
+                    ) / 1e6, 1);
+
+                    acceleration = acceleration.plus(
+                            ss.velocity().minus(titan.velocity()).direction().inverse().times(
+                                    decelerationMagnitude
+                            )
+                    );
+                }
+            } catch (Exception e) {
+            }
 
             integrator.integrate(ss, acceleration, timeStep);
         }
