@@ -100,48 +100,14 @@ public class WindowImpl implements Window {
                   space.requestFocus();
             }
         });
-//        space.addKeyListener(new KeyListener() {
-//            public void keyTyped(KeyEvent e) {
-//            }
-//
-//            public void keyReleased(KeyEvent e) {
-//            }
-//
-//            public void keyPressed(KeyEvent e) {
-//                switch (e.getKeyCode()) {
-//                    // rotation
-//                    case 37: // left arrow
-//                        rotation = rotation.plusHorizontal(-KEY_ROT_DEG);
-//                        break;
-//                    case 39: // right arrow
-//                        rotation = rotation.plusHorizontal(KEY_ROT_DEG);
-//                        break;
-//                    case 38: // up arrow
-//                        rotation = rotation.plusVertical(KEY_ROT_DEG);
-//                        break;
-//                    case 40: // down arrow
-//                        rotation = rotation.plusVertical(-KEY_ROT_DEG);
-//                        break;
-//
-//                    // zoom
-//                    case 87: // comma
-//                        scale *= ZOOM_FACTOR;
-//                        break;
-//                    case 69: // dot
-//                        scale /= ZOOM_FACTOR;
-//                        break;
-//                }
-//                paint();
-//            }
-//        });
 
         KeyListenerManager manager = new KeyListenerManager(space);
         manager.addBinding(37, () -> rotation = rotation.plusHorizontal(-KEY_ROT_DEG));
         manager.addBinding(39, () -> rotation = rotation.plusHorizontal(KEY_ROT_DEG));
         manager.addBinding(38, () -> rotation = rotation.plusVertical(KEY_ROT_DEG));
         manager.addBinding(40, () -> rotation = rotation.plusVertical(-KEY_ROT_DEG));
-        manager.addBinding(49, () -> scale *= ZOOM_FACTOR);
-        manager.addBinding(50, () -> scale /= ZOOM_FACTOR);
+        manager.addBinding(49, () -> setScale(scale * ZOOM_FACTOR));
+        manager.addBinding(50, () -> setScale(scale / ZOOM_FACTOR));
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout());

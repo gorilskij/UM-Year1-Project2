@@ -31,6 +31,10 @@ public class SpaceShip extends BaseBody implements Moving, Trailing {
     private final Trailer trailer = new Trailer(this, 5e4);
     private final static double MAX_VELOCITY = 8E4;//4.358E4;
 
+    public void setPointing(Vector p) {
+        pointing = p;
+    }
+
     public Trailer trailer() {
         return trailer;
     }

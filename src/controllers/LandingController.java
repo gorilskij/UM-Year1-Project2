@@ -46,6 +46,12 @@ public class LandingController extends BaseController {
         return acceleration.magnitude();
     }
 
+    private Vector relativeVelocityDown(Moving body) {
+        return relativeVelocity(body).componentInDirectionOf(
+                spaceShip.position().vectorTo(body.position()).direction()
+        );
+    }
+
     private void pointRetrograde(Moving body) {
         spaceShip.setDesiredPointing(relativeVelocity(body).inverse().direction());
     }
@@ -82,10 +88,59 @@ public class LandingController extends BaseController {
             return Math.min(0.2, point(target, 50));
         }
 
-        if (relativeVelocity(target).magnitude() > 1e3) {
+        if (relativeVelocity(target).magnitude() > 1e4) {
             state(30);
             pointRetrograde(target);
-            return 0.1;
+            return 0.5;
+        }
+
+        if (altitudeASL(target) < 1e5 && relativeVelocityDown(target).magnitude() > 10) {
+            state(56);
+            pointRetrograde(target);
+            return Math.min(relativeVelocity(target).magnitude(), 40);
+        }
+
+        if (altitudeASL(target) < 2e5 && relativeVelocityDown(target).magnitude() > 1e2) {
+            state(55);
+            pointRetrograde(target);
+            return Math.min(relativeVelocity(target).magnitude(), 40);
+        }
+
+        if (altitudeASL(target) < 3e5 && relativeVelocityDown(target).magnitude() > 1e2) {
+            state(54);
+            pointRetrograde(target);
+            return Math.min(relativeVelocity(target).magnitude(), 20);
+        }
+
+        if (altitudeASL(target) < 5e5 && relativeVelocityDown(target).magnitude() > 1e2) {
+            state(53);
+            pointRetrograde(target);
+            return Math.min(relativeVelocity(target).magnitude(), 5);
+        }
+
+        if (altitudeASL(target) < 5e6 && relativeVelocityDown(target).magnitude() > 1e2) {
+            state(52);
+            pointRetrograde(target);
+            return Math.min(relativeVelocity(target).magnitude(), 1);
+        }
+
+        if (altitudeASL(target) < 5e7 && relativeVelocityDown(target).magnitude() > 1e3) {
+            state(51);
+            pointRetrograde(target);
+            return Math.min(relativeVelocity(target).magnitude(), 0.1);
+        }
+
+        if (relativeVelocity(target).magnitude() > 1e3) {
+            System.out.println("speed: " + relativeVelocity(target).magnitude());
+            System.out.println("asl: " + altitudeASL(target));
+            pointRetrograde(target);
+            if (altitudeASL(target) > 5e6) {
+                state(41);
+                return 0.1;
+            } else {
+                state(42);
+                return Math.min(0.5, relativeVelocity(target).magnitude());
+            }
         }
 
         state(0);

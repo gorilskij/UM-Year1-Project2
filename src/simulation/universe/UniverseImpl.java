@@ -217,9 +217,13 @@ public final class UniverseImpl implements Universe {
 
                 if (ss.parent() == null && ss.isOn((Body) attractor)) {
                     Vector relativeVelocity = ss.velocity().minus(((Moving) attractor).velocity());
-                    if (relativeVelocity.magnitude() > 5)
+                    if (relativeVelocity.magnitude() > 5e3)
                         throw new IllegalStateException("spaceship " + ss.name() + " crashed on " + ((Moving) attractor).name() + " with a speed of " + relativeVelocity.magnitude());
+
                     ss.setParent((Body) attractor);
+                    ss.setController(null);
+
+                    throw new IllegalStateException("landed on " + ((Moving) attractor).name() + " at " + relativeVelocity.magnitude() + "m/s");
                 }
 
                 if (ss.parent() != null) {
