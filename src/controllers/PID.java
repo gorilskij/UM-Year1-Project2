@@ -23,14 +23,13 @@ public class PID extends BaseController {
     private double I;
     private double D;
     private double closest;
-    private boolean future;
-    private static final double OVERSHOT = 5;
+    private final double future;
+    private static final double OVERSHOT = 20;
 
-    private static final double MAX_ACCELERATION = 5E-5;
-    private static double FUTURE_STEP_PREDICTION = 1000;
+    private static final double MAX_ACCELERATION = 1E-4 ;
     private static final double FUTURE_STEP_SIZE = 1E-3;
 
-    public PID(Universe universe, SpaceShip spaceShip, Body body, double P, double I, double D, double closest, boolean future) {
+    public PID(Universe universe, SpaceShip spaceShip, Body body, double P, double I, double D, double closest, double future) {
         super(universe, spaceShip);
         this.errors = new ArrayList<>();
         this.trackedBody = body;
@@ -41,7 +40,7 @@ public class PID extends BaseController {
         this.future = future;
     }
 
-    public PID(Universe universe, SpaceShip spaceShip, Body body, List<Double> errors, double P, double I, double D, double closest, boolean future) {
+    public PID(Universe universe, SpaceShip spaceShip, Body body, List<Double> errors, double P, double I, double D, double closest, double future) {
         super(universe, spaceShip);
         this.errors = errors;
         this.trackedBody = body;
@@ -61,10 +60,10 @@ public class PID extends BaseController {
             return 0;
 
         Vector vectorToTitan = spaceShip.nextPosition().vectorTo(trackedBody.position());
-        Vector futureVectorToTitan = spaceShip.position().vectorTo(((Planet) trackedBody).nextPosition(FUTURE_STEP_PREDICTION));
-        Vector directionTotTitan = vectorToTitan.direction();
+        Vector futureVectorToTitan = spaceShip.position().vectorTo(futurePositionOfTrackedBody(future));
+        Vector directionToTitan = vectorToTitan.direction();
         Vector futureDirectionToTitan = futureVectorToTitan.direction();
-        spaceShip.setDesiredPointing(LinearAlgebra.rotateTo(directionTotTitan, futureDirectionToTitan, directionTotTitan.angleBetween(futureDirectionToTitan) + OVERSHOT));
+        spaceShip.setDesiredPointing(LinearAlgebra.rotateTo(directionToTitan, futureDirectionToTitan, directionToTitan.angleBetween(futureDirectionToTitan) + OVERSHOT));
 
         this.updateErrors(error);
         double integralError = this.updateIntegral(error);
@@ -94,19 +93,11 @@ public class PID extends BaseController {
     }
 
     private double proportional(Vector position) {
-        if (future && FUTURE_STEP_PREDICTION > 0) {
-            FUTURE_STEP_PREDICTION -= FUTURE_STEP_SIZE;
-            return position.distanceTo(((Planet) trackedBody).nextPosition(FUTURE_STEP_PREDICTION));
+        if (future > 0) {
+            return position.distanceTo(futurePositionOfTrackedBody(future));
         }
 
         else {
-//        if (future && FUTURE_STEP_PREDICTION > 0) {
-//            if (futurePositionOfTrackedBody(FUTURE_STEP_PREDICTION) != trackedBody.position()) {
-//                System.out.println("not equal" + FUTURE_STEP_PREDICTION);
-//            }
-//            FUTURE_STEP_PREDICTION -= FUTURE_STEP_SIZE;
-//            return position.distanceTo(futurePositionOfTrackedBody(FUTURE_STEP_PREDICTION));
-//        }
             return position.distanceTo(trackedBody.position());
         }
     }

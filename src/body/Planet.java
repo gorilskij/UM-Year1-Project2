@@ -96,7 +96,7 @@ public class Planet extends BaseBody implements Round, Moving, Attractive, Trail
         Vector position = this.position();
         Vector velocity = this.velocity();
         Vector lastAcceleration = this.acceleration();
-        for (double i = 0; i < numberOfTimeSteps; i += 1E-3) {
+        for (double i = 0; i < numberOfTimeSteps; i ++) {
             position = position.plus(velocity
                     .times(TIME_STEP)
                     .plus(acceleration.times(Math.pow(TIME_STEP, 2) / 2))
