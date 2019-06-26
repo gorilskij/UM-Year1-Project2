@@ -28,7 +28,7 @@ public class SpaceShip extends BaseBody implements Moving, Trailing {
     private double radius;
     private Body parent;
     private Vector directionOnParent;
-    private final Trailer trailer = new Trailer(this, 1e6);
+    private final Trailer trailer = new Trailer(this, 5e4);
     private final static double MAX_VELOCITY = 5E4;
 
     public Trailer trailer() {
@@ -37,11 +37,12 @@ public class SpaceShip extends BaseBody implements Moving, Trailing {
 
     // for next position/velocity/acceleration
 
-    private static final double POINTING_SPEED = 10; // degrees rotated at each time step
+    private static final double POINTING_SPEED = 2; // degrees rotated at each time step
 
     public void adjustPointing() {
         double angle = pointing.angleBetween(desiredPointing);
-        pointing = LinearAlgebra.rotateTo(pointing, desiredPointing, angle).direction();
+        if (! pointing.equals(desiredPointing))
+            pointing = LinearAlgebra.rotateTo(pointing, desiredPointing, angle).direction();
     }
     // can be changed for different parts of the journey
     private Controller controller = null;
@@ -141,11 +142,14 @@ public class SpaceShip extends BaseBody implements Moving, Trailing {
         PaintingTools.paintHighlightCircle(g, scale, pos);
         PaintingTools.paintLabel(g, scale, pos, name());
 
-        Vector rotatedPointing = PaintingTools.convert(pointing, Vector.ZERO, rotation);
-        Vector rotatedDesiredPointing = PaintingTools.convert(desiredPointing, Vector.ZERO, rotation);
+        Vector convertedPointing = PaintingTools.convert(pointing, Vector.ZERO, rotation).direction();
+        Vector convertedDesiredPointing = PaintingTools.convert(desiredPointing, Vector.ZERO, rotation).direction();
 
-        PaintingTools.paintPointing(g, Color.RED, 100, pos, rotatedPointing);
-        PaintingTools.paintPointing(g, Color.GREEN, 80, pos, rotatedDesiredPointing);
+        Point.Double pointingVec = convertedPointing.toXYPoint();
+        Point.Double desiredPointingVec = convertedDesiredPointing.toXYPoint();
+
+        PaintingTools.paintPointing(g, Color.RED, 100, pos, pointingVec);
+        PaintingTools.paintPointing(g, Color.GREEN, 80, pos, desiredPointingVec);
 
         trailer.paint(g, centerPosition, rotation, scale);
     }

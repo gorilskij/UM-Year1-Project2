@@ -3,9 +3,11 @@ package simulation.universe;
 import body.Planet;
 import body.SpaceShip;
 import body.interfaces.*;
+import controllers.LandingController;
 import controllers.LaunchController;
 import controllers.PID;
 import data.Constants;
+import general_support.integrator.Euler;
 import general_support.integrator.Integrator;
 import general_support.Vector;
 import data.BodyFactory;
@@ -117,6 +119,7 @@ public final class UniverseImpl implements Universe {
         Vector sunToEarth = getBodyByName("sun").position().vectorTo(earth.position()).direction();
         spaceShip.setPosition(earth.position().plus(sunToEarth.times(earth.radius())));
         spaceShip.setDesiredPointing(sunToEarth);
+        LandingController l = new LandingController(this, spaceShip, (Moving)this.getBodyByName("saturn"), (Moving)this.getBodyByName("titan"));
 
         LaunchController launchController = new LaunchController(
                 this,
@@ -126,25 +129,33 @@ public final class UniverseImpl implements Universe {
         PID pid1 = new PID(this,
                 spaceShip,
                 this.getBodyByName("saturn"),
-                1E-17, 1E-5, 1E-7, 1.15E12, 0
+                1E-17, 1E-5, 1E-7, 1.2E12, 0, 1E-4
         );
         PID pid2 = new PID(this,
                 spaceShip,
                 this.getBodyByName("saturn"),
                 pid1.getErrors(),
-                4E-14, 4E-14, 5E-5, 3E11, 30
+                9E-14, 4E-14, 5E-5, 5E11, 20, 1.5E-4
         );
         PID pid3 = new PID(this,
                 spaceShip,
+                this.getBodyByName("saturn"),
+                pid2.getErrors(),
+                6E-12, 6E-20, 9E-7, 3E11, 35, 5E-5
+        );
+        PID pid4 = new PID(this,
+                spaceShip,
                 this.getBodyByName("titan"),
-                pid1.getErrors(),
-                5E-18, 5E-18, 1E-4, 0, 3
+                pid3.getErrors(),
+                5E-25, 4E-13, 8E-8, 1E11, 2, 5E-6
         );
 
 
         launchController.setNextController(pid1);
         pid1.setNextController(pid2);
         pid2.setNextController(pid3);
+        pid3.setNextController(pid4);
+        pid4.setNextController(l);
 
         spaceShip.setController(launchController);
 
@@ -210,9 +221,11 @@ public final class UniverseImpl implements Universe {
 
                 if (ss.parent() == null && ss.isOn((Body) attractor)) {
                     Vector relativeVelocity = ss.velocity().minus(((Moving) attractor).velocity());
-                    if (relativeVelocity.magnitude() > 5)
+                    if (relativeVelocity.magnitude() > 5e3)
                         throw new IllegalStateException("spaceship " + ss.name() + " crashed on " + ((Moving) attractor).name() + " with a speed of " + relativeVelocity.magnitude());
                     ss.setParent((Body) attractor);
+                    ss.setController(null);
+                    throw new IllegalStateException("FUCK IT");
                 }
 
                 if (ss.parent() != null) {
@@ -233,6 +246,22 @@ public final class UniverseImpl implements Universe {
             }
 
             acceleration = acceleration.plus(controllerAcceleration);
+
+            try {
+                Moving titan = (Moving) getBodyByName("titan");
+                if (ss.position().distanceTo(titan.position()) < 1e10) {
+                    double decelerationMagnitude = Math.min(Math.abs(
+                            ss.velocity().magnitude() - titan.velocity().magnitude()
+                    ) / 1e6, 1);
+
+                    acceleration = acceleration.plus(
+                            ss.velocity().minus(titan.velocity()).direction().inverse().times(
+                                    decelerationMagnitude
+                            )
+                    );
+                }
+            } catch (Exception e) {
+            }
 
             integrator.integrate(ss, acceleration, timeStep);
         }
