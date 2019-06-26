@@ -144,7 +144,7 @@ public final class UniverseImpl implements Universe {
             PID pid1 = new PID(this,
                     ship,
                     this.getBodyByName("titan"),
-                    1E-11, 5E-17, 1E-4, 7E10
+                    0, 0, 0, 7E10
             );
 
             launch.addController(pid1);
@@ -153,7 +153,7 @@ public final class UniverseImpl implements Universe {
                     ship,
                     this.getBodyByName("titan"),
                     pid1.getErrors(),
-                    4E-14, 0, 0.0005, 0));
+                    0, 0, 0, 0));
 
 
 
@@ -162,19 +162,23 @@ public final class UniverseImpl implements Universe {
             PID pid1 = new PID(this,
                     ship,
                     this.getBodyByName("earth"),
-                    1E-11, 5E-17, 1E-4, 7E10
+                    1E-11, 5E-17, 1E-4, 5E9
             );
 
             launch.addController(pid1);
 
-            launch.addController(new PID(this,
+            PID pid2 = new PID(this,
                     ship,
                     this.getBodyByName("earth"),
                     pid1.getErrors(),
-                    4E-14, 0, 0.0005, 0));
+                    1E-5, 0, 1E-8, 0);
+
+            launch.addController(pid2);
+
+            pid1.setNextController(pid2);
 
 
-            pid1.setNextController(null);
+
         }
         queuedLaunches.add(launch);
 

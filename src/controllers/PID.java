@@ -25,7 +25,7 @@ public class PID extends BaseController {
     private double closest;
     private static final double OVERSHOT = 5;
 
-    private static final double MAX_ACCELERATION = 6.35E-5;
+    private static final double MAX_ACCELERATION = 6.35E-1;
 
     public PID(Universe universe, SpaceShip spaceShip, Body body, double P, double I, double D, double closest) {
         super(universe, spaceShip);
@@ -60,7 +60,7 @@ public class PID extends BaseController {
         Vector directionTotTitan = vectorToTitan.direction();
         Vector futureDirectionToTitan = futureVectorToTitan.direction();
         spaceShip.setDesiredPointing(LinearAlgebra.rotateTo(directionTotTitan, futureDirectionToTitan, directionTotTitan.angleBetween(futureDirectionToTitan) + OVERSHOT));
-
+        System.out.println(vectorToTitan.magnitude());
         this.updateErrors(error);
         double integralError = this.updateIntegral(error);
         this.lastError = error;
@@ -68,6 +68,7 @@ public class PID extends BaseController {
         double acceleration = P * error + I * integralError + D * derivativeError;
 
         if (vectorToTitan.magnitude() < closest && super.nextController != null) {
+            System.out.println("switching controller");
             this.spaceShip.setController(this.nextController);
             this.nextController = null;
         }
@@ -108,8 +109,10 @@ public class PID extends BaseController {
             return 0;
         else if (errors.size() == 2)
             return Numerical.TwoPointDerivativeBackWard(errors, h);
-        else
+        else if(errors.size() < 5)
             return Numerical.ThreePointDerivativeBackWard(errors, h);
+        else
+            return Numerical.FivePointDerivativeBackWard(errors, h);
     }
 
     public List<Double> getErrors() {

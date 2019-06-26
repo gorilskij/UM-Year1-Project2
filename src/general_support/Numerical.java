@@ -46,4 +46,8 @@ public class Numerical {
     public static double ThreePointDerivativeBackWard(List<Double> f, double h){
         return (3*f.get(f.size()-1) - 4*f.get(f.size()-2) + f.get(f.size()-3))/h;
     }
+
+    public static double FivePointDerivativeBackWard(List<Double> f, double h){
+        return (25*f.get(f.size()-1) - 48*f.get(f.size()-2) + 36*f.get(f.size()-3) - 16*f.get(f.size()-4) + 3*f.get(f.size()-5))/h;
+    }
 }
